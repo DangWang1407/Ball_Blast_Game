@@ -48,7 +48,7 @@ namespace Game.Controllers
         {
             if(!isActive) return;
             EventManager.Trigger(new MissileDestroyedEvent(transform.position, reason));
-            PoolMangager.Instance.Despawn(poolName, gameObject);
+            PoolManager.Instance.Despawn(poolName, gameObject);
         }
 
         private void OnTriggerEnter2D(Collider2D other)

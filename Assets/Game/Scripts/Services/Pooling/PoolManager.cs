@@ -6,7 +6,7 @@ using Unity.Collections;
 
 namespace Game.Services
 {
-    public class PoolMangager : MonoBehaviour 
+    public class PoolManager : MonoBehaviour 
     {
         [System.Serializable]
         public class  PoolConfig
@@ -23,7 +23,7 @@ namespace Game.Services
         private Dictionary<string, ObjectPool> pools = new Dictionary<string, ObjectPool>();
 
         #region Singleton
-        public static PoolMangager Instance { get; private set; }
+        public static PoolManager Instance { get; private set; }
 
         private void Awake()
         {

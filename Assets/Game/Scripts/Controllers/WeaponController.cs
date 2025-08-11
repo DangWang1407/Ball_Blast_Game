@@ -24,9 +24,9 @@ namespace Game.Controllers
             {
                 Debug.LogError("Missile Prefab is not assigned in WeaponController.");
             }
-            if (PoolMangager.Instance != null)
+            if (PoolManager.Instance != null)
             {
-                PoolMangager.Instance.CreatePool(MISSLE_POOL, missilePrefab, 5, 20, true);
+                PoolManager.Instance.CreatePool(MISSLE_POOL, missilePrefab, 5, 20, true);
             }
         }
 
@@ -43,7 +43,7 @@ namespace Game.Controllers
         {
             if(firePoint == null) firePoint = transform;
 
-            GameObject missile = PoolMangager.Instance.Spawn(MISSLE_POOL, firePoint.position);
+            GameObject missile = PoolManager.Instance.Spawn(MISSLE_POOL, firePoint.position);
             if (missile != null)
             {   
                 var missileController = missile.GetComponent<MissileController>();

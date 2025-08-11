@@ -150,7 +150,8 @@ namespace Game.Core
         private void OnPlayerDeath(PlayerDeathEvent eventData)
         {
             lives--;
-            
+            Debug.Log($"Player died. Remaining lives: {lives}");
+
             if (lives <= 0)
             {
                 GameOver();

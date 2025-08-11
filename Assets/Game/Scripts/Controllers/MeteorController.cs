@@ -1,11 +1,14 @@
-﻿using UnityEngine;
-using TMPro;
+﻿using Game.Core;
+using Game.Events;
 using Game.Services;
+using TMPro;
+using UnityEditor.EditorTools;
+using UnityEngine;
 
 public class MeteorController : MonoBehaviour, IPoolable
 {
     [SerializeField] private Rigidbody2D rb;
-    [SerializeField] private int maxHealth = 3;
+    [SerializeField] private int maxHealth = 10;
     [SerializeField] private TMP_Text textHealth;
     [SerializeField] private float jumpForce = 10f;
 
@@ -34,10 +37,11 @@ public class MeteorController : MonoBehaviour, IPoolable
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        //Debug.Log($"Meteor collided with {other.tag}");
         if (other.CompareTag("Missile"))
         {
             TakeDamage(1);
-            PoolMangager.Instance.Despawn("Missiles", other.gameObject); // trả missile về pool
+            PoolManager.Instance.Despawn("Missiles", other.gameObject); // trả missile về pool
         }
 
         if (other.CompareTag("Wall"))
@@ -53,6 +57,20 @@ public class MeteorController : MonoBehaviour, IPoolable
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
+
+        if (other.CompareTag("Player"))
+        {
+            Debug.Log("Meteor hit player");
+            // Trigger player death event
+            EventManager.Trigger(new PlayerDeathEvent(
+                    GameManager.Instance.Lives,
+                    DeathCause.MeteorHit
+                ));
+
+            // Destroy meteor sau khi hit player
+            PoolManager.Instance.Despawn(poolName, gameObject);
+            return;
+        }
     }
 
     private void TakeDamage(int damage)
@@ -62,10 +80,10 @@ public class MeteorController : MonoBehaviour, IPoolable
 
         if (currentHealth <= 0)
         {
-            PoolMangager.Instance.Despawn(poolName, gameObject); // trả về pool thay vì Destroy
+            PoolManager.Instance.Despawn(poolName, gameObject); // trả về pool thay vì Destroy
         }
     }
-
+     
     private void UpdateUI()
     {
         if (textHealth != null)

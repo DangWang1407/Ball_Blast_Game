@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using Game.Core;
 using Game.Services;
 using Game.Events;
@@ -143,6 +143,15 @@ namespace Game.Controllers
         {
             targetPosition = position;
             isMoving = true;
+        }
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            if (other.CompareTag("Meteor"))
+            {
+                Debug.Log("Meteor hit player - player");
+                // Xử lý giảm máu, chết, v.v.
+            }
         }
 
     }
