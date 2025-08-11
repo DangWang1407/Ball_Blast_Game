@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Game.Core;
@@ -54,7 +54,16 @@ namespace Game.Views
 
         private void OnGameStateChanged(GameStateChangeEvent eventData)
         {
-            UpdateButtonText();
+            // Chỉ ẩn pause button khi game over
+            if (eventData.NewState == GameState.GameOver || eventData.NewState == GameState.Menu)
+            {
+                pauseButton.gameObject.SetActive(false);
+            }
+            else
+            {
+                pauseButton.gameObject.SetActive(true);
+                UpdateButtonText();
+            }
         }
 
         private void UpdateButtonText()
