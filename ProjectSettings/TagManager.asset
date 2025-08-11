@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Ground
   - Cannon
+  - Missile
+  - Wall
+  - Meteor
   layers:
   - Default
   - TransparentFX
