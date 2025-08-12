@@ -112,6 +112,11 @@ public class MeteorController : MonoBehaviour, IPoolable
                 MeteorSpawner.Instance?.SpawnSplitMeteors(transform.position, meteorSize);
 
             PoolManager.Instance.Despawn(poolName, gameObject);
+
+            if (Random.Range(0f, 1f) < 0.3f) 
+            {
+                // Spawn a power-up
+            }
         }
     }
 

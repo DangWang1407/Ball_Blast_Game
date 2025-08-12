@@ -720,7 +720,7 @@ HingeJoint2D:
   m_BreakAction: 3
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: 1.4225352, y: 3.366197}
+  m_ConnectedAnchor: {x: 1.5830722, y: 3.7460816}
   m_UseMotor: 1
   m_Motor:
     m_MotorSpeed: 15

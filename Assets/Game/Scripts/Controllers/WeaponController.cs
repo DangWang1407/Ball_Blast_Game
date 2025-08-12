@@ -1,11 +1,17 @@
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using Game.Services;
+using System.Collections;
 
 namespace Game.Controllers
 {
     public class WeaponController : MonoBehaviour
     {
+        public WeaponStats currentStats = new WeaponStats();
+        private WeaponStats baseStats;
+
+
+
         [SerializeField] private GameObject missilePrefab;
         [SerializeField] private Transform firePoint;
         [SerializeField] private float fireRate = 0.12f;
@@ -28,11 +34,19 @@ namespace Game.Controllers
             {
                 PoolManager.Instance.CreatePool(MISSLE_POOL, missilePrefab, 5, 20, true);
             }
+
+            baseStats = new WeaponStats
+            {
+                fireRate = fireRate,
+                bulletCount = 1,
+                bulletScale = 1f,
+                pierce = false
+            };
         }
 
         private void Update()
         {
-            if(Time.time - lastFireTime >= fireRate)
+            if(Time.time - lastFireTime >= currentStats.fireRate)
             {
                 FireMissile();
                 lastFireTime = Time.time;
@@ -51,5 +65,40 @@ namespace Game.Controllers
                 missileController.SetVelocity(Vector2.up * missileSpeed);
             }
         }
+
+        #region Power-Up Methods
+        public void ApplyRapidFire(float duration)
+        {
+            currentStats.fireRate = baseStats.fireRate / 2f;
+            StartCoroutine(ResetAfterDuration(duration, () => 
+            {
+                currentStats.fireRate = baseStats.fireRate;
+            }));
+        }
+
+        public void ApplyDoubleShot(float duration)
+        {
+            currentStats.bulletCount = 2;
+            StartCoroutine(ResetAfterDuration(duration, () => 
+            {
+                currentStats.bulletCount = baseStats.bulletCount;
+            }));
+        }
+
+        private IEnumerator ResetAfterDuration(float duration, System.Action resetAction)
+        {
+            yield return new WaitForSeconds(duration);
+            resetAction?.Invoke();
+        }
+        #endregion
+    }
+
+    public class WeaponStats
+    {
+        public float fireRate = 0.12f;
+        public int bulletCount = 1;
+        public float bulletScale = 1f;
+        public bool pierce = false;
     }
 }
+

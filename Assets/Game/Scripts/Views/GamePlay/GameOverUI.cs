@@ -74,7 +74,7 @@ namespace Game.Views
         {
             Time.timeScale = 1f;
             // Load menu scene or restart
-            //SceneManager.LoadScene(0); 
+            SceneManager.LoadScene(0);
         }
     }
 }
