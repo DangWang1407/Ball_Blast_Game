@@ -79,10 +79,10 @@ public class MeteorController : MonoBehaviour, IPoolable
         {
             Debug.Log("Meteor hit player");
             // Trigger player death event
-            //EventManager.Trigger(new PlayerDeathEvent(
-            //        GameManager.Instance.Lives,
-            //        DeathCause.MeteorHit
-            //    ));
+            EventManager.Trigger(new PlayerDeathEvent(
+                    GameManager.Instance.Lives,
+                    DeathCause.MeteorHit
+                ));
 
             // Destroy meteor sau khi hit player
             PoolManager.Instance.Despawn(poolName, gameObject);
