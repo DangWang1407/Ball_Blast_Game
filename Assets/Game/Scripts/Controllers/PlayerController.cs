@@ -9,9 +9,11 @@ namespace Game.Controllers
     {
 
         [SerializeField] private float boundaryOffset = 0.56f; // Offset for screen bounds
-
         [SerializeField] private float moveSpeed = 5f;
         [SerializeField] private float smoothing = 0.1f;
+
+        [SerializeField] private HingeJoint2D[] wheels;
+        private JointMotor2D motor;
 
         private Rigidbody2D rb;
         private Camera mainCamera;
@@ -19,6 +21,7 @@ namespace Game.Controllers
         private float screenBounds;
         private Vector2 targetPosition;
         private Vector2 currentVelocity;
+        private Vector2 lastPosition;
 
         private bool isMoving;
         private bool isPaused = false;
@@ -34,6 +37,11 @@ namespace Game.Controllers
         {
             Initialize();
             SubscribeToEvents();
+
+            if(wheels.Length > 0)
+            {
+                motor = wheels[0].motor;
+            }
         }
 
         private void Update()
@@ -44,7 +52,7 @@ namespace Game.Controllers
 
         private void FixedUpdate()
         {
-            if(isPaused) return;
+            if (isPaused) return;
             HandleMovement();
         }
 
@@ -91,7 +99,7 @@ namespace Game.Controllers
 
         private void HandleMovement()
         {
-            if(!isMoving)
+            if (!isMoving)
             {
                 rb.velocity = Vector2.zero;
                 return;
@@ -101,9 +109,9 @@ namespace Game.Controllers
             targetPosition.y = transform.position.y; // Keep the y position constant
 
             Vector2 newPosition = Vector2.SmoothDamp(
-                rb.position, 
+                rb.position,
                 targetPosition,
-                ref currentVelocity, 
+                ref currentVelocity,
                 smoothing
             );
 
@@ -112,6 +120,35 @@ namespace Game.Controllers
             if (Vector2.Distance(rb.position, targetPosition) < 0.01f)
             {
                 isMoving = false; // Stop moving when close to target
+            }
+
+            if (wheels.Length > 0)
+            {
+                float velocityX = (rb.position.x - lastPosition.x) / Time.fixedDeltaTime;
+
+                if (Mathf.Abs(velocityX) > 0.01f)
+                {
+                    motor.motorSpeed = velocityX * 150f;
+                    ActivateMotor(true);
+                }
+                else
+                {
+                    motor.motorSpeed = 0f;
+                    ActivateMotor(false);
+                }
+            }
+
+            lastPosition = rb.position;
+
+
+        }
+
+        private void ActivateMotor(bool isActive)
+        {
+            foreach (var wheel in wheels)
+            {
+                wheel.useMotor = isActive;
+                wheel.motor = motor;
             }
         }
 
