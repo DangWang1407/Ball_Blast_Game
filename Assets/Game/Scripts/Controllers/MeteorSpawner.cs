@@ -1,53 +1,96 @@
-﻿using Game.Controllers;
-using Game.Services;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
+using Game.Services;
+using Game.Core;
+using Game.Events;
 
 public class MeteorSpawner : MonoBehaviour
 {
-    [SerializeField] private string METEOR_POOL = "MeteorPool";
-    [SerializeField] private GameObject[] meteorPrefabs;
-    [SerializeField] private int initialCount = 10;
-    [SerializeField] private float spawnDelay = 1f;
+    [SerializeField] private GameObject[] meteorPrefabs; // Large, Medium, Small
+    [SerializeField] private int meteorsCount = 12;
+    [SerializeField] private float spawnDelay = 4f;
 
-    // Thêm các field này
-    [SerializeField] private float spawnRangeX = 2f; // Độ rộng spawn area
-    [SerializeField] private float spawnHeight = 2f; // Độ cao spawn
+    private readonly string[] poolNames = { "LargeMeteor_Pool", "MediumMeteor_Pool", "SmallMeteor_Pool" };
+    private readonly float[] directions = { -1f, 1f };
 
-    private void Start()
+    public static MeteorSpawner Instance { get; private set; }
+
+    void Awake()
     {
-        // Tạo pool cho từng loại meteor riêng biệt
-        for (int i = 0; i < meteorPrefabs.Length; i++)
-        {
-            string poolName = $"{METEOR_POOL}_{i}";
-            PoolManager.Instance.CreatePool(poolName, meteorPrefabs[i], initialCount, 50, autoExpand: true);
-        }
+        Instance = this;
+    }
 
+    void Start()
+    {
+        CreatePools();
         StartCoroutine(SpawnMeteors());
     }
 
-    private IEnumerator SpawnMeteors()
+    void CreatePools()
     {
-        while (true)
+        for (int i = 0; i < meteorPrefabs.Length; i++)
         {
-            // Random vị trí spawn
-            Vector3 spawnPosition = new Vector3(
-                Random.Range(-spawnRangeX, spawnRangeX), // Random X
-                spawnHeight, // Fixed Y (trên cao)
-                transform.position.z
-            );
+            PoolManager.Instance.CreatePool(poolNames[i], meteorPrefabs[i], 10, 30, true);
+        }
+    }
 
-            // Random loại meteor
-            int randomIndex = Random.Range(0, meteorPrefabs.Length);
-            string poolName = $"{METEOR_POOL}_{randomIndex}";
-
-            GameObject meteor = PoolManager.Instance.Spawn(poolName, spawnPosition);
-            if (meteor != null)
-            {
-                meteor.GetComponent<MeteorController>()?.Initialize(poolName);
-            }
-
+    IEnumerator SpawnMeteors()
+    {
+        for (int i = 0; i < meteorsCount; i++)
+        {
+            SpawnMeteor(MeteorSize.Large);
             yield return new WaitForSeconds(spawnDelay);
+        }
+    }
+
+    public void SpawnMeteor(MeteorSize size)
+    {
+        int sizeIndex = (int)size;
+        float direction = directions[Random.Range(0, 2)];
+        float screenOffset = GameManager.Instance.ScreenWidth * 1.3f;
+
+        Vector3 spawnPos = new Vector3(screenOffset * direction, 3f, 0f);
+        GameObject meteor = PoolManager.Instance.Spawn(poolNames[sizeIndex], spawnPos);
+
+        if (meteor != null)
+        {
+            var controller = meteor.GetComponent<MeteorController>();
+            controller.Initialize(poolNames[sizeIndex]);
+            controller.SetMeteorSize(size);
+
+            var rb = meteor.GetComponent<Rigidbody2D>();
+            rb.velocity = new Vector2(-direction * 2f, 0f);
+            rb.gravityScale = 0f;
+
+            StartCoroutine(EnableGravity(rb, 2f));
+        }
+    }
+
+    IEnumerator EnableGravity(Rigidbody2D rb, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (rb != null)
+        {
+            rb.gravityScale = 1f;
+            rb.AddTorque(Random.Range(-20f, 20f));
+        }
+    }
+
+    public void SpawnSplitMeteors(Vector3 position, MeteorSize currentSize)
+    {
+        if (currentSize == MeteorSize.Small) return;
+
+        MeteorSize newSize = currentSize == MeteorSize.Large ? MeteorSize.Medium : MeteorSize.Small;
+
+        for (int i = 0; i < 2; i++)
+        {
+            GameObject split = PoolManager.Instance.Spawn(poolNames[(int)newSize], position);
+            if (split != null)
+            {
+                split.GetComponent<MeteorController>().Initialize(poolNames[(int)newSize]);
+                split.GetComponent<MeteorController>().SetMeteorSize(newSize);
+                split.GetComponent<Rigidbody2D>().velocity = new Vector2(directions[i] * 3f, 5f);
+            }
         }
     }
 }

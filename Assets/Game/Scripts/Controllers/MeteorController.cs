@@ -11,7 +11,11 @@ public class MeteorController : MonoBehaviour, IPoolable
     [SerializeField] private TMP_Text textHealth;
 
     [SerializeField] private int maxHealth = 10;
-    [SerializeField] private float jumpForce = 10f;
+    private float jumpForce = 12f;
+
+    [SerializeField] private MeteorSize meteorSize = MeteorSize.Large;
+    //[SerializeField] private GameObject smallerMeteorPrefab;
+    //[SerializeField] private int splitCount = 2;
 
     private int currentHealth;
     private string poolName;
@@ -28,7 +32,15 @@ public class MeteorController : MonoBehaviour, IPoolable
     {
         currentHealth = maxHealth;
         UpdateUI();
-        rb.velocity = Vector2.right; // di chuyển ngang
+
+        // Spawn rơi từ trên xuống với vận tốc ngang ngẫu nhiên
+        //float horizontalSpeed = Random.Range(-2f, 2f);
+        //rb.velocity = new Vector2(horizontalSpeed, 0f);
+
+        //rb.gravityScale = 1f; // Cho rơi nhanh hơn
+        rb.mass = 1f;         // Khối lượng hợp lý
+        rb.drag = 0.2f;       // Giảm tốc chậm
+        //rb.angularVelocity = Random.Range(-90f, 90f); // Quay tự nhiên
     }
 
     public void OnCreate() { }
@@ -50,10 +62,15 @@ public class MeteorController : MonoBehaviour, IPoolable
         if (other.CompareTag("Wall"))
         {
             float posX = transform.position.x;
+            //if (posX > 0)
+            //    rb.AddForce(Vector2.left * 8f, ForceMode2D.Impulse);
+            //else
+            //    rb.AddForce(Vector2.right * 8f, ForceMode2D.Impulse);
             if (posX > 0)
-                rb.AddForce(Vector2.left * 8f, ForceMode2D.Impulse);
+                rb.velocity = new Vector2(-Mathf.Abs(rb.velocity.x), rb.velocity.y);
             else
-                rb.AddForce(Vector2.right * 8f, ForceMode2D.Impulse);
+                rb.velocity = new Vector2(Mathf.Abs(rb.velocity.x), rb.velocity.y);
+
         }
 
         if (other.CompareTag("Ground"))
@@ -65,15 +82,23 @@ public class MeteorController : MonoBehaviour, IPoolable
         {
             Debug.Log("Meteor hit player");
             // Trigger player death event
-            EventManager.Trigger(new PlayerDeathEvent(
-                    GameManager.Instance.Lives,
-                    DeathCause.MeteorHit
-                ));
+            //EventManager.Trigger(new PlayerDeathEvent(
+            //        GameManager.Instance.Lives,
+            //        DeathCause.MeteorHit
+            //    ));
 
             // Destroy meteor sau khi hit player
             PoolManager.Instance.Despawn(poolName, gameObject);
             return;
         }
+    }
+
+    public void SetMeteorSize(MeteorSize size)
+    {
+        meteorSize = size;
+        maxHealth = size == MeteorSize.Large ? 10 : size == MeteorSize.Medium ? 5 : 2;
+        currentHealth = maxHealth;
+        UpdateUI();
     }
 
     private void TakeDamage(int damage)
@@ -83,9 +108,13 @@ public class MeteorController : MonoBehaviour, IPoolable
 
         if (currentHealth <= 0)
         {
-            PoolManager.Instance.Despawn(poolName, gameObject); // trả về pool thay vì Destroy
+            if (meteorSize != MeteorSize.Small)
+                MeteorSpawner.Instance?.SpawnSplitMeteors(transform.position, meteorSize);
+
+            PoolManager.Instance.Despawn(poolName, gameObject);
         }
     }
+
      
     private void UpdateUI()
     {
@@ -97,7 +126,7 @@ public class MeteorController : MonoBehaviour, IPoolable
 
 public enum MeteorSize
 {
-    Large = 0,
-    Medium = 1,
-    Small = 2
+    Large,
+    Medium,
+    Small
 }
