@@ -57,12 +57,22 @@ namespace Game.Controllers
         {
             if(firePoint == null) firePoint = transform;
 
-            GameObject missile = PoolManager.Instance.Spawn(MISSLE_POOL, firePoint.position);
-            if (missile != null)
-            {   
-                var missileController = missile.GetComponent<MissileController>();
-                missileController.Initialize(MISSLE_POOL, missileSpeed);
-                missileController.SetVelocity(Vector2.up * missileSpeed);
+            for (int i = 0; i < currentStats.bulletCount; i++)
+            {
+                Vector3 spawnPos = firePoint.position;
+                if (currentStats.bulletCount > 1)
+                {
+                    float offset = (i - (currentStats.bulletCount - 1) * 0.5f) * 0.3f;
+                    spawnPos.x += offset;
+                }
+
+                GameObject missile = PoolManager.Instance.Spawn(MISSLE_POOL, spawnPos);
+                if (missile != null)
+                {
+                    var missileController = missile.GetComponent<MissileController>();
+                    missileController.Initialize(MISSLE_POOL, missileSpeed);
+                    missileController.SetVelocity(Vector2.up * missileSpeed);
+                }
             }
         }
 
