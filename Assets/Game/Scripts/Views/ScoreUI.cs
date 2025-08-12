@@ -10,19 +10,18 @@ public class ScoreUI : MonoBehaviour
 
     private void Start()
     {
-        EventManager.Subscribe<ScoreUpdateEvent>(OnScoreUpdate);
+        EventManager.Subscribe<TotalScoreUpdateEvent>(OnTotalScoreUpdate);
         UpdateScoreUI(0); // Initialize score UI to 0 at start
     }
 
     private void OnDestroy()
     {
-        EventManager.Unsubscribe<ScoreUpdateEvent>(OnScoreUpdate);
+        EventManager.Unsubscribe<TotalScoreUpdateEvent>(OnTotalScoreUpdate);
     }
 
-    private void OnScoreUpdate(ScoreUpdateEvent scoreEvent)
+    private void OnTotalScoreUpdate(TotalScoreUpdateEvent scoreEvent)
     {
-        Debug.Log($"Score Updated: {scoreEvent.ScoreChange} | New Total: {scoreEvent.newTotalScore} | Reason: {scoreEvent.Reason}");
-        UpdateScoreUI(scoreEvent.newTotalScore);
+        UpdateScoreUI(scoreEvent.NewTotalScore);
     }
 
     private void UpdateScoreUI(int score)

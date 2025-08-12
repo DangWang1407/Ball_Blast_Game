@@ -35,14 +35,9 @@ public class MeteorController : MonoBehaviour, IPoolable
         currentHealth = maxHealth;
         UpdateUI();
 
-        // Spawn rơi từ trên xuống với vận tốc ngang ngẫu nhiên
-        //float horizontalSpeed = Random.Range(-2f, 2f);
-        //rb.velocity = new Vector2(horizontalSpeed, 0f);
-
-        //rb.gravityScale = 1f; // Cho rơi nhanh hơn
         rb.mass = 1f;         // Khối lượng hợp lý
         rb.drag = 0.2f;       // Giảm tốc chậm
-        //rb.angularVelocity = Random.Range(-90f, 90f); // Quay tự nhiên
+
     }
 
     public void OnCreate() { }
@@ -110,7 +105,9 @@ public class MeteorController : MonoBehaviour, IPoolable
 
         if (currentHealth <= 0)
         {
-            EventManager.Trigger(new ScoreUpdateEvent(10, 10, ScoreReason.MeteorDestroyed));
+            EventManager.Trigger(new ScoreChangeEvent(ScoreReason.MeteorDestroyed, 
+                meteorSize == MeteorSize.Large ? 100 : 
+                meteorSize == MeteorSize.Medium ? 50 : 25));
             if (meteorSize != MeteorSize.Small)
                 MeteorSpawner.Instance?.SpawnSplitMeteors(transform.position, meteorSize);
 

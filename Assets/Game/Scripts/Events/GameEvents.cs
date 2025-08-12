@@ -35,16 +35,37 @@ namespace Game.Events
         }
     }
 
-    public struct ScoreUpdateEvent : IGameEvent
+    //public struct ScoreUpdateEvent : IGameEvent
+    //{
+    //    public int ScoreChange { get; }
+    //    public int newTotalScore { get; }
+    //    public ScoreReason Reason { get; }
+    //    public ScoreUpdateEvent(int scoreChange, int newTotalScore, ScoreReason reason)
+    //    {
+    //        ScoreChange = scoreChange;
+    //        this.newTotalScore = newTotalScore;
+    //        Reason = reason;
+    //    }
+    //}
+
+    public struct ScoreChangeEvent : IGameEvent
     {
+        public ScoreReason ScoreReason { get; }
         public int ScoreChange { get; }
-        public int newTotalScore { get; }
-        public ScoreReason Reason { get; }
-        public ScoreUpdateEvent(int scoreChange, int newTotalScore, ScoreReason reason)
+
+        public ScoreChangeEvent(ScoreReason scoreReason, int scoreChange)
         {
+            ScoreReason = scoreReason;
             ScoreChange = scoreChange;
-            this.newTotalScore = newTotalScore;
-            Reason = reason;
+        }
+    }
+
+    public struct TotalScoreUpdateEvent : IGameEvent
+    {
+        public int NewTotalScore { get; }
+        public TotalScoreUpdateEvent(int newTotalScore)
+        {
+            NewTotalScore = newTotalScore;
         }
     }
 

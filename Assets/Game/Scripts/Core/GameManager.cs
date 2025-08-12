@@ -72,15 +72,17 @@ namespace Game.Core
         private void SubscribeToEvents()
         {
             EventManager.Subscribe<GameStateChangeEvent>(OnGameStateChanged);
-            EventManager.Subscribe<ScoreUpdateEvent>(OnScoreUpdated);
+            EventManager.Subscribe<ScoreChangeEvent>(OnScoreChanged);
             EventManager.Subscribe<PlayerDeathEvent>(OnPlayerDeath);
+            //EventManager.Subscribe<MeteorDestroyedEvent>(OnMeteorDestroyed);
         }
 
         private void UnsubscribeFromEvents()
         {
             EventManager.Unsubscribe<GameStateChangeEvent>(OnGameStateChanged);
-            EventManager.Unsubscribe<ScoreUpdateEvent>(OnScoreUpdated);
+            EventManager.Unsubscribe<ScoreChangeEvent>(OnScoreChanged);
             EventManager.Unsubscribe<PlayerDeathEvent>(OnPlayerDeath);
+            //EventManager.Unsubscribe<MeteorDestroyedEvent>(OnMeteorDestroyed);
         }
 
         #region Game State Management
@@ -142,9 +144,10 @@ namespace Game.Core
             }
         }
 
-        private void OnScoreUpdated(ScoreUpdateEvent eventData)
+        private void OnScoreChanged(ScoreChangeEvent eventData)
         {
             score = Mathf.Max(0, score + eventData.ScoreChange);
+            EventManager.Trigger(new TotalScoreUpdateEvent(score));
         }
 
         private void OnPlayerDeath(PlayerDeathEvent eventData)
@@ -156,6 +159,20 @@ namespace Game.Core
             {
                 GameOver();
             }
+        }
+
+        //private void OnMeteorDestroyed(MeteorDestroyedEvent eventData)
+        //{
+        //    int points = eventData.Size == MeteorSize.Large ? 100 :
+        //        eventData.Size == MeteorSize.Medium ? 50 : 25;
+
+        //    EventManager.Trigger(new ScoreUpdateEvent(points, 0, ScoreReason.MeteorDestroyed));
+        //    Debug.Log($"Score updated: {score}");
+        //}
+
+        private void AddScore(int points)
+        {
+           
         }
         #endregion
 
