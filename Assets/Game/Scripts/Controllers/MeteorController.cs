@@ -9,18 +9,20 @@ public class MeteorController : MonoBehaviour, IPoolable
 {
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private TMP_Text textHealth;
-
     [SerializeField] private int maxHealth = 10;
     private float jumpForce = 12f;
 
     [SerializeField] private MeteorSize meteorSize = MeteorSize.Large;
-    //[SerializeField] private GameObject smallerMeteorPrefab;
-    //[SerializeField] private int splitCount = 2;
 
     private int currentHealth;
     private string poolName;
 
-
+    private void Awake()
+    {
+        if (rb == null)
+            rb = GetComponent<Rigidbody2D>();
+        gameObject.tag = "Meteor";
+    }
 
     public void Initialize(string poolName)
     {
@@ -108,6 +110,7 @@ public class MeteorController : MonoBehaviour, IPoolable
 
         if (currentHealth <= 0)
         {
+            EventManager.Trigger(new ScoreUpdateEvent(10, 10, ScoreReason.MeteorDestroyed));
             if (meteorSize != MeteorSize.Small)
                 MeteorSpawner.Instance?.SpawnSplitMeteors(transform.position, meteorSize);
 
