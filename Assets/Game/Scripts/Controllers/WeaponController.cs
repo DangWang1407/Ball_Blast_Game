@@ -73,6 +73,8 @@ namespace Game.Controllers
                     missileController.Initialize(MISSLE_POOL, missileSpeed);
                     missileController.SetVelocity(Vector2.up * missileSpeed);
                 }
+
+
             }
         }
 
