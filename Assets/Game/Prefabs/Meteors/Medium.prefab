@@ -287,9 +287,6 @@ MonoBehaviour:
   rb: {fileID: 3318520883292402971}
   textHealth: {fileID: 6352836985889099068}
   maxHealth: 7
-  powerUpPrefabs:
-  - {fileID: 4865726334389350400, guid: 62dbbb4850de83949b0848fc97d5fa4c, type: 3}
-  - {fileID: 8433698183133804979, guid: c9b5b74ca5d14af4eb33f9e4376bb6f1, type: 3}
   meteorSize: 1
 --- !u!50 &3318520883292402971
 Rigidbody2D:
@@ -305,7 +302,7 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_GravityScale: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:

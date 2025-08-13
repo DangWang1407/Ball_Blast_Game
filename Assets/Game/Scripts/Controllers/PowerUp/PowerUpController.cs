@@ -1,6 +1,7 @@
 using UnityEngine;
 using Game.Controllers;
 using Game.Events;
+using Game.Scriptable;
 
 public class  PowerUpController : MonoBehaviour
 {

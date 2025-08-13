@@ -7,8 +7,9 @@ namespace Game.Controllers
     public class  MissileController : MonoBehaviour, IPoolable 
     {
         private Rigidbody2D rb;
+        private Collider2D col;
         private string poolName;
-        private float speed;
+        //private float speed;
         private bool isActive;
 
         public WeaponStats weaponStats { get; private set; }
@@ -16,13 +17,14 @@ namespace Game.Controllers
         private void Awake()
         {
             rb = GetComponent<Rigidbody2D>();
+            col = GetComponent<Collider2D>();
             gameObject.tag = "Missile";
         }
 
-        public void Initialize(string poolName, float speed, WeaponStats weaponStats)
+        public void Initialize(string poolName, WeaponStats weaponStats)
         {
             this.poolName = poolName;
-            this.speed = speed;
+            //this.speed = speed;
             this.weaponStats = weaponStats;
 
             transform.localScale = Vector3.one * weaponStats.bulletScale;
@@ -32,7 +34,7 @@ namespace Game.Controllers
         {
             rb.gravityScale = 0f;
             rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-            GetComponent<Collider2D>().isTrigger = true;
+            col.isTrigger = true;
         }
         public void OnSpawned()
         {
@@ -52,7 +54,7 @@ namespace Game.Controllers
         public void DestroyMissile(MissileDestroyReason reason)
         {
             if(!isActive) return;
-            EventManager.Trigger(new MissileDestroyedEvent(transform.position, reason));
+            //EventManager.Trigger(new MissileDestroyedEvent(transform.position, reason));
             PoolManager.Instance.Despawn(poolName, gameObject);
         }
 
@@ -62,6 +64,10 @@ namespace Game.Controllers
             if (other.CompareTag("Wall"))
             {
                 DestroyMissile(MissileDestroyReason.OutOfBounds);
+            }
+            if(other.CompareTag("Meteor") && !weaponStats.pierce)
+            {
+                DestroyMissile(MissileDestroyReason.HitTarget);
             }
         }
     }

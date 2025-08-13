@@ -51,8 +51,6 @@ MonoBehaviour:
   rb: {fileID: 8631502847221260562}
   textHealth: {fileID: 2111764959717945852}
   maxHealth: 7
-  powerUpPrefabs:
-  - {fileID: 4865726334389350400, guid: 62dbbb4850de83949b0848fc97d5fa4c, type: 3}
   meteorSize: 2
 --- !u!50 &8631502847221260562
 Rigidbody2D:

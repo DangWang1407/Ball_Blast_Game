@@ -153,9 +153,6 @@ MonoBehaviour:
   rb: {fileID: 2312441219754251870}
   textHealth: {fileID: 5174681897399173599}
   maxHealth: 7
-  powerUpPrefabs:
-  - {fileID: 5966426908361368883, guid: b1ceb186a242c4f4ebe40e5ea4d84d3a, type: 3}
-  - {fileID: 4865726334389350400, guid: 62dbbb4850de83949b0848fc97d5fa4c, type: 3}
   meteorSize: 0
 --- !u!50 &2312441219754251870
 Rigidbody2D:
@@ -171,9 +168,9 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: cd188a1417aa1b241b739e873f330a58, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -213,7 +210,7 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0.012069643}

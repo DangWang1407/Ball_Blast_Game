@@ -3,6 +3,7 @@ using UnityEngine;
 using Game.Services;
 using System.Collections;
 using Game.Events;
+using Game.Scriptable;
 
 namespace Game.Controllers
 {
@@ -11,12 +12,12 @@ namespace Game.Controllers
         public WeaponStats currentStats = new WeaponStats();
         private WeaponStats baseStats;
 
-
-
-        [SerializeField] private GameObject missilePrefab;
+        //[SerializeField] private GameObject missilePrefab;
         [SerializeField] private Transform firePoint;
         [SerializeField] private float fireRate = 0.12f;
         [SerializeField] private float missileSpeed = 8f;
+
+        [SerializeField] private WeaponData weaponData;
 
         private float lastFireTime;
         private const string MISSLE_POOL = "Missiles";
@@ -27,13 +28,17 @@ namespace Game.Controllers
             {
                 Debug.LogError("FirePoint is not assigned in WeaponController.");
             }
-            if (missilePrefab == null)
-            {
-                Debug.LogError("Missile Prefab is not assigned in WeaponController.");
-            }
             if (PoolManager.Instance != null)
             {
-                PoolManager.Instance.CreatePool(MISSLE_POOL, missilePrefab, 5, 20, true);
+                //PoolManager.Instance.CreatePool(MISSLE_POOL, missilePrefab, 5, 20, true);
+                for (int i = 0; i < weaponData.missilePrefabs.Length; i++)
+                {
+                    if (weaponData.missilePrefabs[i] != null)
+                    {
+                        PoolManager.Instance.CreatePool(MISSLE_POOL + "_" + i, weaponData.missilePrefabs[i], 10, 30, true);   
+                        Debug.Log($"Created pool for {MISSLE_POOL}_{i} with prefab {weaponData.missilePrefabs[i].name}");
+                    }
+                }              
             }
 
             baseStats = new WeaponStats
@@ -88,11 +93,11 @@ namespace Game.Controllers
                     spawnPos.x += offset;
                 }
 
-                GameObject missile = PoolManager.Instance.Spawn(MISSLE_POOL, spawnPos);
+                GameObject missile = PoolManager.Instance.Spawn(MISSLE_POOL + "_" + i, spawnPos);
                 if (missile != null)
                 {
                     var missileController = missile.GetComponent<MissileController>();
-                    missileController.Initialize(MISSLE_POOL, missileSpeed, currentStats);
+                    missileController.Initialize(MISSLE_POOL + "_" + i,currentStats);
                     missileController.SetVelocity(Vector2.up * missileSpeed);
                 }
 

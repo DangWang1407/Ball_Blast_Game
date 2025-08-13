@@ -3,9 +3,9 @@ using Game.Events;
 using Game.Core;
 using Game.Controllers;
 
-namespace Game.Services
+namespace Game.Controllers
 {
-    public class PowerUpService : MonoBehaviour
+    public class PowerUpSpawner : MonoBehaviour
     {
         private void Start()
         {

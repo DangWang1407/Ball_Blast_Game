@@ -38,7 +38,7 @@ public class MeteorController : MonoBehaviour, IPoolable
         currentHealth = maxHealth;
         UpdateUI();
 
-        rb.mass = 1f;         // Khối lượng hợp lý
+        rb.mass = 1f;         // 
         rb.drag = 0.2f;       // Giảm tốc chậm
 
     }
@@ -56,13 +56,13 @@ public class MeteorController : MonoBehaviour, IPoolable
         if (other.CompareTag("Missile"))
         {
             TakeDamage(1);
-            var missileController = other.GetComponent<MissileController>();
+            //var missileController = other.GetComponent<MissileController>();
 
-            // Chỉ despawn missile nếu KHÔNG pierce
-            if (!missileController.weaponStats.pierce)
-            {
-                PoolManager.Instance.Despawn("Missiles", other.gameObject);
-            }
+            //// Chỉ despawn missile nếu KHÔNG pierce
+            //if (!missileController.weaponStats.pierce)
+            //{
+            //    //PoolManager.Instance.Despawn("Missiles", other.gameObject);
+            //}
         }
 
         if (other.CompareTag("Wall"))
