@@ -1,6 +1,7 @@
 ﻿using Game.Core;
 using Game.Events;
 using Game.Services;
+using Game.Controllers;
 using TMPro;
 using UnityEditor.EditorTools;
 using UnityEngine;
@@ -53,6 +54,7 @@ public class MeteorController : MonoBehaviour, IPoolable
         if (other.CompareTag("Missile"))
         {
             TakeDamage(1);
+            var weaponController = other.GetComponentInParent<WeaponController>();
             PoolManager.Instance.Despawn("Missiles", other.gameObject); // trả missile về pool
         }
 

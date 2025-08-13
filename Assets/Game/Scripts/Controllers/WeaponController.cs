@@ -70,7 +70,7 @@ namespace Game.Controllers
                 if (missile != null)
                 {
                     var missileController = missile.GetComponent<MissileController>();
-                    missileController.Initialize(MISSLE_POOL, missileSpeed);
+                    missileController.Initialize(MISSLE_POOL, missileSpeed, currentStats);
                     missileController.SetVelocity(Vector2.up * missileSpeed);
                 }
 
@@ -94,6 +94,24 @@ namespace Game.Controllers
             StartCoroutine(ResetAfterDuration(duration, () => 
             {
                 currentStats.bulletCount = baseStats.bulletCount;
+            }));
+        }
+
+        public void ApplyPowerShot(float duration)
+        {
+            currentStats.bulletScale = 2f;
+            StartCoroutine(ResetAfterDuration(duration, () =>
+            {
+                currentStats.bulletScale = baseStats.bulletScale;
+            }));
+        }
+
+        public void ApplyPierceShot(float duration)
+        {
+            currentStats.pierce = true;
+            StartCoroutine(ResetAfterDuration(duration, () =>
+            {
+                currentStats.pierce = baseStats.pierce;
             }));
         }
 

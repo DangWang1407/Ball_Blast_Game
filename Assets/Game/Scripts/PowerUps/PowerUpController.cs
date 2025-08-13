@@ -29,7 +29,16 @@ public class  PowerUpController : MonoBehaviour
                     weaponController.ApplyRapidFire(powerUpData.duration);
                     break;
                 case PowerUpType.DoubleShot:
+                    Debug.Log("Applying Double Shot Power-Up");
                     weaponController.ApplyDoubleShot(powerUpData.duration);
+                    break;
+                case PowerUpType.PowerShot:
+                    Debug.Log("Applying Power Shot Power-Up");
+                    weaponController.ApplyPowerShot(powerUpData.duration);
+                    break;
+                case PowerUpType.PierceShot:
+                    Debug.Log("Applying Pierce Shot Power-Up");
+                    weaponController.ApplyPierceShot(powerUpData.duration);
                     break;
             }
             Destroy(gameObject);

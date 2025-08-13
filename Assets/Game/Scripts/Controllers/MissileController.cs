@@ -11,16 +11,21 @@ namespace Game.Controllers
         private float speed;
         private bool isActive;
 
+        private WeaponStats weaponStats;
+
         private void Awake()
         {
             rb = GetComponent<Rigidbody2D>();
             gameObject.tag = "Missile";
         }
 
-        public void Initialize(string poolName, float speed)
+        public void Initialize(string poolName, float speed, WeaponStats weaponStats)
         {
             this.poolName = poolName;
             this.speed = speed;
+            this.weaponStats = weaponStats;
+
+            transform.localScale = Vector3.one * weaponStats.bulletScale;
         }
 
         public void OnCreate()

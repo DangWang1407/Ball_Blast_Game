@@ -153,10 +153,7 @@ MonoBehaviour:
   rb: {fileID: 2312441219754251870}
   textHealth: {fileID: 5174681897399173599}
   maxHealth: 7
-  jumpForce: 10
   meteorSize: 0
-  smallerMeteorPrefab: {fileID: 6530300682898762477, guid: 3dfa45be986e3114a86811c87aa9bdc7, type: 3}
-  splitCount: 2
 --- !u!50 &2312441219754251870
 Rigidbody2D:
   serializedVersion: 4
@@ -172,7 +169,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0.7
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
