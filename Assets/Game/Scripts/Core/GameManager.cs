@@ -1,5 +1,6 @@
 using UnityEngine;
 using Game.Events;
+using Game.Scriptable;
 
 namespace Game.Core
 {

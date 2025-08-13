@@ -11,7 +11,7 @@ public class MeteorController : MonoBehaviour, IPoolable
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private TMP_Text textHealth;
     [SerializeField] private int maxHealth = 10;
-    [SerializeField] private GameObject[] powerUpPrefabs;
+    //[SerializeField] private GameObject[] powerUpPrefabs;
 
     private float jumpForce = 12f;
 
@@ -114,6 +114,7 @@ public class MeteorController : MonoBehaviour, IPoolable
 
         if (currentHealth <= 0)
         {
+            Debug.Log($"Meteor of size {meteorSize} destroyed");
             EventManager.Trigger(new ScoreChangeEvent(ScoreReason.MeteorDestroyed, 
                 meteorSize == MeteorSize.Large ? 100 : 
                 meteorSize == MeteorSize.Medium ? 50 : 25));
@@ -129,15 +130,16 @@ public class MeteorController : MonoBehaviour, IPoolable
             //}
 
             EventManager.Trigger(new PowerUpSpawnEvent(transform.position, meteorSize));
+            Debug.Log($"Power-up spawn event triggered for meteor size: {meteorSize} at position: {transform.position}");
         }
     }
 
-    private void SpawnPowerUp()
-    {
-        if (powerUpPrefabs.Length == 0) return;
-        int randomIndex = Random.Range(0, powerUpPrefabs.Length);
-        GameObject powerUp = Instantiate(powerUpPrefabs[randomIndex], transform.position, Quaternion.identity);
-    }
+    //private void SpawnPowerUp()
+    //{
+    //    if (powerUpPrefabs.Length == 0) return;
+    //    int randomIndex = Random.Range(0, powerUpPrefabs.Length);
+    //    GameObject powerUp = Instantiate(powerUpPrefabs[randomIndex], transform.position, Quaternion.identity);
+    //}
 
      
     private void UpdateUI()

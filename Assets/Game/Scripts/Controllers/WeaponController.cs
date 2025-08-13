@@ -2,6 +2,7 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 using Game.Services;
 using System.Collections;
+using Game.Events;
 
 namespace Game.Controllers
 {
@@ -42,6 +43,27 @@ namespace Game.Controllers
                 bulletScale = 0.5f,
                 pierce = false
             };
+
+            EventManager.Subscribe<PowerUpCollectedEvent>(OnPowerUpCollected);
+        }
+
+        private void OnPowerUpCollected(PowerUpCollectedEvent powerUpEvent)
+        {
+            switch (powerUpEvent.PowerUpType)
+            {
+                case PowerUpType.RapidFire:
+                    ApplyRapidFire(powerUpEvent.Duration);
+                    break;
+                case PowerUpType.DoubleShot:
+                    ApplyDoubleShot(powerUpEvent.Duration);
+                    break;
+                case PowerUpType.PowerShot:
+                    ApplyPowerShot(powerUpEvent.Duration);
+                    break;
+                case PowerUpType.PierceShot:
+                    ApplyPierceShot(powerUpEvent.Duration);
+                    break;
+            }
         }
 
         private void Update()
@@ -76,6 +98,11 @@ namespace Game.Controllers
 
 
             }
+        }
+
+        private void OnDestroy()
+        {
+            EventManager.Unsubscribe<PowerUpCollectedEvent>(OnPowerUpCollected);
         }
 
         #region Power-Up Methods
