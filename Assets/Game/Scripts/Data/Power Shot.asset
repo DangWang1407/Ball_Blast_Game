@@ -10,8 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b760d5a26d94954db8243381534fa02, type: 3}
-  m_Name: RapidFire
+  m_Name: Power Shot
   m_EditorClassIdentifier: 
-  powerUpType: 0
-  icon: {fileID: 60070318, guid: a00ebd2637cc7c6449daaf86bf3e10db, type: 3}
-  duration: 10
+  powerUpType: 2
+  duration: 20

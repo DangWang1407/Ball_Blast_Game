@@ -1,5 +1,6 @@
 using UnityEngine;
 using Game.Controllers;
+using Game.Events;
 
 public class  PowerUpController : MonoBehaviour
 {
@@ -11,8 +12,6 @@ public class  PowerUpController : MonoBehaviour
         {
             Debug.LogError("PowerUpData is not assigned in PowerUpController.");
         }
-
-        this.gameObject.GetComponent<SpriteRenderer>().sprite = powerUpData.icon;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

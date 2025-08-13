@@ -250,7 +250,7 @@ GameObject:
   - component: {fileID: 4970447098622717348}
   - component: {fileID: 8647939382064674362}
   m_Layer: 0
-  m_Name: MediumMeteor
+  m_Name: Medium
   m_TagString: Meteor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -287,10 +287,10 @@ MonoBehaviour:
   rb: {fileID: 3318520883292402971}
   textHealth: {fileID: 6352836985889099068}
   maxHealth: 7
-  jumpForce: 10
+  powerUpPrefabs:
+  - {fileID: 4865726334389350400, guid: 62dbbb4850de83949b0848fc97d5fa4c, type: 3}
+  - {fileID: 8433698183133804979, guid: c9b5b74ca5d14af4eb33f9e4376bb6f1, type: 3}
   meteorSize: 1
-  smallerMeteorPrefab: {fileID: 1081747361399260239, guid: 7c07329482d6eff4197afaf260f7491a, type: 3}
-  splitCount: 2
 --- !u!50 &3318520883292402971
 Rigidbody2D:
   serializedVersion: 4

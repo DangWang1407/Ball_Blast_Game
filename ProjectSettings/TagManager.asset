@@ -9,6 +9,7 @@ TagManager:
   - Missile
   - Wall
   - Meteor
+  - PowerUp
   layers:
   - Default
   - TransparentFX

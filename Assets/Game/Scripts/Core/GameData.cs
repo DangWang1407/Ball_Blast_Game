@@ -25,20 +25,27 @@ namespace Game.Core
         public float meteorJumpForce = 10f;
         public float meteorBounceForce = 8f;
         
-        [Header("Scoring")]
-        public int meteorDestroyScore = 100;
-        public int perfectShotBonus = 50;
+        //[Header("Scoring")]
+        //public int meteorDestroyScore = 100;
+        //public int perfectShotBonus = 50;
         
-        [Header("Physics")]
-        public float wheelMotorSpeed = 150f;
-        public float gravityScale = 1f;
+        //[Header("Physics")]
+        //public float wheelMotorSpeed = 150f;
+        //public float gravityScale = 1f;
         
-        [Header("UI Settings")]
-        public float transitionDuration = 0.5f;
+        //[Header("UI Settings")]
+        //public float transitionDuration = 0.5f;
         
-        [Header("Audio Settings")]
-        public float masterVolume = 1f;
-        public float sfxVolume = 0.8f;
-        public float musicVolume = 0.6f;
+        //[Header("Audio Settings")]
+        //public float masterVolume = 1f;
+        //public float sfxVolume = 0.8f;
+        //public float musicVolume = 0.6f;
+
+        [Header("Power-Up Settings")]
+        public float largeMeteorDropChance = 0.4f;
+        public float mediumMeteorDropChance = 0.3f;
+        public float smallMeteorDropChance = 0.2f;
+        public GameObject[] powerUpPrefabs;
+        public float powerUpDuration = 30f;
     }
 }

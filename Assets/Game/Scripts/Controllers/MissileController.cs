@@ -11,7 +11,7 @@ namespace Game.Controllers
         private float speed;
         private bool isActive;
 
-        private WeaponStats weaponStats;
+        public WeaponStats weaponStats { get; private set; }
 
         private void Awake()
         {

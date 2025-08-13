@@ -39,7 +39,7 @@ namespace Game.Controllers
             {
                 fireRate = fireRate,
                 bulletCount = 1,
-                bulletScale = 1f,
+                bulletScale = 0.5f,
                 pierce = false
             };
         }
@@ -99,7 +99,7 @@ namespace Game.Controllers
 
         public void ApplyPowerShot(float duration)
         {
-            currentStats.bulletScale = 2f;
+            currentStats.bulletScale = 1f;
             StartCoroutine(ResetAfterDuration(duration, () =>
             {
                 currentStats.bulletScale = baseStats.bulletScale;
@@ -127,7 +127,7 @@ namespace Game.Controllers
     {
         public float fireRate = 0.12f;
         public int bulletCount = 1;
-        public float bulletScale = 1f;
+        public float bulletScale = 0.5f;
         public bool pierce = false;
     }
 }

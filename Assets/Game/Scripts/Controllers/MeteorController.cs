@@ -11,6 +11,8 @@ public class MeteorController : MonoBehaviour, IPoolable
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private TMP_Text textHealth;
     [SerializeField] private int maxHealth = 10;
+    [SerializeField] private GameObject[] powerUpPrefabs;
+
     private float jumpForce = 12f;
 
     [SerializeField] private MeteorSize meteorSize = MeteorSize.Large;
@@ -54,8 +56,13 @@ public class MeteorController : MonoBehaviour, IPoolable
         if (other.CompareTag("Missile"))
         {
             TakeDamage(1);
-            var weaponController = other.GetComponentInParent<WeaponController>();
-            PoolManager.Instance.Despawn("Missiles", other.gameObject); // trả missile về pool
+            var missileController = other.GetComponent<MissileController>();
+
+            // Chỉ despawn missile nếu KHÔNG pierce
+            if (!missileController.weaponStats.pierce)
+            {
+                PoolManager.Instance.Despawn("Missiles", other.gameObject);
+            }
         }
 
         if (other.CompareTag("Wall"))
@@ -115,11 +122,21 @@ public class MeteorController : MonoBehaviour, IPoolable
 
             PoolManager.Instance.Despawn(poolName, gameObject);
 
-            if (Random.Range(0f, 1f) < 0.3f) 
-            {
-                // Spawn a power-up
-            }
+            //if (Random.Range(0f, 1f) < 0.3f) 
+            //{
+            //    // Spawn a power-up
+            //    SpawnPowerUp();
+            //}
+
+            EventManager.Trigger(new PowerUpSpawnEvent(transform.position, meteorSize));
         }
+    }
+
+    private void SpawnPowerUp()
+    {
+        if (powerUpPrefabs.Length == 0) return;
+        int randomIndex = Random.Range(0, powerUpPrefabs.Length);
+        GameObject powerUp = Instantiate(powerUpPrefabs[randomIndex], transform.position, Quaternion.identity);
     }
 
      
