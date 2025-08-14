@@ -10,6 +10,11 @@ namespace Game.Scriptable
         public float bulletSpacing = 0.3f;
         public bool pierce = false;
 
+        public int bulletCount = 1;
+        public float bulletScale = 0.5f;
+        public bool burst = false;
+        public int damage = 1;
+
         [Header("Missiles per Shot")]
         public GameObject[] missilePrefabs;
 

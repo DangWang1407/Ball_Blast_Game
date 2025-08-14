@@ -19,6 +19,7 @@ public class  PowerUpController : MonoBehaviour
     {
         if(collision.CompareTag("Player"))
         {
+            Debug.Log($"PowerUp collected: {powerUpData.powerUpType} for {powerUpData.duration} seconds");
             EventManager.Trigger(new PowerUpCollectedEvent(powerUpData.powerUpType, powerUpData.duration));
             Destroy(gameObject);
         }

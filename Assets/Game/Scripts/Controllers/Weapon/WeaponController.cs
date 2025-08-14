@@ -9,14 +9,13 @@ namespace Game.Controllers
 {
     public class WeaponController : MonoBehaviour
     {
-        public WeaponStats currentStats = new WeaponStats();
-        private WeaponStats baseStats;
+        //public WeaponStats currentStats = new WeaponStats();
+        //private WeaponStats baseStats;
 
         //[SerializeField] private GameObject missilePrefab;
         [SerializeField] private Transform firePoint;
         [SerializeField] private float fireRate = 0.12f;
         [SerializeField] private float missileSpeed = 8f;
-
         [SerializeField] private WeaponData weaponData;
 
         private float lastFireTime;
@@ -41,13 +40,15 @@ namespace Game.Controllers
                 }              
             }
 
-            baseStats = new WeaponStats
-            {
-                fireRate = fireRate,
-                bulletCount = 1,
-                bulletScale = 0.5f,
-                pierce = false
-            };
+            //baseStats = new WeaponStats
+            //{
+            //    fireRate = fireRate,
+            //    bulletCount = 1,
+            //    bulletScale = 0.5f,
+            //    pierce = false,
+            //    burst = false,
+            //    damage = 1
+            //};
 
             EventManager.Subscribe<PowerUpCollectedEvent>(OnPowerUpCollected);
         }
@@ -68,12 +69,18 @@ namespace Game.Controllers
                 case PowerUpType.PierceShot:
                     ApplyPierceShot(powerUpEvent.Duration);
                     break;
+                case PowerUpType.BurstShot:
+                    ApplyBurstShot(powerUpEvent.Duration);
+                    break;
+                case PowerUpType.DamageBoost:
+                    ApplyDamageBoost(powerUpEvent.Duration);
+                    break;
             }
         }
 
         private void Update()
         {
-            if(Time.time - lastFireTime >= currentStats.fireRate)
+            if(Time.time - lastFireTime >= WeaponStats.fireRate)
             {
                 FireMissile();
                 lastFireTime = Time.time;
@@ -82,14 +89,25 @@ namespace Game.Controllers
 
         private void FireMissile()
         {
-            if(firePoint == null) firePoint = transform;
+            if (firePoint == null) firePoint = transform;
+            if (WeaponStats.burst)
+            {
+                StartCoroutine(FireBurstMissiles());
+            }
+            else
+            {
+                FireSingleMissile();
+            }
+        }
 
-            for (int i = 0; i < currentStats.bulletCount; i++)
+        private void FireSingleMissile()
+        {
+            for (int i = 0; i < WeaponStats.bulletCount; i++)
             {
                 Vector3 spawnPos = firePoint.position;
-                if (currentStats.bulletCount > 1)
+                if (WeaponStats.bulletCount > 1)
                 {
-                    float offset = (i - (currentStats.bulletCount - 1) * 0.5f) * 0.3f;
+                    float offset = (i - (WeaponStats.bulletCount - 1) * 0.5f) * 0.3f;
                     spawnPos.x += offset;
                 }
 
@@ -97,12 +115,17 @@ namespace Game.Controllers
                 if (missile != null)
                 {
                     var missileController = missile.GetComponent<MissileController>();
-                    missileController.Initialize(MISSLE_POOL + "_" + i,currentStats);
+                    missileController.Initialize(MISSLE_POOL + "_" + i);
                     missileController.SetVelocity(Vector2.up * missileSpeed);
                 }
-
-
             }
+        }
+
+        private IEnumerator FireBurstMissiles()
+        {
+            FireSingleMissile();
+            yield return new WaitForSeconds(WeaponStats.fireRate / 4f);
+            FireSingleMissile();
         }
 
         private void OnDestroy()
@@ -113,37 +136,55 @@ namespace Game.Controllers
         #region Power-Up Methods
         public void ApplyRapidFire(float duration)
         {
-            currentStats.fireRate = baseStats.fireRate / 2f;
+            WeaponStats.fireRate = weaponData.fireRate / 2f;
             StartCoroutine(ResetAfterDuration(duration, () => 
             {
-                currentStats.fireRate = baseStats.fireRate;
+                WeaponStats.fireRate = weaponData.fireRate;
             }));
         }
 
         public void ApplyDoubleShot(float duration)
         {
-            currentStats.bulletCount = 2;
+            WeaponStats.bulletCount = 2;
             StartCoroutine(ResetAfterDuration(duration, () => 
             {
-                currentStats.bulletCount = baseStats.bulletCount;
+                WeaponStats.bulletCount = weaponData.bulletCount;
             }));
         }
 
         public void ApplyPowerShot(float duration)
         {
-            currentStats.bulletScale = 1f;
+            WeaponStats.bulletScale = 1f;
             StartCoroutine(ResetAfterDuration(duration, () =>
             {
-                currentStats.bulletScale = baseStats.bulletScale;
+                WeaponStats.bulletScale = weaponData.bulletScale;
             }));
         }
 
         public void ApplyPierceShot(float duration)
         {
-            currentStats.pierce = true;
+            WeaponStats.pierce = true;
             StartCoroutine(ResetAfterDuration(duration, () =>
             {
-                currentStats.pierce = baseStats.pierce;
+                WeaponStats.pierce = weaponData.pierce;
+            }));
+        }
+
+        public void ApplyBurstShot(float duration)
+        {
+            WeaponStats.burst = true;
+            StartCoroutine(ResetAfterDuration(duration, () =>
+            {
+                WeaponStats.burst = weaponData.burst;
+            }));
+        }
+
+        public void ApplyDamageBoost(float duration)
+        {
+            WeaponStats.damage += 1;
+            StartCoroutine(ResetAfterDuration(duration, () =>
+            {
+                WeaponStats.damage = weaponData.damage;
             }));
         }
 
@@ -155,12 +196,14 @@ namespace Game.Controllers
         #endregion
     }
 
-    public class WeaponStats
+    public static class WeaponStats
     {
-        public float fireRate = 0.12f;
-        public int bulletCount = 1;
-        public float bulletScale = 0.5f;
-        public bool pierce = false;
+        public static float fireRate = 0.12f;
+        public static int bulletCount = 1;
+        public static float bulletScale = 0.5f;
+        public static bool pierce = false;
+        public static bool burst = false;
+        public static int damage = 1;
     }
 }
 

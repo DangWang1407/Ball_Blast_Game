@@ -41,6 +41,8 @@ namespace Game.Events
         RapidFire,
         DoubleShot,
         PowerShot,
-        PierceShot
+        PierceShot,
+        BurstShot,
+        DamageBoost
     }
 }

@@ -24,12 +24,13 @@ MonoBehaviour:
   meteorDefaultHealth: 10
   meteorJumpForce: 10
   meteorBounceForce: 8
-  largeMeteorDropChance: 0.4
-  mediumMeteorDropChance: 0.3
-  smallMeteorDropChance: 0.2
+  largeMeteorDropChance: 0.2
+  mediumMeteorDropChance: 0.1
+  smallMeteorDropChance: 0.05
   powerUpPrefabs:
   - {fileID: 4865726334389350400, guid: 62dbbb4850de83949b0848fc97d5fa4c, type: 3}
   - {fileID: 5966426908361368883, guid: b1ceb186a242c4f4ebe40e5ea4d84d3a, type: 3}
   - {fileID: 8433698183133804979, guid: c9b5b74ca5d14af4eb33f9e4376bb6f1, type: 3}
   - {fileID: 2338567495673281401, guid: 59172d89dd342ce4fa12a98fa4af4a34, type: 3}
+  - {fileID: 690184449418647973, guid: 54895a4f83f7d6544a1aabc0c55837d1, type: 3}
   powerUpDuration: 30

@@ -55,7 +55,8 @@ public class MeteorController : MonoBehaviour, IPoolable
         //Debug.Log($"Meteor collided with {other.tag}");
         if (other.CompareTag("Missile"))
         {
-            TakeDamage(1);
+            var missileController = other.GetComponent<MissileController>();
+            TakeDamage(WeaponStats.damage);
             //var missileController = other.GetComponent<MissileController>();
 
             //// Chỉ despawn missile nếu KHÔNG pierce
@@ -109,6 +110,7 @@ public class MeteorController : MonoBehaviour, IPoolable
 
     private void TakeDamage(int damage)
     {
+        Debug.Log($"Meteor of size {meteorSize} taking {damage} damage. Current health: {currentHealth}");
         currentHealth -= damage;
         UpdateUI();
 

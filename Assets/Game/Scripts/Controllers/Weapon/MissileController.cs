@@ -12,7 +12,7 @@ namespace Game.Controllers
         //private float speed;
         private bool isActive;
 
-        public WeaponStats weaponStats { get; private set; }
+        //public WeaponStats weaponStats { get; private set; }
 
         private void Awake()
         {
@@ -21,13 +21,12 @@ namespace Game.Controllers
             gameObject.tag = "Missile";
         }
 
-        public void Initialize(string poolName, WeaponStats weaponStats)
+        public void Initialize(string poolName)
         {
             this.poolName = poolName;
             //this.speed = speed;
-            this.weaponStats = weaponStats;
 
-            transform.localScale = Vector3.one * weaponStats.bulletScale;
+            transform.localScale = Vector3.one * WeaponStats.bulletScale;
         }
 
         public void OnCreate()
@@ -65,7 +64,7 @@ namespace Game.Controllers
             {
                 DestroyMissile(MissileDestroyReason.OutOfBounds);
             }
-            if(other.CompareTag("Meteor") && !weaponStats.pierce)
+            if(other.CompareTag("Meteor") && !WeaponStats.pierce)
             {
                 DestroyMissile(MissileDestroyReason.HitTarget);
             }
