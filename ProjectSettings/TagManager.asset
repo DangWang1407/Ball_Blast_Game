@@ -10,6 +10,7 @@ TagManager:
   - Wall
   - Meteor
   - PowerUp
+  - Shield
   layers:
   - Default
   - TransparentFX

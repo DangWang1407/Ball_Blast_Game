@@ -2,6 +2,7 @@
 using Game.Core;
 using Game.Services;
 using Game.Events;
+using System.Collections;
 
 namespace Game.Controllers
 {
@@ -13,6 +14,14 @@ namespace Game.Controllers
         [SerializeField] private float smoothing = 0.1f;
 
         [SerializeField] private HingeJoint2D[] wheels;
+        [SerializeField] private GameObject shieldPrefabs;
+        
+        private GameObject shield;
+
+        private bool isShieldActive = false;
+
+        public bool IsInvisible = false;
+
         private JointMotor2D motor;
 
         private Rigidbody2D rb;
@@ -36,6 +45,7 @@ namespace Game.Controllers
         private void Start()
         {
             Initialize();
+            CreateShield();
             SubscribeToEvents();
 
             if(wheels.Length > 0)
@@ -76,16 +86,34 @@ namespace Game.Controllers
             Debug.Log("PlayerController initialized with screen bounds: " + screenBounds);
         }
 
+        private void CreateShield()
+        {
+            shield = Object.Instantiate(shieldPrefabs);
+            shield.transform.SetParent(transform);
+            shield.transform.localPosition = Vector3.zero;
+            shield.tag = "Shield";
+
+            //shield.AddComponent<SpriteRenderer>().sprite = spriteShield.sprite;
+
+            //CircleCollider2D circleCol = shield.AddComponent<CircleCollider2D>();
+            //circleCol.radius = 1.5f; 
+            //circleCol.isTrigger = true;
+
+            shield.SetActive(false); 
+        }
+
         private void SubscribeToEvents()
         {
             EventManager.Subscribe<PlayerInputEvent>(OnPlayerInput);
             EventManager.Subscribe<GameStateChangeEvent>(OnGameStateChanged);
+            EventManager.Subscribe<PowerUpCollectedEvent>(OnPowerUpCollected);
         }
 
         private void UnsubcribeToEvents()
         {
             EventManager.Unsubscribe<PlayerInputEvent>(OnPlayerInput);
             EventManager.Unsubscribe<GameStateChangeEvent>(OnGameStateChanged);
+            EventManager.Unsubscribe<PowerUpCollectedEvent>(OnPowerUpCollected);
         }
 
         private void HandleLegacyInput()
@@ -173,6 +201,40 @@ namespace Game.Controllers
                 isMoving = false;
             }
         }
+
+        private void OnPowerUpCollected(PowerUpCollectedEvent eventData)
+        {
+            if(eventData.PowerUpType == PowerUpType.Invisible)
+            {
+                               // Handle invisible power-up logic here
+                Debug.Log("Invisible power-up collected!");
+                // Example: Make player invisible for a duration
+                StartCoroutine(InvisiblePowerUpCoroutine(eventData.Duration));
+            }
+            if(eventData.PowerUpType == PowerUpType.Shield)
+            {
+                Debug.Log("Shield power-up collected!");
+                StartCoroutine(ActivateShield(eventData.Duration));
+            }
+        }
+
+        IEnumerator InvisiblePowerUpCoroutine(float duration)
+        {
+            IsInvisible = true;
+            var spriteRenderer = GetComponent<SpriteRenderer>();
+            Color originalColor = spriteRenderer.color;
+            spriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0.5f); 
+            yield return new WaitForSeconds(duration);
+            spriteRenderer.color = originalColor; 
+            IsInvisible = false;
+        }
+
+        IEnumerator ActivateShield(float duration)
+        {
+            shield.SetActive(true);
+            yield return new WaitForSeconds(duration);
+            shield.SetActive(false);
+        }
         #endregion
 
 
@@ -187,7 +249,7 @@ namespace Game.Controllers
             if (other.CompareTag("Meteor"))
             {
                 Debug.Log("Meteor hit player - player");
-                // Xử lý giảm máu, chết, v.v.
+                
             }
         }
 

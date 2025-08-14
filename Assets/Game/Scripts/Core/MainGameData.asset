@@ -33,4 +33,7 @@ MonoBehaviour:
   - {fileID: 8433698183133804979, guid: c9b5b74ca5d14af4eb33f9e4376bb6f1, type: 3}
   - {fileID: 2338567495673281401, guid: 59172d89dd342ce4fa12a98fa4af4a34, type: 3}
   - {fileID: 690184449418647973, guid: 54895a4f83f7d6544a1aabc0c55837d1, type: 3}
+  - {fileID: 7963748419159275344, guid: 72218634e57bd8c418c4e408ddd72f2c, type: 3}
+  - {fileID: 4994425700803436148, guid: 6bbd843a7cd3e8741a1bc90ac24ccdd3, type: 3}
+  - {fileID: 1982877080617075495, guid: 4bd4664415d1ef942a479b747300fa3d, type: 3}
   powerUpDuration: 30

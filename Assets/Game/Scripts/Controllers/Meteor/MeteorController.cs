@@ -25,6 +25,7 @@ public class MeteorController : MonoBehaviour, IPoolable
         if (rb == null)
             rb = GetComponent<Rigidbody2D>();
         gameObject.tag = "Meteor";
+       // Tạo chuyển động xoay ngẫu nhiên
     }
 
     public void Initialize(string poolName)
@@ -41,6 +42,12 @@ public class MeteorController : MonoBehaviour, IPoolable
         rb.mass = 1f;         // 
         rb.drag = 0.2f;       // Giảm tốc chậm
 
+    }
+
+    void Update()
+    {
+        // Xoay meteor liên tục
+        rb.angularVelocity = 100f;
     }
 
     public void OnCreate() { }
@@ -87,6 +94,8 @@ public class MeteorController : MonoBehaviour, IPoolable
 
         if (other.CompareTag("Player"))
         {
+            var playerController = other.GetComponent<PlayerController>();
+            if (playerController.IsInvisible) return;
             Debug.Log("Meteor hit player");
             // Trigger player death event
             EventManager.Trigger(new PlayerDeathEvent(
@@ -96,6 +105,13 @@ public class MeteorController : MonoBehaviour, IPoolable
 
             // Destroy meteor sau khi hit player
             PoolManager.Instance.Despawn(poolName, gameObject);
+            return;
+        }
+
+        if(other.CompareTag("Shield"))
+        {
+            Vector2 direction = (transform.position - other.transform.position).normalized;
+            rb.velocity = direction * 10f;
             return;
         }
     }

@@ -43,6 +43,8 @@ namespace Game.Events
         PowerShot,
         PierceShot,
         BurstShot,
-        DamageBoost
+        DamageBoost, 
+        Invisible,
+        Shield
     }
 }

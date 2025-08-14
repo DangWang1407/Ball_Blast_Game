@@ -14,7 +14,7 @@ namespace Game.Controllers
 
         //[SerializeField] private GameObject missilePrefab;
         [SerializeField] private Transform firePoint;
-        [SerializeField] private float fireRate = 0.12f;
+        //[SerializeField] private float fireRate = 0.12f;
         [SerializeField] private float missileSpeed = 8f;
         [SerializeField] private WeaponData weaponData;
 

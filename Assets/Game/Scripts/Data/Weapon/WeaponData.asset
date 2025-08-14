@@ -15,6 +15,10 @@ MonoBehaviour:
   fireRate: 0.12
   bulletSpacing: 0.3
   pierce: 0
+  bulletCount: 1
+  bulletScale: 0.5
+  burst: 0
+  damage: 1
   missilePrefabs:
   - {fileID: 7351639875398920185, guid: c6983b28eca64ec45bbe08f794107034, type: 3}
   - {fileID: 7697459211221981160, guid: 12cb992bd5d461c49ab2b492b09284e5, type: 3}
