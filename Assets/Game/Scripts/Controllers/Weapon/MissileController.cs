@@ -96,7 +96,6 @@ namespace Game.Controllers
             //rotate base on velocity
             if (velocity != Vector2.zero)
             {
-                //fix this, this is not working properly
                 float angle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg - 90;
                 rb.rotation = angle;
             }

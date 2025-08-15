@@ -7,11 +7,15 @@ using Game.Events;
 public class MeteorSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject[] meteorPrefabs; // Large, Medium, Small
+    [SerializeField] private TextAsset meteorsJson;
+
     [SerializeField] private int meteorsCount = 12;
     [SerializeField] private float spawnDelay = 4f;
 
     private readonly string[] poolNames = { "LargeMeteor_Pool", "MediumMeteor_Pool", "SmallMeteor_Pool" };
     private readonly float[] directions = { -1f, 1f };
+
+    private MeteorSpawnList meteors;
 
     public static MeteorSpawner Instance { get; private set; }
 
@@ -23,7 +27,8 @@ public class MeteorSpawner : MonoBehaviour
     void Start()
     {
         CreatePools();
-        StartCoroutine(SpawnMeteors());
+        LoadMeteorData();
+        StartCoroutine(SpawnMeteorsFromJson());
     }
 
     void CreatePools()
@@ -31,6 +36,55 @@ public class MeteorSpawner : MonoBehaviour
         for (int i = 0; i < meteorPrefabs.Length; i++)
         {
             PoolManager.Instance.CreatePool(poolNames[i], meteorPrefabs[i], 10, 30, true);
+        }
+    }
+
+    void LoadMeteorData()
+    {
+        if (meteorsJson == null)
+        {
+            Debug.Log("Meteor json is null");
+            return;
+        }
+        meteors = JsonUtility.FromJson<MeteorSpawnList>(meteorsJson.text);
+        Debug.Log("Initiate meteors");
+    }
+
+    IEnumerator SpawnMeteorsFromJson()
+    {
+        if(meteors == null) yield break;
+        float startTime = Time.time;
+        int currentIndex = 0;
+        while (currentIndex < meteors.meteors.Length)
+        {
+            var meteorData = meteors.meteors[currentIndex];
+            if(Time.time > startTime + meteors.meteors[currentIndex].spawnTime)
+            {
+                SpawnMeteorFromData(meteors.meteors[currentIndex]);
+                currentIndex++;
+            }
+            yield return null;
+        }
+    }
+
+    void SpawnMeteorFromData(MeteorData meteorData)
+    {
+        float direction = directions[Random.Range(0, 2)];
+        int sizeIndex = (int)meteorData.size;
+        Vector3 spawnPosition = (Vector3)meteorData.position;
+        GameObject meteor = PoolManager.Instance.Spawn(poolNames[sizeIndex], spawnPosition);
+
+        if(meteor != null)
+        {
+            var meteorController = meteor.GetComponent<MeteorController>();
+            meteorController.Initialize(poolNames[sizeIndex]);
+            meteorController.SetMeteorSize(meteorData.size);
+
+            var rb = meteor.GetComponent<Rigidbody2D>();
+            rb.velocity = new Vector2(-direction * 2f, 0f);
+            rb.gravityScale = 0f;
+
+            StartCoroutine(EnableGravity(rb, 2f));
         }
     }
 
@@ -93,4 +147,19 @@ public class MeteorSpawner : MonoBehaviour
             }
         }
     }
+}
+
+[System.Serializable]
+public class MeteorData
+{
+    public float spawnTime;
+    public Vector3 position;
+    public MeteorSize size;
+
+}
+
+[System.Serializable]
+public class MeteorSpawnList
+{
+    public MeteorData[] meteors;
 }

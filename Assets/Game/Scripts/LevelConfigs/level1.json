@@ -1,0 +1,94 @@
+{
+	"meteors" : [
+		{
+			"spawnTime" : 2,
+			"position" : {
+				"x" : 3,
+				"y" : 3,
+				"z" : 0
+			},
+			"size" : 2
+		},
+		{
+			"spawnTime" : 2,
+			"position" : {
+				"x" : -3,
+				"y" : 3,
+				"z" : 0
+			},
+			"size" : 0
+		},
+		{
+			"spawnTime" : 5,
+			"position" : {
+				"x" : 3,
+				"y" : 3,
+				"z" : 0
+			},
+			"size" : 0
+		},
+		{
+			"spawnTime" : 9,
+			"position" : {
+				"x" : -3,
+				"y" : 3,
+				"z" : 0
+			},
+			"size" : 1
+		},
+		{
+			"spawnTime" : 10,
+			"position" : {
+				"x" : 3,
+				"y" : 3,
+				"z" : 0
+			},
+			"size" : 2
+		},
+		{
+			"spawnTime" : 14,
+			"position" : {
+				"x" : 3,
+				"y" : 3,
+				"z" : 0
+			},
+			"size" : 2
+		},
+		{
+			"spawnTime" : 15,
+			"position" : {
+				"x" : 3,
+				"y" : 3,
+				"z" : 0
+			},
+			"size" : 0
+		},
+		{
+			"spawnTime" : 20,
+			"position" : {
+				"x" : 3,
+				"y" : 3,
+				"z" : 0
+			},
+			"size" : 2
+		},
+		{
+			"spawnTime" : 22,
+			"position" : {
+				"x" : 3,
+				"y" : 3,
+				"z" : 0
+			},
+			"size" : 0
+		},
+		{
+			"spawnTime" : 23,
+			"position" : {
+				"x" : 3,
+				"y" : 3,
+				"z" : 0
+			},
+			"size" : 0
+		}
+	]
+}

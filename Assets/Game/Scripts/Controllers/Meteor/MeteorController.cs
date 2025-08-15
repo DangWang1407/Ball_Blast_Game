@@ -132,7 +132,7 @@ public class MeteorController : MonoBehaviour, IPoolable
 
     private void TakeDamage(int damage)
     {
-        Debug.Log($"Meteor of size {meteorSize} taking {damage} damage. Current health: {currentHealth}");
+        //Debug.Log($"Meteor of size {meteorSize} taking {damage} damage. Current health: {currentHealth}");
         currentHealth -= damage;
         UpdateUI();
 
