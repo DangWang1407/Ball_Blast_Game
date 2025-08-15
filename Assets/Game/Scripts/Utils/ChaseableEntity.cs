@@ -7,14 +7,19 @@ namespace Game.Utils
     {
         public static readonly HashSet<ChaseableEntity> AllEntities = new HashSet<ChaseableEntity>();
 
-        void Awake()
+        private void OnEnable()
         {
             AllEntities.Add(this);
         }
 
-        void OnDestroy()
+        void OnDisable()
         {
             AllEntities.Remove(this);
+        }
+
+        public static void ClearAllEntities()
+        {
+            AllEntities.Clear();
         }
     }
 }

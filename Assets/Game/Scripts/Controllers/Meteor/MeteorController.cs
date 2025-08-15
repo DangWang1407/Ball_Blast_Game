@@ -64,6 +64,7 @@ public class MeteorController : MonoBehaviour, IPoolable
         {
             var missileController = other.GetComponent<MissileController>();
             TakeDamage(WeaponStats.damage);
+
             //var missileController = other.GetComponent<MissileController>();
 
             //// Chỉ despawn missile nếu KHÔNG pierce

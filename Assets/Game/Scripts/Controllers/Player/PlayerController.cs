@@ -154,7 +154,7 @@ namespace Game.Controllers
             {
                 float velocityX = (rb.position.x - lastPosition.x) / Time.fixedDeltaTime;
 
-                if (Mathf.Abs(velocityX) > 0.01f)
+                if (Mathf.Abs(velocityX) > 0.1f)
                 {
                     motor.motorSpeed = velocityX * 150f;
                     ActivateMotor(true);

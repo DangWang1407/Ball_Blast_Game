@@ -36,4 +36,5 @@ MonoBehaviour:
   - {fileID: 7963748419159275344, guid: 72218634e57bd8c418c4e408ddd72f2c, type: 3}
   - {fileID: 4994425700803436148, guid: 6bbd843a7cd3e8741a1bc90ac24ccdd3, type: 3}
   - {fileID: 1982877080617075495, guid: 4bd4664415d1ef942a479b747300fa3d, type: 3}
-  powerUpDuration: 30
+  - {fileID: 1891839965848136852, guid: fc31129e7a1eead43b5b729b91880e47, type: 3}
+  powerUpDuration: 20

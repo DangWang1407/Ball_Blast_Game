@@ -14,6 +14,7 @@ namespace Game.Scriptable
         public float bulletScale = 0.5f;
         public bool burst = false;
         public int damage = 1;
+        public bool homing = false;
 
         [Header("Missiles per Shot")]
         public GameObject[] missilePrefabs;

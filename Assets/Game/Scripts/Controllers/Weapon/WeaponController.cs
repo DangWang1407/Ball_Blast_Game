@@ -9,17 +9,19 @@ namespace Game.Controllers
 {
     public class WeaponController : MonoBehaviour
     {
-        //public WeaponStats currentStats = new WeaponStats();
-        //private WeaponStats baseStats;
-
-        //[SerializeField] private GameObject missilePrefab;
         [SerializeField] private Transform firePoint;
         //[SerializeField] private float fireRate = 0.12f;
-        [SerializeField] private float missileSpeed = 8f;
+        //[SerializeField] private float missileSpeed = 8f;
         [SerializeField] private WeaponData weaponData;
+
+        //need to fix 
+        private bool diagonalFire = false;
+        Vector2[] directions;
 
         private float lastFireTime;
         private const string MISSLE_POOL = "Missiles";
+
+        
 
         private void Start()
         {
@@ -39,16 +41,6 @@ namespace Game.Controllers
                     }
                 }              
             }
-
-            //baseStats = new WeaponStats
-            //{
-            //    fireRate = fireRate,
-            //    bulletCount = 1,
-            //    bulletScale = 0.5f,
-            //    pierce = false,
-            //    burst = false,
-            //    damage = 1
-            //};
 
             EventManager.Subscribe<PowerUpCollectedEvent>(OnPowerUpCollected);
         }
@@ -75,6 +67,9 @@ namespace Game.Controllers
                 case PowerUpType.DamageBoost:
                     ApplyDamageBoost(powerUpEvent.Duration);
                     break;
+                case PowerUpType.Homing:
+                    ApplyHoming(powerUpEvent.Duration);
+                    break;
             }
         }
 
@@ -90,17 +85,36 @@ namespace Game.Controllers
         private void FireMissile()
         {
             if (firePoint == null) firePoint = transform;
+
+            //if(diagonalFire)
+            //{
+            //    directions = new Vector2[]
+            //    {
+            //        new Vector2(1, 1).normalized,
+            //        new Vector2(-1, 1).normalized,
+            //    };
+            //}
+            //else
+            //{
+            //    directions = new Vector2[]
+            //    {
+            //        Vector2.up,
+            //        Vector2.up,
+            //    };
+            //}
+
+
             if (WeaponStats.burst)
             {
                 StartCoroutine(FireBurstMissiles());
             }
             else
             {
-                FireSingleMissile();
+                FireSingleMissile(Vector2.up);
             }
         }
 
-        private void FireSingleMissile()
+        private void FireSingleMissile(Vector2 direction)
         {
             for (int i = 0; i < WeaponStats.bulletCount; i++)
             {
@@ -116,16 +130,16 @@ namespace Game.Controllers
                 {
                     var missileController = missile.GetComponent<MissileController>();
                     missileController.Initialize(MISSLE_POOL + "_" + i);
-                    missileController.SetVelocity(Vector2.up * missileSpeed);
+                    missileController.SetVelocity(direction);
                 }
             }
         }
 
         private IEnumerator FireBurstMissiles()
         {
-            FireSingleMissile();
+            FireSingleMissile(Vector2.up);
             yield return new WaitForSeconds(WeaponStats.fireRate / 4f);
-            FireSingleMissile();
+            FireSingleMissile(Vector2.up);
         }
 
         private void OnDestroy()
@@ -188,6 +202,15 @@ namespace Game.Controllers
             }));
         }
 
+        public void ApplyHoming(float duration)
+        {
+            WeaponStats.homing = true;
+            StartCoroutine(ResetAfterDuration(duration, () =>
+            {
+                WeaponStats.homing = weaponData.homing;
+            }));
+        }
+
         private IEnumerator ResetAfterDuration(float duration, System.Action resetAction)
         {
             yield return new WaitForSeconds(duration);
@@ -198,12 +221,14 @@ namespace Game.Controllers
 
     public static class WeaponStats
     {
+        public static float missileSpeed = 8f;
         public static float fireRate = 0.12f;
         public static int bulletCount = 1;
         public static float bulletScale = 0.5f;
         public static bool pierce = false;
         public static bool burst = false;
         public static int damage = 1;
+        public static bool homing = false;
     }
 }
 

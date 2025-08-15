@@ -1,6 +1,7 @@
 using UnityEngine;
 using Game.Services;
 using Game.Events;
+using Game.Utils;
 
 namespace Game.Controllers
 {
@@ -11,6 +12,11 @@ namespace Game.Controllers
         private string poolName;
         //private float speed;
         private bool isActive;
+
+        private Transform targetMeteor;
+
+        //need to fix
+        //private bool homing = true;
 
         //public WeaponStats weaponStats { get; private set; }
 
@@ -27,6 +33,46 @@ namespace Game.Controllers
             //this.speed = speed;
 
             transform.localScale = Vector3.one * WeaponStats.bulletScale;
+        }
+
+        private void Update()
+        {
+            if (WeaponStats.homing)
+            {
+                FingdClosestMeteor();
+                if (targetMeteor != null)
+                {
+                    NavigateDirection();
+                }
+            }
+        }
+
+        private void FingdClosestMeteor()
+        {
+            float closestDistance = float.MaxValue;
+            targetMeteor = null;
+            foreach (var meteor in ChaseableEntity.AllEntities)
+            {
+                float distance = Vector2.Distance(transform.position, meteor.transform.position);
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    targetMeteor = meteor.transform;
+                }
+            }
+        }
+
+        private void NavigateDirection()
+        {
+            Vector2 direction = (targetMeteor.position - transform.position).normalized;
+            rb.velocity = direction * WeaponStats.missileSpeed;
+            // Optional: Rotate the missile to face the target
+            // This not working properly, need to fix
+            Quaternion targetRotation = Quaternion.LookRotation(Vector3.forward, direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
+
+            //float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            //rb.rotation = angle;
         }
 
         public void OnCreate()
@@ -47,7 +93,7 @@ namespace Game.Controllers
 
         public void SetVelocity(Vector2 velocity)
         {
-            rb.velocity = velocity;
+            rb.velocity = velocity * WeaponStats.missileSpeed;
         }
 
         public void DestroyMissile(MissileDestroyReason reason)
@@ -64,7 +110,11 @@ namespace Game.Controllers
             {
                 DestroyMissile(MissileDestroyReason.OutOfBounds);
             }
-            if(other.CompareTag("Meteor") && !WeaponStats.pierce)
+            if(other.CompareTag("Ground"))
+            {
+                DestroyMissile(MissileDestroyReason.OutOfBounds);
+            }
+            if (other.CompareTag("Meteor") && !WeaponStats.pierce)
             {
                 DestroyMissile(MissileDestroyReason.HitTarget);
             }

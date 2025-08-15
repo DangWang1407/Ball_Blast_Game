@@ -45,6 +45,7 @@ namespace Game.Events
         BurstShot,
         DamageBoost, 
         Invisible,
-        Shield
+        Shield, 
+        Homing
     }
 }

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8631502847221260562}
   - component: {fileID: 1711072812798183796}
   - component: {fileID: 7696159183562260922}
+  - component: {fileID: -6863954785051705389}
   m_Layer: 0
   m_Name: Small
   m_TagString: Meteor
@@ -166,6 +167,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &-6863954785051705389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1081747361399260239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ae86821f1d686346a61af9a8e49be58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4268333328238861676
 GameObject:
   m_ObjectHideFlags: 0
