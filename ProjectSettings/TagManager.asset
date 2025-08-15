@@ -11,6 +11,7 @@ TagManager:
   - Meteor
   - PowerUp
   - Shield
+  - UpBounce
   layers:
   - Default
   - TransparentFX

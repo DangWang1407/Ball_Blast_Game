@@ -15,7 +15,7 @@ namespace Game.Controllers
         [SerializeField] private WeaponData weaponData;
 
         //need to fix 
-        private bool diagonalFire = false;
+        //private bool diagonalFire = true;
         Vector2[] directions;
 
         private float lastFireTime;
@@ -70,6 +70,12 @@ namespace Game.Controllers
                 case PowerUpType.Homing:
                     ApplyHoming(powerUpEvent.Duration);
                     break;
+                case PowerUpType.DiagonalFire:
+                    ApplyDiagonalFire(powerUpEvent.Duration);
+                    break;
+                case PowerUpType.BounceShot:
+                    ApplyBounceShot(powerUpEvent.Duration);
+                    break;
             }
         }
 
@@ -111,6 +117,12 @@ namespace Game.Controllers
             else
             {
                 FireSingleMissile(Vector2.up);
+            }
+
+            if(WeaponStats.diagonalFire)
+            {
+                FireSingleMissile(new Vector2(1,1));
+                FireSingleMissile(new Vector2(-1, 1));
             }
         }
 
@@ -211,6 +223,24 @@ namespace Game.Controllers
             }));
         }
 
+        public void ApplyDiagonalFire(float duration)
+        {
+            WeaponStats.diagonalFire = true;
+            StartCoroutine(ResetAfterDuration(duration, () =>
+            {
+                WeaponStats.diagonalFire = weaponData.diagonalFire;
+            }));
+        }
+
+        public void ApplyBounceShot(float duration)
+        {
+            WeaponStats.bounceShot = true;
+            StartCoroutine(ResetAfterDuration(duration, () =>
+            {
+                WeaponStats.bounceShot = weaponData.bounceShot;
+            }));
+        }
+
         private IEnumerator ResetAfterDuration(float duration, System.Action resetAction)
         {
             yield return new WaitForSeconds(duration);
@@ -221,14 +251,16 @@ namespace Game.Controllers
 
     public static class WeaponStats
     {
-        public static float missileSpeed = 8f;
-        public static float fireRate = 0.12f;
+        public static float missileSpeed = 6f;
+        public static float fireRate = 0.2f;
         public static int bulletCount = 1;
         public static float bulletScale = 0.5f;
         public static bool pierce = false;
         public static bool burst = false;
         public static int damage = 1;
         public static bool homing = false;
+        public static bool diagonalFire = false;
+        public static bool bounceShot = false;
     }
 }
 

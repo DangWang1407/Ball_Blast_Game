@@ -93,6 +93,11 @@ public class MeteorController : MonoBehaviour, IPoolable
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
 
+        if(other.CompareTag("UpBounce"))
+        {
+            rb.velocity = Vector2.Reflect(rb.velocity.normalized, other.transform.up);
+        }
+
         if (other.CompareTag("Player"))
         {
             var playerController = other.GetComponent<PlayerController>();

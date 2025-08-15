@@ -9,12 +9,13 @@ namespace Game.Scriptable
         public float fireRate = 0.12f;
         public float bulletSpacing = 0.3f;
         public bool pierce = false;
-
         public int bulletCount = 1;
         public float bulletScale = 0.5f;
         public bool burst = false;
         public int damage = 1;
         public bool homing = false;
+        public bool diagonalFire = false;
+        public bool bounceShot = false;
 
         [Header("Missiles per Shot")]
         public GameObject[] missilePrefabs;

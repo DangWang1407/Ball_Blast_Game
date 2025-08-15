@@ -16,7 +16,8 @@ namespace Game.Controllers
         private Transform targetMeteor;
 
         //need to fix
-        //private bool homing = true;
+        private bool bounceShot = false;
+        private int bounceLeft = 0;
 
         //public WeaponStats weaponStats { get; private set; }
 
@@ -30,9 +31,10 @@ namespace Game.Controllers
         public void Initialize(string poolName)
         {
             this.poolName = poolName;
-            //this.speed = speed;
 
             transform.localScale = Vector3.one * WeaponStats.bulletScale;
+
+            bounceLeft = WeaponStats.bounceShot ? 3 : 0;
         }
 
         private void Update()
@@ -66,13 +68,9 @@ namespace Game.Controllers
         {
             Vector2 direction = (targetMeteor.position - transform.position).normalized;
             rb.velocity = direction * WeaponStats.missileSpeed;
-            // Optional: Rotate the missile to face the target
-            // This not working properly, need to fix
+
             Quaternion targetRotation = Quaternion.LookRotation(Vector3.forward, direction);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
-
-            //float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            //rb.rotation = angle;
         }
 
         public void OnCreate()
@@ -94,6 +92,14 @@ namespace Game.Controllers
         public void SetVelocity(Vector2 velocity)
         {
             rb.velocity = velocity * WeaponStats.missileSpeed;
+
+            //rotate base on velocity
+            if (velocity != Vector2.zero)
+            {
+                //fix this, this is not working properly
+                float angle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg - 90;
+                rb.rotation = angle;
+            }
         }
 
         public void DestroyMissile(MissileDestroyReason reason)
@@ -108,11 +114,29 @@ namespace Game.Controllers
             if(!isActive) return;
             if (other.CompareTag("Wall"))
             {
-                DestroyMissile(MissileDestroyReason.OutOfBounds);
+                if(WeaponStats.bounceShot && bounceLeft > 0)
+                {
+                    bounceLeft--;
+                    Vector2 reflectDirection = Vector2.Reflect(rb.velocity.normalized, other.transform.right);
+                    SetVelocity(reflectDirection);
+                }
+                else
+                {
+                    DestroyMissile(MissileDestroyReason.OutOfBounds);
+                }
             }
-            if(other.CompareTag("Ground"))
+            if(other.CompareTag("Ground") || other.CompareTag("UpBounce"))
             {
-                DestroyMissile(MissileDestroyReason.OutOfBounds);
+                if (WeaponStats.bounceShot && bounceLeft > 0)
+                {
+                    bounceLeft--;
+                    Vector2 reflectDirection = Vector2.Reflect(rb.velocity.normalized, other.transform.up);
+                    SetVelocity(reflectDirection);
+                }
+                else
+                {
+                    DestroyMissile(MissileDestroyReason.OutOfBounds);
+                }
             }
             if (other.CompareTag("Meteor") && !WeaponStats.pierce)
             {

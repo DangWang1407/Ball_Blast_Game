@@ -46,6 +46,8 @@ namespace Game.Events
         DamageBoost, 
         Invisible,
         Shield, 
-        Homing
+        Homing,
+        DiagonalFire,
+        BounceShot
     }
 }
