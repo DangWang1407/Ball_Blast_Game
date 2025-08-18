@@ -1,87 +1,68 @@
-using System.Runtime.CompilerServices;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Game.Services;
-using System.Collections;
 using Game.Events;
 using Game.Scriptable;
+using Game.PowerUps;
 
 namespace Game.Controllers
 {
     public class WeaponController : MonoBehaviour
     {
-        [SerializeField] private Transform firePoint;
-        //[SerializeField] private float fireRate = 0.12f;
-        //[SerializeField] private float missileSpeed = 8f;
-        [SerializeField] private WeaponData weaponData;
-
-        //need to fix 
-        //private bool diagonalFire = true;
-        Vector2[] directions;
+        [SerializeField] public Transform firePoint;
+        [SerializeField] public WeaponData weaponData;
 
         private float lastFireTime;
-        private const string MISSLE_POOL = "Missiles";
+        private const string MISSILE_POOL = "Missiles";
 
-        
+        private Dictionary<PowerUpType, IPowerUpWeapon> powerUps;
 
         private void Start()
         {
-            if(firePoint == null)
+            if (firePoint == null)
             {
                 Debug.LogError("FirePoint is not assigned in WeaponController.");
             }
+
             if (PoolManager.Instance != null)
             {
-                //PoolManager.Instance.CreatePool(MISSLE_POOL, missilePrefab, 5, 20, true);
                 for (int i = 0; i < weaponData.missilePrefabs.Length; i++)
                 {
                     if (weaponData.missilePrefabs[i] != null)
                     {
-                        PoolManager.Instance.CreatePool(MISSLE_POOL + "_" + i, weaponData.missilePrefabs[i], 10, 30, true);   
-                        Debug.Log($"Created pool for {MISSLE_POOL}_{i} with prefab {weaponData.missilePrefabs[i].name}");
+                        PoolManager.Instance.CreatePool(
+                            MISSILE_POOL + "_" + i,
+                            weaponData.missilePrefabs[i],
+                            10,
+                            30,
+                            true
+                        );
+
+                        Debug.Log($"Created pool for {MISSILE_POOL}_{i} with prefab {weaponData.missilePrefabs[i].name}");
                     }
-                }              
+                }
             }
+
+            powerUps = new Dictionary<PowerUpType, IPowerUpWeapon>
+            {
+                { PowerUpType.RapidFire, new RapidFirePowerUp() },
+                { PowerUpType.DoubleShot, new DoubleShotPowerUp() },
+                { PowerUpType.PowerShot, new PowerShotPowerUp() },
+                { PowerUpType.PierceShot, new PierceShotPowerUp() },
+                { PowerUpType.BurstShot, new BurstShotPowerUp() },
+                { PowerUpType.DamageBoost, new DamageBoostPowerUp() },
+                { PowerUpType.Homing, new HomingPowerUp() },
+                { PowerUpType.DiagonalFire, new DiagonalFirePowerUp() },
+                { PowerUpType.BounceShot, new BounceShotPowerUp() },
+            };
 
             EventManager.Subscribe<PowerUpCollectedEvent>(OnPowerUpCollected);
         }
 
-        private void OnPowerUpCollected(PowerUpCollectedEvent powerUpEvent)
-        {
-            switch (powerUpEvent.PowerUpType)
-            {
-                case PowerUpType.RapidFire:
-                    ApplyRapidFire(powerUpEvent.Duration);
-                    break;
-                case PowerUpType.DoubleShot:
-                    ApplyDoubleShot(powerUpEvent.Duration);
-                    break;
-                case PowerUpType.PowerShot:
-                    ApplyPowerShot(powerUpEvent.Duration);
-                    break;
-                case PowerUpType.PierceShot:
-                    ApplyPierceShot(powerUpEvent.Duration);
-                    break;
-                case PowerUpType.BurstShot:
-                    ApplyBurstShot(powerUpEvent.Duration);
-                    break;
-                case PowerUpType.DamageBoost:
-                    ApplyDamageBoost(powerUpEvent.Duration);
-                    break;
-                case PowerUpType.Homing:
-                    ApplyHoming(powerUpEvent.Duration);
-                    break;
-                case PowerUpType.DiagonalFire:
-                    ApplyDiagonalFire(powerUpEvent.Duration);
-                    break;
-                case PowerUpType.BounceShot:
-                    ApplyBounceShot(powerUpEvent.Duration);
-                    break;
-            }
-        }
-
         private void Update()
         {
-            if(Time.time - lastFireTime >= WeaponStats.fireRate)
+            if (Time.time - lastFireTime >= WeaponStats.fireRate)
             {
                 FireMissile();
                 lastFireTime = Time.time;
@@ -92,24 +73,6 @@ namespace Game.Controllers
         {
             if (firePoint == null) firePoint = transform;
 
-            //if(diagonalFire)
-            //{
-            //    directions = new Vector2[]
-            //    {
-            //        new Vector2(1, 1).normalized,
-            //        new Vector2(-1, 1).normalized,
-            //    };
-            //}
-            //else
-            //{
-            //    directions = new Vector2[]
-            //    {
-            //        Vector2.up,
-            //        Vector2.up,
-            //    };
-            //}
-
-
             if (WeaponStats.burst)
             {
                 StartCoroutine(FireBurstMissiles());
@@ -119,9 +82,9 @@ namespace Game.Controllers
                 FireSingleMissile(Vector2.up);
             }
 
-            if(WeaponStats.diagonalFire)
+            if (WeaponStats.diagonalFire)
             {
-                FireSingleMissile(new Vector2(1,1));
+                FireSingleMissile(new Vector2(1, 1));
                 FireSingleMissile(new Vector2(-1, 1));
             }
         }
@@ -131,17 +94,20 @@ namespace Game.Controllers
             for (int i = 0; i < WeaponStats.bulletCount; i++)
             {
                 Vector3 spawnPos = firePoint.position;
+
                 if (WeaponStats.bulletCount > 1)
                 {
                     float offset = (i - (WeaponStats.bulletCount - 1) * 0.5f) * 0.3f;
                     spawnPos.x += offset;
                 }
 
-                GameObject missile = PoolManager.Instance.Spawn(MISSLE_POOL + "_" + i, spawnPos);
+                string poolName = MISSILE_POOL + "_" + Mathf.Min(i, weaponData.missilePrefabs.Length - 1);
+
+                GameObject missile = PoolManager.Instance.Spawn(poolName, spawnPos);
                 if (missile != null)
                 {
                     var missileController = missile.GetComponent<MissileController>();
-                    missileController.Initialize(MISSLE_POOL + "_" + i);
+                    missileController.Initialize(poolName);
                     missileController.SetVelocity(direction);
                 }
             }
@@ -154,99 +120,24 @@ namespace Game.Controllers
             FireSingleMissile(Vector2.up);
         }
 
-        private void OnDestroy()
+        private void OnPowerUpCollected(PowerUpCollectedEvent powerUpEvent)
         {
-            EventManager.Unsubscribe<PowerUpCollectedEvent>(OnPowerUpCollected);
-        }
-
-        #region Power-Up Methods
-        public void ApplyRapidFire(float duration)
-        {
-            WeaponStats.fireRate = weaponData.fireRate / 2f;
-            StartCoroutine(ResetAfterDuration(duration, () => 
+            if (powerUps.TryGetValue(powerUpEvent.PowerUpType, out var powerUp))
             {
-                WeaponStats.fireRate = weaponData.fireRate;
-            }));
+                powerUp.Apply(this, powerUpEvent.Duration);
+            }
         }
 
-        public void ApplyDoubleShot(float duration)
-        {
-            WeaponStats.bulletCount = 2;
-            StartCoroutine(ResetAfterDuration(duration, () => 
-            {
-                WeaponStats.bulletCount = weaponData.bulletCount;
-            }));
-        }
-
-        public void ApplyPowerShot(float duration)
-        {
-            WeaponStats.bulletScale = 1f;
-            StartCoroutine(ResetAfterDuration(duration, () =>
-            {
-                WeaponStats.bulletScale = weaponData.bulletScale;
-            }));
-        }
-
-        public void ApplyPierceShot(float duration)
-        {
-            WeaponStats.pierce = true;
-            StartCoroutine(ResetAfterDuration(duration, () =>
-            {
-                WeaponStats.pierce = weaponData.pierce;
-            }));
-        }
-
-        public void ApplyBurstShot(float duration)
-        {
-            WeaponStats.burst = true;
-            StartCoroutine(ResetAfterDuration(duration, () =>
-            {
-                WeaponStats.burst = weaponData.burst;
-            }));
-        }
-
-        public void ApplyDamageBoost(float duration)
-        {
-            WeaponStats.damage += 1;
-            StartCoroutine(ResetAfterDuration(duration, () =>
-            {
-                WeaponStats.damage = weaponData.damage;
-            }));
-        }
-
-        public void ApplyHoming(float duration)
-        {
-            WeaponStats.homing = true;
-            StartCoroutine(ResetAfterDuration(duration, () =>
-            {
-                WeaponStats.homing = weaponData.homing;
-            }));
-        }
-
-        public void ApplyDiagonalFire(float duration)
-        {
-            WeaponStats.diagonalFire = true;
-            StartCoroutine(ResetAfterDuration(duration, () =>
-            {
-                WeaponStats.diagonalFire = weaponData.diagonalFire;
-            }));
-        }
-
-        public void ApplyBounceShot(float duration)
-        {
-            WeaponStats.bounceShot = true;
-            StartCoroutine(ResetAfterDuration(duration, () =>
-            {
-                WeaponStats.bounceShot = weaponData.bounceShot;
-            }));
-        }
-
-        private IEnumerator ResetAfterDuration(float duration, System.Action resetAction)
+        public IEnumerator ResetAfterDuration(float duration, System.Action resetAction)
         {
             yield return new WaitForSeconds(duration);
             resetAction?.Invoke();
         }
-        #endregion
+
+        private void OnDestroy()
+        {
+            EventManager.Unsubscribe<PowerUpCollectedEvent>(OnPowerUpCollected);
+        }
     }
 
     public static class WeaponStats
@@ -263,4 +154,3 @@ namespace Game.Controllers
         public static bool bounceShot = false;
     }
 }
-

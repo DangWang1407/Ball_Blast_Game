@@ -14,17 +14,6 @@ namespace Game.Events
         }
     }
 
-    //public struct WeaponPowerUpEvent : IGameEvent
-    //{
-    //    public PowerUpType PowerUpType { get; }
-    //    public float Duration { get; }
-    //    public WeaponPowerUpEvent(PowerUpType powerUpType, float duration)
-    //    {
-    //        PowerUpType = powerUpType;
-    //        Duration = duration;
-    //    }
-    //}
-
     public struct PowerUpCollectedEvent : IGameEvent
     {
         public PowerUpType PowerUpType;

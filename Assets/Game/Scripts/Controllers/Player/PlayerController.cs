@@ -2,39 +2,37 @@
 using Game.Core;
 using Game.Services;
 using Game.Events;
+using Game.PowerUps;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Game.Controllers
 {
     public class PlayerController : MonoBehaviour
     {
-
-        [SerializeField] private float boundaryOffset = 0.56f; // Offset for screen bounds
+        [SerializeField] private float boundaryOffset = 0.56f;
         [SerializeField] private float moveSpeed = 5f;
         [SerializeField] private float smoothing = 0.1f;
 
         [SerializeField] private HingeJoint2D[] wheels;
         [SerializeField] private GameObject shieldPrefabs;
-        
-        private GameObject shield;
-
-        private bool isShieldActive = false;
-
-        public bool IsInvisible = false;
-
-        private JointMotor2D motor;
 
         private Rigidbody2D rb;
         private Camera mainCamera;
+        private JointMotor2D motor;
 
-        private float screenBounds;
         private Vector2 targetPosition;
         private Vector2 currentVelocity;
         private Vector2 lastPosition;
 
+        private float screenBounds;
         private bool isMoving;
         private bool isPaused = false;
 
+        public bool IsInvisible = false;
+        public GameObject Shield { get; private set; }
+
+        private Dictionary<PowerUpType, IPowerUpDefend> powerUps;
 
         private void Awake()
         {
@@ -48,10 +46,15 @@ namespace Game.Controllers
             CreateShield();
             SubscribeToEvents();
 
-            if(wheels.Length > 0)
-            {
+            if (wheels.Length > 0)
                 motor = wheels[0].motor;
-            }
+
+            // Khởi tạo dictionary PowerUps
+            powerUps = new Dictionary<PowerUpType, IPowerUpDefend>
+            {
+                { PowerUpType.Invisible, new InvisiblePowerUp() },
+                { PowerUpType.Shield, new ShieldPowerUp() }
+            };
         }
 
         private void Update()
@@ -68,19 +71,15 @@ namespace Game.Controllers
 
         private void OnDestroy()
         {
-            UnsubcribeToEvents();
+            UnsubscribeToEvents();
         }
 
         private void Initialize()
         {
             if (mainCamera != null)
-            {
                 screenBounds = mainCamera.ScreenToWorldPoint(new Vector3(Screen.width, 0f, 0f)).x - boundaryOffset;
-            }
             else
-            {
                 screenBounds = GameManager.Instance.ScreenWidth - boundaryOffset;
-            }
 
             targetPosition = transform.position;
             Debug.Log("PlayerController initialized with screen bounds: " + screenBounds);
@@ -88,18 +87,11 @@ namespace Game.Controllers
 
         private void CreateShield()
         {
-            shield = Object.Instantiate(shieldPrefabs);
-            shield.transform.SetParent(transform);
-            shield.transform.localPosition = Vector3.zero;
-            shield.tag = "Shield";
-
-            //shield.AddComponent<SpriteRenderer>().sprite = spriteShield.sprite;
-
-            //CircleCollider2D circleCol = shield.AddComponent<CircleCollider2D>();
-            //circleCol.radius = 1.5f; 
-            //circleCol.isTrigger = true;
-
-            shield.SetActive(false); 
+            Shield = Object.Instantiate(shieldPrefabs);
+            Shield.transform.SetParent(transform);
+            Shield.transform.localPosition = Vector3.zero;
+            Shield.tag = "Shield";
+            Shield.SetActive(false);
         }
 
         private void SubscribeToEvents()
@@ -109,7 +101,7 @@ namespace Game.Controllers
             EventManager.Subscribe<PowerUpCollectedEvent>(OnPowerUpCollected);
         }
 
-        private void UnsubcribeToEvents()
+        private void UnsubscribeToEvents()
         {
             EventManager.Unsubscribe<PlayerInputEvent>(OnPlayerInput);
             EventManager.Unsubscribe<GameStateChangeEvent>(OnGameStateChanged);
@@ -134,7 +126,7 @@ namespace Game.Controllers
             }
 
             targetPosition.x = Mathf.Clamp(targetPosition.x, -screenBounds, screenBounds);
-            targetPosition.y = transform.position.y; // Keep the y position constant
+            targetPosition.y = transform.position.y;
 
             Vector2 newPosition = Vector2.SmoothDamp(
                 rb.position,
@@ -146,9 +138,7 @@ namespace Game.Controllers
             rb.MovePosition(newPosition);
 
             if (Vector2.Distance(rb.position, targetPosition) < 0.01f)
-            {
-                isMoving = false; // Stop moving when close to target
-            }
+                isMoving = false;
 
             if (wheels.Length > 0)
             {
@@ -167,8 +157,6 @@ namespace Game.Controllers
             }
 
             lastPosition = rb.position;
-
-
         }
 
         private void ActivateMotor(bool isActive)
@@ -197,46 +185,19 @@ namespace Game.Controllers
             isPaused = eventData.NewState == GameState.Paused;
             if (isPaused)
             {
-                rb.velocity = Vector2.zero; // Stop movement when paused
+                rb.velocity = Vector2.zero;
                 isMoving = false;
             }
         }
 
         private void OnPowerUpCollected(PowerUpCollectedEvent eventData)
         {
-            if(eventData.PowerUpType == PowerUpType.Invisible)
+            if (powerUps.TryGetValue(eventData.PowerUpType, out var powerUp))
             {
-                               // Handle invisible power-up logic here
-                Debug.Log("Invisible power-up collected!");
-                // Example: Make player invisible for a duration
-                StartCoroutine(InvisiblePowerUpCoroutine(eventData.Duration));
+                powerUp.Apply(this, eventData.Duration);
             }
-            if(eventData.PowerUpType == PowerUpType.Shield)
-            {
-                Debug.Log("Shield power-up collected!");
-                StartCoroutine(ActivateShield(eventData.Duration));
-            }
-        }
-
-        IEnumerator InvisiblePowerUpCoroutine(float duration)
-        {
-            IsInvisible = true;
-            var spriteRenderer = GetComponent<SpriteRenderer>();
-            Color originalColor = spriteRenderer.color;
-            spriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0.5f); 
-            yield return new WaitForSeconds(duration);
-            spriteRenderer.color = originalColor; 
-            IsInvisible = false;
-        }
-
-        IEnumerator ActivateShield(float duration)
-        {
-            shield.SetActive(true);
-            yield return new WaitForSeconds(duration);
-            shield.SetActive(false);
         }
         #endregion
-
 
         public void SetTargetPosition(Vector2 position)
         {
@@ -249,9 +210,7 @@ namespace Game.Controllers
             if (other.CompareTag("Meteor"))
             {
                 Debug.Log("Meteor hit player - player");
-                
             }
         }
-
     }
 }
