@@ -7,7 +7,8 @@ using Game.Events;
 public class MeteorSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject[] meteorPrefabs; // Large, Medium, Small
-    [SerializeField] private TextAsset meteorsJson;
+    //[SerializeField] 
+    private TextAsset meteorsJson;
 
     [SerializeField] private int meteorsCount = 12;
     [SerializeField] private float spawnDelay = 4f;
@@ -22,13 +23,16 @@ public class MeteorSpawner : MonoBehaviour
     void Awake()
     {
         Instance = this;
+        EventManager.Subscribe<LevelStartEvent>(OnLevelStart);
     }
 
     void Start()
     {
         CreatePools();
-        LoadMeteorData();
-        StartCoroutine(SpawnMeteorsFromJson());
+        Debug.Log("Subcribe level start event.");
+        //EventManager.Subscribe<LevelStartEvent>(OnLevelStart);
+        //LoadMeteorData();
+        //StartCoroutine(SpawnMeteorsFromJson());
     }
 
     void CreatePools()
@@ -37,6 +41,14 @@ public class MeteorSpawner : MonoBehaviour
         {
             PoolManager.Instance.CreatePool(poolNames[i], meteorPrefabs[i], 10, 30, true);
         }
+    }
+
+    private void OnLevelStart(LevelStartEvent ev)
+    {
+        Debug.Log("On level start function");
+        meteorsJson = ev.LevelData;
+        LoadMeteorData();
+        StartCoroutine(SpawnMeteorsFromJson());
     }
 
     void LoadMeteorData()
@@ -65,6 +77,8 @@ public class MeteorSpawner : MonoBehaviour
             }
             yield return null;
         }
+
+        EventManager.Trigger(new AllMeteorsDestroyedEvent(LevelManager.Instance.CurrentLevel));
     }
 
     void SpawnMeteorFromData(MeteorData meteorData)
@@ -146,6 +160,11 @@ public class MeteorSpawner : MonoBehaviour
                 split.GetComponent<Rigidbody2D>().velocity = new Vector2(directions[i] * 3f, 5f);
             }
         }
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.Unsubscribe<LevelStartEvent>(OnLevelStart);
     }
 }
 
