@@ -102,14 +102,14 @@ public class MeteorSpawner : MonoBehaviour
         }
     }
 
-    IEnumerator SpawnMeteors()
-    {
-        for (int i = 0; i < meteorsCount; i++)
-        {
-            SpawnMeteor(MeteorSize.Large);
-            yield return new WaitForSeconds(spawnDelay);
-        }
-    }
+    //IEnumerator SpawnMeteors()
+    //{
+    //    for (int i = 0; i < meteorsCount; i++)
+    //    {
+    //        SpawnMeteor(MeteorSize.Large);
+    //        yield return new WaitForSeconds(spawnDelay);
+    //    }
+    //}
 
     public void SpawnMeteor(MeteorSize size)
     {

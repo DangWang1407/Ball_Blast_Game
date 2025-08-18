@@ -63,23 +63,11 @@ public class MeteorController : MonoBehaviour, IPoolable
         {
             var missileController = other.GetComponent<MissileController>();
             TakeDamage(WeaponStats.damage);
-
-            //var missileController = other.GetComponent<MissileController>();
-
-            //// Chỉ despawn missile nếu KHÔNG pierce
-            //if (!missileController.weaponStats.pierce)
-            //{
-            //    //PoolManager.Instance.Despawn("Missiles", other.gameObject);
-            //}
         }
 
         if (other.CompareTag("Wall"))
         {
             float posX = transform.position.x;
-            //if (posX > 0)
-            //    rb.AddForce(Vector2.left * 8f, ForceMode2D.Impulse);
-            //else
-            //    rb.AddForce(Vector2.right * 8f, ForceMode2D.Impulse);
             if (posX > 0)
                 rb.velocity = new Vector2(-Mathf.Abs(rb.velocity.x), rb.velocity.y);
             else
@@ -137,7 +125,7 @@ public class MeteorController : MonoBehaviour, IPoolable
 
         if (currentHealth <= 0)
         {
-            Debug.Log($"Meteor of size {meteorSize} destroyed");
+            //Debug.Log($"Meteor of size {meteorSize} destroyed");
             EventManager.Trigger(new ScoreChangeEvent(ScoreReason.MeteorDestroyed, 
                 meteorSize == MeteorSize.Large ? 100 : 
                 meteorSize == MeteorSize.Medium ? 50 : 25));
@@ -146,24 +134,10 @@ public class MeteorController : MonoBehaviour, IPoolable
 
             PoolManager.Instance.Despawn(poolName, gameObject);
 
-            //if (Random.Range(0f, 1f) < 0.3f) 
-            //{
-            //    // Spawn a power-up
-            //    SpawnPowerUp();
-            //}
-
             EventManager.Trigger(new PowerUpSpawnEvent(transform.position, meteorSize));
-            Debug.Log($"Power-up spawn event triggered for meteor size: {meteorSize} at position: {transform.position}");
+            //Debug.Log($"Power-up spawn event triggered for meteor size: {meteorSize} at position: {transform.position}");
         }
     }
-
-    //private void SpawnPowerUp()
-    //{
-    //    if (powerUpPrefabs.Length == 0) return;
-    //    int randomIndex = Random.Range(0, powerUpPrefabs.Length);
-    //    GameObject powerUp = Instantiate(powerUpPrefabs[randomIndex], transform.position, Quaternion.identity);
-    //}
-
      
     private void UpdateUI()
     {

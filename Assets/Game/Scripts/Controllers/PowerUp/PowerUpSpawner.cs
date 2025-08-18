@@ -14,9 +14,9 @@ namespace Game.Controllers
 
         private void OnPowerUpSpawn(PowerUpSpawnEvent evt)
         {
-            Debug.Log($"Power-up spawn event received for meteor size: {evt.MeteorSize} at position: {evt.Position}");
+            //Debug.Log($"Power-up spawn event received for meteor size: {evt.MeteorSize} at position: {evt.Position}");
             float dropChance = GetDropChance(evt.MeteorSize);
-            Debug.Log($"Drop chance for {evt.MeteorSize} meteor: {dropChance}");
+            //Debug.Log($"Drop chance for {evt.MeteorSize} meteor: {dropChance}");
             if (Random.Range(0f, 1f) < dropChance)
             {
                 SpawnRandomPowerUp(evt.Position);
@@ -36,7 +36,7 @@ namespace Game.Controllers
 
         private void SpawnRandomPowerUp(Vector3 position)
         {
-            Debug.Log($"Spawning power-up at {position}");
+            //Debug.Log($"Spawning power-up at {position}");
             var powerUpPrefabs = GameManager.Instance.Data.powerUpPrefabs;
             if (powerUpPrefabs.Length > 0)
             {

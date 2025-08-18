@@ -6,11 +6,9 @@ public class LevelManager : MonoBehaviour
 {
     [Header("Level Data")]
     [SerializeField] private TextAsset[] levelJsonFiles;
-    [SerializeField] private float levelCompleteDelay = 3f;
 
-    [Header("Current Level Info")]
-    [SerializeField] private int currentLevel = 0;
-    [SerializeField] private bool levelCompleted = false;
+    private int currentLevel = 0;
+    private bool levelCompleted = false;
 
     public static LevelManager Instance { get; private set; }
 
@@ -39,7 +37,6 @@ public class LevelManager : MonoBehaviour
         levelCompleted = false;
         Debug.Log($"Starting Level {currentLevel + 1}");
 
-        // Notify MeteorSpawner to load current level
         EventManager.Trigger(new LevelStartEvent(currentLevel, GetCurrentLevelData()));
     }
 
