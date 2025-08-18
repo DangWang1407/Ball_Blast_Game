@@ -16,7 +16,7 @@ namespace Game.Controllers
         private float lastFireTime;
         private const string MISSILE_POOL = "Missiles";
 
-        private Dictionary<PowerUpType, IPowerUpWeapon> powerUps;
+        //private Dictionary<PowerUpType, IPowerUpWeapon> powerUps;
 
         private void Start()
         {
@@ -43,21 +43,6 @@ namespace Game.Controllers
                     }
                 }
             }
-
-            powerUps = new Dictionary<PowerUpType, IPowerUpWeapon>
-            {
-                { PowerUpType.RapidFire, new RapidFirePowerUp() },
-                { PowerUpType.DoubleShot, new DoubleShotPowerUp() },
-                { PowerUpType.PowerShot, new PowerShotPowerUp() },
-                { PowerUpType.PierceShot, new PierceShotPowerUp() },
-                { PowerUpType.BurstShot, new BurstShotPowerUp() },
-                { PowerUpType.DamageBoost, new DamageBoostPowerUp() },
-                { PowerUpType.Homing, new HomingPowerUp() },
-                { PowerUpType.DiagonalFire, new DiagonalFirePowerUp() },
-                { PowerUpType.BounceShot, new BounceShotPowerUp() },
-            };
-
-            EventManager.Subscribe<PowerUpCollectedEvent>(OnPowerUpCollected);
         }
 
         private void Update()
@@ -120,14 +105,6 @@ namespace Game.Controllers
             FireSingleMissile(Vector2.up);
         }
 
-        private void OnPowerUpCollected(PowerUpCollectedEvent powerUpEvent)
-        {
-            if (powerUps.TryGetValue(powerUpEvent.PowerUpType, out var powerUp))
-            {
-                powerUp.Apply(this, powerUpEvent.Duration);
-            }
-        }
-
         public IEnumerator ResetAfterDuration(float duration, System.Action resetAction)
         {
             yield return new WaitForSeconds(duration);
@@ -136,21 +113,6 @@ namespace Game.Controllers
 
         private void OnDestroy()
         {
-            EventManager.Unsubscribe<PowerUpCollectedEvent>(OnPowerUpCollected);
         }
-    }
-
-    public static class WeaponStats
-    {
-        public static float missileSpeed = 6f;
-        public static float fireRate = 0.2f;
-        public static int bulletCount = 1;
-        public static float bulletScale = 0.5f;
-        public static bool pierce = false;
-        public static bool burst = false;
-        public static int damage = 1;
-        public static bool homing = false;
-        public static bool diagonalFire = false;
-        public static bool bounceShot = false;
     }
 }

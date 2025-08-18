@@ -32,8 +32,6 @@ namespace Game.Controllers
         public bool IsInvisible = false;
         public GameObject Shield { get; private set; }
 
-        private Dictionary<PowerUpType, IPowerUpDefend> powerUps;
-
         private void Awake()
         {
             rb = GetComponent<Rigidbody2D>();
@@ -48,13 +46,6 @@ namespace Game.Controllers
 
             if (wheels.Length > 0)
                 motor = wheels[0].motor;
-
-            // Khởi tạo dictionary PowerUps
-            powerUps = new Dictionary<PowerUpType, IPowerUpDefend>
-            {
-                { PowerUpType.Invisible, new InvisiblePowerUp() },
-                { PowerUpType.Shield, new ShieldPowerUp() }
-            };
         }
 
         private void Update()
@@ -98,14 +89,12 @@ namespace Game.Controllers
         {
             EventManager.Subscribe<PlayerInputEvent>(OnPlayerInput);
             EventManager.Subscribe<GameStateChangeEvent>(OnGameStateChanged);
-            EventManager.Subscribe<PowerUpCollectedEvent>(OnPowerUpCollected);
         }
 
         private void UnsubscribeToEvents()
         {
             EventManager.Unsubscribe<PlayerInputEvent>(OnPlayerInput);
             EventManager.Unsubscribe<GameStateChangeEvent>(OnGameStateChanged);
-            EventManager.Unsubscribe<PowerUpCollectedEvent>(OnPowerUpCollected);
         }
 
         private void HandleLegacyInput()
@@ -187,14 +176,6 @@ namespace Game.Controllers
             {
                 rb.velocity = Vector2.zero;
                 isMoving = false;
-            }
-        }
-
-        private void OnPowerUpCollected(PowerUpCollectedEvent eventData)
-        {
-            if (powerUps.TryGetValue(eventData.PowerUpType, out var powerUp))
-            {
-                powerUp.Apply(this, eventData.Duration);
             }
         }
         #endregion

@@ -11,7 +11,6 @@ public class MeteorController : MonoBehaviour, IPoolable
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private TMP_Text textHealth;
     [SerializeField] private int maxHealth = 10;
-    //[SerializeField] private GameObject[] powerUpPrefabs;
 
     private float jumpForce = 12f;
 
@@ -47,7 +46,7 @@ public class MeteorController : MonoBehaviour, IPoolable
     void Update()
     {
         // Xoay meteor liên tục
-        rb.angularVelocity = 100f;
+        rb.angularVelocity = 10f;
     }
 
     public void OnCreate() { }
