@@ -38,6 +38,7 @@ namespace Game.Views
 
         public void TogglePause()
         {
+            Debug.Log("Toggle pause");
             if (GameManager.Instance == null) return;
 
             GameState currentState = GameManager.Instance.CurrentState;

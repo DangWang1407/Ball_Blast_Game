@@ -12,6 +12,7 @@ TagManager:
   - PowerUp
   - Shield
   - UpBounce
+  - Wheel
   layers:
   - Default
   - TransparentFX

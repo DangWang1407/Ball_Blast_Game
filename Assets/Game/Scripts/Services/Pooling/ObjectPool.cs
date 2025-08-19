@@ -33,7 +33,7 @@ public class ObjectPool
             return null;
         }
 
-        Debug.Log($"Creating new object in pool '{poolName}'");
+        //Debug.Log($"Creating new object in pool '{poolName}'");
 
         GameObject obj = Object.Instantiate(prefab, container);
         obj.SetActive(false);

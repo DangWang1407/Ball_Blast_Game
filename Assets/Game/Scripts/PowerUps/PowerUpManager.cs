@@ -40,6 +40,7 @@ namespace Game.PowerUps
             if (weaponPowerUps.TryGetValue(powerUpEvent.PowerUpType, out var weaponPowerup))
             {
                 weaponPowerup.Apply(weaponController, powerUpEvent.Duration);
+                return;
             }
             if(defendPowerUps.TryGetValue(powerUpEvent.PowerUpType, out var defendPowerup))
             {

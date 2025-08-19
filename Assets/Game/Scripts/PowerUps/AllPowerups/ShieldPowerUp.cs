@@ -11,17 +11,8 @@ namespace Game.PowerUps
 
         public void Apply(PlayerController controller, float duration)
         {
-            controller.StartCoroutine(ShieldCoroutine(controller, duration));
-        }
-
-        private IEnumerator ShieldCoroutine(PlayerController controller, float duration)
-        {
-            if (controller.Shield == null)
-                yield break;
-
-            controller.Shield.SetActive(true);
-            yield return new WaitForSeconds(duration);
-            controller.Shield.SetActive(false);
+            var shield = controller.GetComponent<PlayerShield>();
+            shield?.ActivateShield(duration);
         }
     }
 }

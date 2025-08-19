@@ -87,8 +87,8 @@ public class MeteorController : MonoBehaviour, IPoolable
 
         if (other.CompareTag("Player"))
         {
-            var playerController = other.GetComponent<PlayerController>();
-            if (playerController.IsInvisible) return;
+            //var playerController = other.GetComponent<PlayerController>();
+            //if (playerController.IsInvisible) return;
             Debug.Log("Meteor hit player");
             // Trigger player death event
             EventManager.Trigger(new PlayerDeathEvent(
@@ -108,6 +108,7 @@ public class MeteorController : MonoBehaviour, IPoolable
             return;
         }
     }
+
 
     public void SetMeteorSize(MeteorSize size)
     {
