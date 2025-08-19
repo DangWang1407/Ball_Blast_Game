@@ -7,11 +7,14 @@ namespace Game.Controllers
 {
     public class  MissileController : MonoBehaviour, IPoolable 
     {
-        private Rigidbody2D rb;
-        private Collider2D col;
+        public Rigidbody2D Rigidbody { get; private set; }
+        private Collider2D Collider { get; set; }
+        public bool IsActive { get => isActive; set => isActive = value; }
+
         private string poolName;
         //private float speed;
         private bool isActive;
+
 
         private Transform targetMeteor;
 
@@ -23,8 +26,8 @@ namespace Game.Controllers
 
         private void Awake()
         {
-            rb = GetComponent<Rigidbody2D>();
-            col = GetComponent<Collider2D>();
+            Rigidbody = GetComponent<Rigidbody2D>();
+            Collider = GetComponent<Collider2D>();
             gameObject.tag = "Missile";
         }
 
@@ -67,7 +70,7 @@ namespace Game.Controllers
         private void NavigateDirection()
         {
             Vector2 direction = (targetMeteor.position - transform.position).normalized;
-            rb.velocity = direction * WeaponStats.missileSpeed;
+            Rigidbody.velocity = direction * WeaponStats.missileSpeed;
 
             Quaternion targetRotation = Quaternion.LookRotation(Vector3.forward, direction);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
@@ -75,9 +78,9 @@ namespace Game.Controllers
 
         public void OnCreate()
         {
-            rb.gravityScale = 0f;
-            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-            col.isTrigger = true;
+            Rigidbody.gravityScale = 0f;
+            Rigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
+            Collider.isTrigger = true;
         }
         public void OnSpawned()
         {
@@ -86,18 +89,18 @@ namespace Game.Controllers
         public void OnDespawned()
         {
             isActive = false;
-            rb.velocity = Vector2.zero;
+            Rigidbody.velocity = Vector2.zero;
         }
 
         public void SetVelocity(Vector2 velocity)
         {
-            rb.velocity = velocity * WeaponStats.missileSpeed;
+            Rigidbody.velocity = velocity * WeaponStats.missileSpeed;
 
             //rotate base on velocity
             if (velocity != Vector2.zero)
             {
                 float angle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg - 90;
-                rb.rotation = angle;
+                Rigidbody.rotation = angle;
             }
         }
 
@@ -116,7 +119,7 @@ namespace Game.Controllers
                 if(WeaponStats.bounceShot && bounceLeft > 0)
                 {
                     bounceLeft--;
-                    Vector2 reflectDirection = Vector2.Reflect(rb.velocity.normalized, other.transform.right);
+                    Vector2 reflectDirection = Vector2.Reflect(Rigidbody.velocity.normalized, other.transform.right);
                     SetVelocity(reflectDirection);
                 }
                 else
@@ -129,7 +132,7 @@ namespace Game.Controllers
                 if (WeaponStats.bounceShot && bounceLeft > 0)
                 {
                     bounceLeft--;
-                    Vector2 reflectDirection = Vector2.Reflect(rb.velocity.normalized, other.transform.up);
+                    Vector2 reflectDirection = Vector2.Reflect(Rigidbody.velocity.normalized, other.transform.up);
                     SetVelocity(reflectDirection);
                 }
                 else

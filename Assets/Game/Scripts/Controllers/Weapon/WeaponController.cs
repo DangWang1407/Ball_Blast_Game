@@ -1,118 +1,53 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Game.Services;
-using Game.Events;
 using Game.Scriptable;
-using Game.PowerUps;
+using System.Collections;
+using UnityEngine;
 
 namespace Game.Controllers
 {
     public class WeaponController : MonoBehaviour
     {
-        [SerializeField] public Transform firePoint;
         [SerializeField] public WeaponData weaponData;
 
-        private float lastFireTime;
-        private const string MISSILE_POOL = "Missiles";
-
-        //private Dictionary<PowerUpType, IPowerUpWeapon> powerUps;
+        //Components
+        private WeaponShooting weaponShooting;
+        private WeaponPooling weaponPooling;
+        private NormalShot normalShot;
+        private BurstShot burstShot;
+        private DiagonalShot diagonalShot;
 
         private void Start()
         {
-            if (firePoint == null)
-            {
-                Debug.LogError("FirePoint is not assigned in WeaponController.");
-            }
+            normalShot = GetComponent<NormalShot>();
+            burstShot = GetComponent<BurstShot>();
+            diagonalShot = GetComponent<DiagonalShot>();
 
-            if (PoolManager.Instance != null)
-            {
-                for (int i = 0; i < weaponData.missilePrefabs.Length; i++)
-                {
-                    if (weaponData.missilePrefabs[i] != null)
-                    {
-                        PoolManager.Instance.CreatePool(
-                            MISSILE_POOL + "_" + i,
-                            weaponData.missilePrefabs[i],
-                            10,
-                            30,
-                            true
-                        );
+            normalShot.Initialize();
+            burstShot.Initialize();
+            diagonalShot.Initialize();
 
-                        Debug.Log($"Created pool for {MISSILE_POOL}_{i} with prefab {weaponData.missilePrefabs[i].name}");
-                    }
-                }
-            }
+
+            weaponShooting = GetComponent<WeaponShooting>();
+            weaponPooling = GetComponent<WeaponPooling>();
+
+            Debug.Log("weaponShooting = " + weaponShooting);
+            Debug.Log("weaponPooling = " + weaponPooling);
+
+
+
+
+            weaponShooting.Initialize(this);
+            weaponPooling.Initialize(this);
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
-            if (Time.time - lastFireTime >= WeaponStats.fireRate)
-            {
-                FireMissile();
-                lastFireTime = Time.time;
-            }
-        }
-
-        private void FireMissile()
-        {
-            if (firePoint == null) firePoint = transform;
-
-            if (WeaponStats.burst)
-            {
-                StartCoroutine(FireBurstMissiles());
-            }
-            else
-            {
-                FireSingleMissile(Vector2.up);
-            }
-
-            if (WeaponStats.diagonalFire)
-            {
-                FireSingleMissile(new Vector2(1, 1));
-                FireSingleMissile(new Vector2(-1, 1));
-            }
-        }
-
-        private void FireSingleMissile(Vector2 direction)
-        {
-            for (int i = 0; i < WeaponStats.bulletCount; i++)
-            {
-                Vector3 spawnPos = firePoint.position;
-
-                if (WeaponStats.bulletCount > 1)
-                {
-                    float offset = (i - (WeaponStats.bulletCount - 1) * 0.5f) * 0.3f;
-                    spawnPos.x += offset;
-                }
-
-                string poolName = MISSILE_POOL + "_" + Mathf.Min(i, weaponData.missilePrefabs.Length - 1);
-
-                GameObject missile = PoolManager.Instance.Spawn(poolName, spawnPos);
-                if (missile != null)
-                {
-                    var missileController = missile.GetComponent<MissileController>();
-                    missileController.Initialize(poolName);
-                    missileController.SetVelocity(direction);
-                }
-            }
-        }
-
-        private IEnumerator FireBurstMissiles()
-        {
-            FireSingleMissile(Vector2.up);
-            yield return new WaitForSeconds(WeaponStats.fireRate / 4f);
-            FireSingleMissile(Vector2.up);
+            weaponShooting.FixedUpdate();
         }
 
         public IEnumerator ResetAfterDuration(float duration, System.Action resetAction)
         {
             yield return new WaitForSeconds(duration);
             resetAction?.Invoke();
-        }
-
-        private void OnDestroy()
-        {
         }
     }
 }
