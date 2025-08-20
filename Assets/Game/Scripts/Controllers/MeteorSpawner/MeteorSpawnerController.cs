@@ -32,15 +32,15 @@ namespace Game.Controllers
 
         private void Initialize()
         {
-            //spawnerPooling = GetComponent<MeteorSpawnerPooling>();
-            //spawnerData = GetComponent<MeteorSpawnerData>();
-            //spawnerSpawning = GetComponent<MeteorSpawnerSpawning>();
-            //spawnerSplitting = GetComponent<MeteorSpawnerSplitting>();
+            spawnerPooling = GetComponent<MeteorSpawnerPooling>();
+            spawnerData = GetComponent<MeteorSpawnerData>();
+            spawnerSpawning = GetComponent<MeteorSpawnerSpawning>();
+            spawnerSplitting = GetComponent<MeteorSpawnerSplitting>();
 
-            spawnerPooling = gameObject.AddComponent<MeteorSpawnerPooling>();
-            spawnerSpawning = gameObject.AddComponent<MeteorSpawnerSpawning>();
-            spawnerSplitting = gameObject.AddComponent<MeteorSpawnerSplitting>();
-            spawnerData = gameObject.AddComponent<MeteorSpawnerData>();
+            //spawnerPooling = gameObject.AddComponent<MeteorSpawnerPooling>();
+            //spawnerSpawning = gameObject.AddComponent<MeteorSpawnerSpawning>();
+            //spawnerSplitting = gameObject.AddComponent<MeteorSpawnerSplitting>();
+            //spawnerData = gameObject.AddComponent<MeteorSpawnerData>();
 
             spawnerPooling.Initialize(this);
             spawnerData.Initialize(this);

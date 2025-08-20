@@ -2063,6 +2063,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1224519519}
   - component: {fileID: 1224519518}
+  - component: {fileID: 1224519523}
+  - component: {fileID: 1224519522}
+  - component: {fileID: 1224519521}
+  - component: {fileID: 1224519520}
   m_Layer: 0
   m_Name: MeteorSpawner
   m_TagString: Untagged
@@ -2103,6 +2107,54 @@ Transform:
   m_Children: []
   m_Father: {fileID: 850165163}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1224519520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1224519517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08d555d9ba69ae64fb6ec5c144cd1fba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1224519521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1224519517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a192855ec88f41c498ff21bcd6df49d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1224519522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1224519517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c8f6a3801e3c164fa39f0edf8d52498, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1224519523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1224519517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ca2921382719704fa4a9e174eac38a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1320863617
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -7,9 +7,11 @@ namespace Game.Scriptable
     public class MissileData : ScriptableObject
     {
         [Header("Missile Settings")]
-        public GameObject missilePrefab;
-        public MissileType missileType = MissileType.Standard;
-        public float speed = 8f;
-        public float scale = 0.5f;
+        public float missileSpeed = 6f;
+        public float bulletScale = 0.5f;
+        public int damage = 1;
+        public bool canHoming = false;
+        public bool canBounce = false;
+        public bool canPierce = false;
     }
 }

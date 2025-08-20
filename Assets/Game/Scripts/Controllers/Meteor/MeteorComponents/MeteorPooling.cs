@@ -12,7 +12,7 @@ namespace Game.Controllers
         {
             this.meteorController = meteorController;
             poolName = meteorController.PoolName;
-            Debug.Log("Pool name: " + poolName);
+            //Debug.Log("Pool name: " + poolName);
         }
 
         public void DestroyMeteor()

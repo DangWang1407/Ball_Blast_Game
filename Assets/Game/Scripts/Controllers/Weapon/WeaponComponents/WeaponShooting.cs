@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -29,19 +30,45 @@ namespace Game.Controllers
             //weaponPooling.Initialize(controller);
         }
 
+        //public void FireNormalMissile(Vector2 direction)
+        //{
+        //    for (int i = 0; i < WeaponStats.bulletCount; i++)
+        //    {
+        //        Vector3 spawnPos = FirePoint.position;
+
+        //        if (WeaponStats.bulletCount > 1)
+        //        {
+        //            float offset = (i - (WeaponStats.bulletCount - 1) * 0.5f) * 0.3f;
+        //            spawnPos.x += offset;
+        //        }
+
+        //        weaponPooling.SpawnMissile(i, spawnPos, direction);
+        //    }
+        //}
+
         public void FireNormalMissile(Vector2 direction)
         {
-            for (int i = 0; i < WeaponStats.bulletCount; i++)
+            StartCoroutine(FireBurstRoutine(direction));
+        }
+
+        private IEnumerator FireBurstRoutine(Vector2 direction)
+        {
+            for (int burst = 0; burst < WeaponStats.burstCount; burst++)
             {
-                Vector3 spawnPos = FirePoint.position;
-
-                if (WeaponStats.bulletCount > 1)
+                for (int i = 0; i < WeaponStats.bulletCount; i++)
                 {
-                    float offset = (i - (WeaponStats.bulletCount - 1) * 0.5f) * 0.3f;
-                    spawnPos.x += offset;
-                }
+                    Vector3 spawnPos = FirePoint.position;
 
-                weaponPooling.SpawnMissile(i, spawnPos, direction);
+                    if (WeaponStats.bulletCount > 1)
+                    {
+                        float offset = (i - (WeaponStats.bulletCount - 1) * 0.5f) * 0.3f;
+                        spawnPos.x += offset;
+                    }
+
+                    weaponPooling.SpawnMissile(i, spawnPos, direction);
+                }
+                if (burst < WeaponStats.burstCount - 1)
+                    yield return new WaitForSeconds(WeaponStats.burstDelay);
             }
         }
 
