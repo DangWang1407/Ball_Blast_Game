@@ -34,8 +34,8 @@ namespace Game.Controllers
             if (missile != null)
             {
                 var missileController = missile.GetComponent<MissileController>();
-                missileController.Initialize("Missiles_" + missileIndex);
-                missileController.SetVelocity(direction);
+                missileController.Initialize("Missiles_" + missileIndex, direction);
+                //missileController.SetVelocity(direction);
             }
         }
     }

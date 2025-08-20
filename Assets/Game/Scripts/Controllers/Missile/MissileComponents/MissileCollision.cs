@@ -7,6 +7,7 @@ namespace Game.Controllers
     {
         private MissileController missileController;
         private MissileMovement missileMovement;
+        private MissilePooling missilePooling;
 
         private int bounceLeft = 0;
         private bool canBounce = false;
@@ -15,7 +16,18 @@ namespace Game.Controllers
         {
             this.missileController = missileController;
             missileMovement = GetComponent<MissileMovement>();
+            missilePooling = GetComponent<MissilePooling>();
 
+            bounceLeft = WeaponStats.bounceShot ? 3 : 0;
+        }
+
+        public void Update()
+        {
+            canBounce = WeaponStats.bounceShot;
+        }
+
+        public void OnSpawned()
+        {
             bounceLeft = WeaponStats.bounceShot ? 3 : 0;
         }
 
@@ -36,51 +48,40 @@ namespace Game.Controllers
             {
                 HandleMeteorCollision(collision);
             }
-            //if (other.CompareTag("Wall"))
-            //{
-            //    if (WeaponStats.bounceShot && bounceLeft > 0)
-            //    {
-            //        bounceLeft--;
-            //        Vector2 reflectDirection = Vector2.Reflect(Rigidbody.velocity.normalized, other.transform.right);
-            //        SetVelocity(reflectDirection);
-            //    }
-            //    else
-            //    {
-            //        DestroyMissile(MissileDestroyReason.OutOfBounds);
-            //    }
-            //}
-            //if (other.CompareTag("Ground") || other.CompareTag("UpBounce"))
-            //{
-            //    if (WeaponStats.bounceShot && bounceLeft > 0)
-            //    {
-            //        bounceLeft--;
-            //        Vector2 reflectDirection = Vector2.Reflect(Rigidbody.velocity.normalized, other.transform.up);
-            //        SetVelocity(reflectDirection);
-            //    }
-            //    else
-            //    {
-            //        DestroyMissile(MissileDestroyReason.OutOfBounds);
-            //    }
-            //}
-            //if (other.CompareTag("Meteor") && !WeaponStats.pierce)
-            //{
-            //    DestroyMissile(MissileDestroyReason.HitTarget);
-            //}
         }
 
         private void HandleWallCollision(Collider2D collision)
         {
-
+            if (canBounce && bounceLeft > 0)
+            {
+                bounceLeft--;
+                missileMovement.Reflect(collision.transform.right);
+            }
+            else
+            {
+                missilePooling.DestroyMissile();
+            }
         }
 
         private void HandleGroundCollision(Collider2D collision)
         {
-
+            if(canBounce && bounceLeft > 0)
+            {
+                bounceLeft--;
+                missileMovement.Reflect(collision.transform.up);
+            }
+            else
+            {
+                missilePooling.DestroyMissile();
+            }
         }
 
         private void HandleMeteorCollision(Collider2D collision)
         {
-
+            if(!WeaponStats.pierce)
+            {
+                missilePooling.DestroyMissile();
+            }
         }
     }
 }

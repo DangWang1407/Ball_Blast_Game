@@ -13,7 +13,7 @@ namespace Game.Controllers
             this.missileController = missileController;
         }
 
-        public void OnDespawn()
+        public void OnDespawned()
         {
             missileController.Rigidbody.velocity = Vector2.zero;
             currentVelocity = Vector2.zero;
@@ -32,7 +32,7 @@ namespace Game.Controllers
             }
         }
 
-        public void ReFlect(Vector2 normal)
+        public void Reflect(Vector2 normal)
         {
             Vector2 reflectedDirection = Vector2.Reflect(currentVelocity.normalized, normal);
             SetVelocity(reflectedDirection);
