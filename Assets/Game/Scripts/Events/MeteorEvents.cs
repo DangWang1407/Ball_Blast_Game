@@ -12,4 +12,15 @@ namespace Game.Events
             Position = position;
         }
     }
+
+    public struct SplitMeteorEvent : IGameEvent
+    {
+        public Vector3 Position { get; }
+        public MeteorSize MeteorSize { get; }
+        public SplitMeteorEvent(Vector3 position, MeteorSize meteorSize)
+        {
+            Position = position;
+            MeteorSize = meteorSize;
+        }
+    }
 }

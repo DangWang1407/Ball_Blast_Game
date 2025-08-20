@@ -41,7 +41,7 @@ namespace Game.Controllers
         public void TakeDamage(int damage)
         {
             currentHealth -= damage;
-            if (currentHealth < 0)
+            if (currentHealth <= 0)
             {
                 int scoreValue = meteorController.MeteorSize switch
                 {
@@ -55,9 +55,11 @@ namespace Game.Controllers
 
                 if(meteorController.MeteorSize != MeteorSize.Small)
                 {
-                    MeteorSpawner.Instance?.SpawnSplitMeteors(transform.position, meteorController.MeteorSize);
+                    //MeteorSpawnerController.Instance?.SpawnSplitMeteors(transform.position, meteorController.MeteorSize);
+                    EventManager.Trigger(new SplitMeteorEvent(transform.position, meteorController.MeteorSize));
+                    
                 }
-
+                EventManager.Trigger(new PowerUpSpawnEvent(transform.position, meteorController.MeteorSize));
                 meteorPooling.DestroyMeteor();
             }
             meteorUI.UpdateHealthDisplay();          

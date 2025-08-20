@@ -5,7 +5,6 @@ namespace Game.Controllers
     public class MeteorMovement  : MonoBehaviour
     {
         [SerializeField] private float angularVelocity = 10f;
-        [SerializeField] private float jumpForce = 12f;
 
         private MeteorController meteorController;
 

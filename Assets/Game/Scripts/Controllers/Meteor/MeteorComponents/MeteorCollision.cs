@@ -4,6 +4,7 @@ namespace Game.Controllers
 {
     public class MeteorCollision : MonoBehaviour
     {
+        [SerializeField] private float jumpForce = 12f;
         private MeteorController meteorController;
         private MeteorHealth meteorHealth;
 
@@ -24,8 +25,10 @@ namespace Game.Controllers
                     HandleWallCollision(collision);
                     break;
                 case "Ground":
-                case "UpBounce":
                     HandleGroundCollision(collision);
+                    break;
+                case "UpBounce":
+                    HandleUpBounce(collision);
                     break;
                 case "Player":
                     HandlePlayerCollision(collision);
@@ -43,12 +46,21 @@ namespace Game.Controllers
 
         private void HandleWallCollision(Collider2D collision)
         {
-            meteorController.Rigidbody.velocity = Vector2.Reflect(meteorController.Rigidbody.velocity, transform.right);
+            float posX = transform.position.x;
+            var velocity = meteorController.Rigidbody.velocity;
+            meteorController.Rigidbody.velocity = new Vector2(
+                posX > 0 ? -Mathf.Abs(velocity.x) : Mathf.Abs(velocity.x),
+                velocity.y);
         }
 
         private void HandleGroundCollision(Collider2D collision)
         {
-            meteorController.Rigidbody.velocity = Vector2.Reflect(meteorController.Rigidbody.velocity, transform.up);
+            meteorController.Rigidbody.velocity = new Vector2(meteorController.Rigidbody.velocity.x, jumpForce);
+        }
+
+        private void HandleUpBounce(Collider2D collision)
+        {
+            meteorController.Rigidbody.velocity = Vector2.Reflect(meteorController.Rigidbody.velocity.normalized, collision.transform.up);
         }
 
         private void HandlePlayerCollision(Collider2D collision)
