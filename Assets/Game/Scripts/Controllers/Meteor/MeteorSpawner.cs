@@ -116,28 +116,28 @@ namespace Game.Controllers
         //    }
         //}
 
-        public void SpawnMeteor(MeteorSize size)
-        {
-            int sizeIndex = (int)size;
-            float direction = directions[Random.Range(0, 2)];
-            float screenOffset = GameManager.Instance.ScreenWidth * 1.3f;
+        //public void SpawnMeteor(MeteorSize size)
+        //{
+        //    int sizeIndex = (int)size;
+        //    float direction = directions[Random.Range(0, 2)];
+        //    float screenOffset = GameManager.Instance.ScreenWidth * 1.3f;
 
-            Vector3 spawnPos = new Vector3(screenOffset * direction, 3f, 0f);
-            GameObject meteor = PoolManager.Instance.Spawn(poolNames[sizeIndex], spawnPos);
+        //    Vector3 spawnPos = new Vector3(screenOffset * direction, 3f, 0f);
+        //    GameObject meteor = PoolManager.Instance.Spawn(poolNames[sizeIndex], spawnPos);
 
-            if (meteor != null)
-            {
-                var controller = meteor.GetComponent<MeteorController>();
-                controller.Initialize(poolNames[sizeIndex]);
-                controller.SetMeteorSize(size);
+        //    if (meteor != null)
+        //    {
+        //        var controller = meteor.GetComponent<MeteorController>();
+        //        controller.Initialize(poolNames[sizeIndex]);
+        //        controller.SetMeteorSize(size);
 
-                var rb = meteor.GetComponent<Rigidbody2D>();
-                rb.velocity = new Vector2(-direction * 2f, 0f);
-                rb.gravityScale = 0f;
+        //        var rb = meteor.GetComponent<Rigidbody2D>();
+        //        rb.velocity = new Vector2(-direction * 2f, 0f);
+        //        rb.gravityScale = 0f;
 
-                StartCoroutine(EnableGravity(rb, 2f));
-            }
-        }
+        //        StartCoroutine(EnableGravity(rb, 2f));
+        //    }
+        //}
 
         IEnumerator EnableGravity(Rigidbody2D rb, float delay)
         {
