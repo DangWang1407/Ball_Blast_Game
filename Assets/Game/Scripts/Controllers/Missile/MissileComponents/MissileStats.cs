@@ -7,14 +7,14 @@ namespace Game.Controllers
     {
         private MissileController missileController;
 
-        private float missileSpeed;     
-        private float bulletScale;
-        private int damage;
-        private bool canHoming;
-        private bool canBounce;
-        private bool canPierce;
+        private float missileSpeed = 6f;     
+        private float bulletScale = 0.5f;
+        private int damage = 1;
+        private bool canHoming = false;
+        private bool canBounce = false;
+        private bool canPierce = false;
 
-        [SerializeField] MissileData baseMissileData;
+        // [SerializeField] MissileData baseMissileData;
 
         public float MissileSpeed { get => missileSpeed; set => missileSpeed = value; }
         public float BulletScale { get => bulletScale; set => bulletScale = value; }
@@ -26,21 +26,21 @@ namespace Game.Controllers
         public void Initialize(MissileController missileController)
         {
             this.missileController = missileController;
-            if (baseMissileData != null)
-            {
-                ResetData();
-            }
+            // if (baseMissileData != null)
+            // {
+            //     ResetData();
+            // }
         }
 
-        public void ResetData()
-        {
-            missileSpeed = baseMissileData.missileSpeed;
-            bulletScale = baseMissileData.bulletScale;
-            damage = baseMissileData.damage;
-            canHoming = baseMissileData.canHoming;
-            canBounce = baseMissileData.canBounce;
-            canPierce = baseMissileData.canPierce;
-        }
+        // public void ResetData()
+        // {
+        //     missileSpeed = baseMissileData.missileSpeed;
+        //     bulletScale = baseMissileData.bulletScale;
+        //     damage = baseMissileData.damage;
+        //     canHoming = baseMissileData.canHoming;
+        //     canBounce = baseMissileData.canBounce;
+        //     canPierce = baseMissileData.canPierce;
+        // }
 
 
     }

@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 1356643778608034389}
   - component: {fileID: 996793843964782261}
   - component: {fileID: 5416910605994677781}
+  - component: {fileID: 4018635725179594784}
+  - component: {fileID: 6602973602552311867}
   m_Layer: 0
   m_Name: Invisible
   m_TagString: PowerUp
@@ -162,3 +164,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   powerUpData: {fileID: 11400000, guid: 4f042d5e0c2bbc345b86262ccbdb551e, type: 2}
+--- !u!114 &4018635725179594784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7963748419159275344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2131ba161fc14614ca2365ed01071752, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectComponents:
+  - {fileID: 6602973602552311867}
+  targetType: 0
+--- !u!114 &6602973602552311867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7963748419159275344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b35db3dc41b2f2439779d7cd0819b12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 20
+  autoDestroy: 1
+  alphaValue: 0.5

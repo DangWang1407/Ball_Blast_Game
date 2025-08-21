@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 5611845179542581258}
   - component: {fileID: 6710188724163158763}
   - component: {fileID: 7534102728622076024}
+  - component: {fileID: -4954423362659799795}
+  - component: {fileID: -4992740351650156678}
   m_Layer: 0
   m_Name: Diagonal Fire
   m_TagString: PowerUp
@@ -162,3 +164,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   powerUpData: {fileID: 11400000, guid: ae545cdb9c37bf348ab89c0d898267e0, type: 2}
+--- !u!114 &-4954423362659799795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6094241772701710220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2131ba161fc14614ca2365ed01071752, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectComponents:
+  - {fileID: -4992740351650156678}
+  targetType: 1
+--- !u!114 &-4992740351650156678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6094241772701710220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d2eaa4844e8c744e9aa289e012786b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 20
+  autoDestroy: 1

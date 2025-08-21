@@ -1,4 +1,5 @@
 using Game.Services;
+using Game.PowerUps;
 using UnityEngine;
 
 namespace Game.Controllers
@@ -36,6 +37,7 @@ namespace Game.Controllers
                 var missileController = missile.GetComponent<MissileController>();
                 missileController.Initialize("Missiles_" + missileIndex, direction);
                 //missileController.SetVelocity(direction);
+                PowerUpFactory.ApplyStoredEffectsToMissile(missile, gameObject);
             }
         }
     }

@@ -1,42 +1,48 @@
-using Game.Utils;
 using UnityEngine;
+using Game.Controllers;
+using Game.Utils;
 
-namespace Game.Controllers
+namespace Game.PowerUps.Missile
 {
-    public class MissileHoming : MonoBehaviour
+    // Homing Effect - Thay thế MissileHoming component
+    public class HomingEffectComponent : PowerUpEffectComponent
     {
+        [SerializeField] private float homingRate = 0.5f;
+        [SerializeField] private float rotationSpeed = 5f;
+        
+        private Transform targetMeteor;
+        private float lastTime;
         private MissileController missileController;
-        private MissileMovement missileMovement;
         private MissileStats missileStats;
 
-        private Transform targetMeteor;
-        private float lastTime = 0;
-        private float homingRate = 0.5f;
-
-        public void Initialize(MissileController missileController)
+        protected override void OnActivate()
         {
-            this.missileController = missileController;
-            missileMovement = GetComponent<MissileMovement>();
+            autoDestroy = false; // Missile controls its own lifetime
+            missileController = GetComponent<MissileController>();
             missileStats = GetComponent<MissileStats>();
         }
-
-        public void Update()
+        
+        protected override void OnUpdate()
         {
-            if (Time.time - lastTime > homingRate) { 
+            if (missileController == null) return;
+            
+            if (Time.time - lastTime > homingRate)
+            {
                 lastTime = Time.time;
-                FingdClosestMeteor();               
+                FindClosestMeteor();
             }
-
+            
             if (targetMeteor != null)
             {
-                NavigateDirection();
+                NavigateToTarget();
             }
         }
-
-        private void FingdClosestMeteor()
+        
+        private void FindClosestMeteor()
         {
             float closestDistance = float.MaxValue;
             targetMeteor = null;
+            
             foreach (var meteor in ChaseableEntity.AllEntities)
             {
                 float distance = Vector2.Distance(transform.position, meteor.transform.position);
@@ -47,14 +53,14 @@ namespace Game.Controllers
                 }
             }
         }
-
-        private void NavigateDirection()
+        
+        private void NavigateToTarget()
         {
             Vector2 direction = (targetMeteor.position - transform.position).normalized;
             missileController.Rigidbody.velocity = direction * missileStats.MissileSpeed;
-
+            
             Quaternion targetRotation = Quaternion.LookRotation(Vector3.forward, direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
         }
     }
 }
