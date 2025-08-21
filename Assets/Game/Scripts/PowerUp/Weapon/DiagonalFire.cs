@@ -1,28 +1,39 @@
-using Game.Controllers;
+﻿using Game.Controllers;
 using UnityEngine;
 
 namespace Game.PowerUp
 {
     public class DiagonalFire : PowerUpEffect
     {
-        private bool originalDiagonalFire;
+        private WeaponShooting weaponShooting;
         private WeaponStats weaponStats;
+        private float lastFireTime = 0;
 
         protected override void OnActivate()
         {
+            weaponShooting = GetComponent<WeaponShooting>();
             weaponStats = GetComponent<WeaponStats>();
-            if (weaponStats == null)
+
+            if (weaponShooting == null || weaponStats == null)
             {
-                Debug.LogError("WeaponStats component not found on this GameObject!");
+                Debug.LogError("Required components not found!");
                 return;
             }
-            originalDiagonalFire = weaponStats.DiagonalFire;
-            weaponStats.DiagonalFire = true;
+        }
+
+        private void FixedUpdate()
+        {
+            if (weaponShooting != null && Time.time - lastFireTime >= weaponStats.FireRate)
+            {
+                lastFireTime = Time.time;
+                weaponShooting.FireNormalMissile(new Vector2(1, 1));
+                weaponShooting.FireNormalMissile(new Vector2(-1, 1));
+            }
         }
 
         protected override void OnDeactivate()
         {
-            weaponStats.DiagonalFire = originalDiagonalFire;
+            // Logic dọn dẹp khi power-up hết hiệu lực
         }
     }
 }

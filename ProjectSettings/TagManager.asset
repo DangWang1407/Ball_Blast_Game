@@ -13,6 +13,7 @@ TagManager:
   - Shield
   - UpBounce
   - Wheel
+  - Weapon
   layers:
   - Default
   - TransparentFX

@@ -12,20 +12,12 @@ namespace Game.Controllers
         private WeaponShooting weaponShooting;
         private WeaponPooling weaponPooling;
         private NormalShot normalShot;
-        private BurstShot burstShot;
-        private DiagonalShot diagonalShot;
         private WeaponStats weaponStats;
 
         private void Start()
         {
             normalShot = GetComponent<NormalShot>();
-            burstShot = GetComponent<BurstShot>();
-            diagonalShot = GetComponent<DiagonalShot>();
-
             normalShot.Initialize();
-            burstShot.Initialize();
-            diagonalShot.Initialize();
-
 
             weaponShooting = GetComponent<WeaponShooting>();
             weaponPooling = GetComponent<WeaponPooling>();

@@ -13,8 +13,6 @@ namespace Game.Controllers
         [SerializeField] public Transform FirePoint;
 
         private NormalShot normalShot;
-        private BurstShot burstShot;
-        private DiagonalShot diagonalShot;
 
         private float lastFireTime = 0;
 
@@ -25,8 +23,6 @@ namespace Game.Controllers
             weaponStats = GetComponent<WeaponStats>();
 
             normalShot = GetComponent<NormalShot>();
-            burstShot = GetComponent<BurstShot>();
-            diagonalShot = GetComponent<DiagonalShot>();
         }
 
         public void FireNormalMissile(Vector2 direction)
@@ -60,10 +56,7 @@ namespace Game.Controllers
             if (Time.time - lastFireTime >= weaponStats.FireRate)
             {
                 lastFireTime = Time.time;
-                normalShot.Fire();
-                burstShot.Fire();
-                diagonalShot.Fire();
-                
+                normalShot.Fire();               
             }
         }
     }

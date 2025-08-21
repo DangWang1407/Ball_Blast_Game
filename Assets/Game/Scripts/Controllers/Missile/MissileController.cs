@@ -40,14 +40,13 @@ namespace Game.Controllers
             Rigidbody.gravityScale = 0f;
             Rigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
             Collider.isTrigger = true;
-
-            //missileHoming.enabled = false;
         }
 
         public void Initialize(string poolName, Vector2 direction)
         {
             this.poolName = poolName;
             missileMovement.SetVelocity(direction);
+            gameObject.transform.localScale = Vector3.one * missileStats.BulletScale;
         }
 
         public void OnCreate()
@@ -65,11 +64,6 @@ namespace Game.Controllers
         {
             isActive = false;
             missileMovement?.OnDespawned();
-        }
-
-        private void Update()
-        {
-            //missileHoming.enabled = WeaponStats.homing;
         }
     }
 }

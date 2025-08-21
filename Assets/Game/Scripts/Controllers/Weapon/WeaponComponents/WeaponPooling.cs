@@ -8,19 +8,6 @@ namespace Game.Controllers
     public class WeaponPooling : MonoBehaviour
     {
 
-        //private List<PowerUpType> pendingMissileEffects = new List<PowerUpType>();
-
-        //public void AddMissileEffect(PowerUpType effect)
-        //{
-        //    if (!pendingMissileEffects.Contains(effect))
-        //        pendingMissileEffects.Add(effect);
-        //}
-
-        //public List<PowerUpType> GetMissileEffects()
-        //{
-        //    return pendingMissileEffects;
-        //}
-
         private MissileEffectList missileEffectList;
 
 
