@@ -40,3 +40,4 @@ MonoBehaviour:
   - {fileID: 6094241772701710220, guid: 66b5ca9f633956742a62bc25ec401abb, type: 3}
   - {fileID: 2364482105492448672, guid: 57c9733111d359f459020284393deef8, type: 3}
   powerUpDuration: 20
+  shieldPrefab: {fileID: 3410435278320625140, guid: 927b09bdfab08fe47bb5831f8e046c6c, type: 3}

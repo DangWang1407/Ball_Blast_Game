@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4499342118308637329}
   - component: {fileID: 3318609708518473173}
   - component: {fileID: 4670561978932996150}
-  - component: {fileID: 1864543788373831438}
+  - component: {fileID: 6957104778476856902}
   m_Layer: 0
   m_Name: PierceShot
   m_TagString: PowerUp
@@ -149,7 +149,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &1864543788373831438
+--- !u!114 &6957104778476856902
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -158,7 +158,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 5966426908361368883}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e4d20fbb6886f647a274dff446867dc, type: 3}
+  m_Script: {fileID: 11500000, guid: 1d4001800c8f3974a89678f98f1d926b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerUpData: {fileID: 11400000, guid: d8bce069ff571374386859c74a6723e1, type: 2}
+  powerUpType: 6
+  targetType: 2

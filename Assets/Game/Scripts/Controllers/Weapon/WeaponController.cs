@@ -14,6 +14,7 @@ namespace Game.Controllers
         private NormalShot normalShot;
         private BurstShot burstShot;
         private DiagonalShot diagonalShot;
+        private WeaponStats weaponStats;
 
         private void Start()
         {
@@ -28,6 +29,7 @@ namespace Game.Controllers
 
             weaponShooting = GetComponent<WeaponShooting>();
             weaponPooling = GetComponent<WeaponPooling>();
+            weaponStats = GetComponent<WeaponStats>();
 
             Debug.Log("weaponShooting = " + weaponShooting);
             Debug.Log("weaponPooling = " + weaponPooling);
@@ -37,6 +39,7 @@ namespace Game.Controllers
 
             weaponShooting.Initialize(this);
             weaponPooling.Initialize(this);
+            weaponStats.Initialize(this);
         }
 
         private void FixedUpdate()

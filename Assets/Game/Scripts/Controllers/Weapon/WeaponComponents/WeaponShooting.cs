@@ -8,6 +8,8 @@ namespace Game.Controllers
     {
         //private WeaponController controller;
         private WeaponPooling weaponPooling;
+        private WeaponStats weaponStats;
+
         [SerializeField] public Transform FirePoint;
 
         private NormalShot normalShot;
@@ -20,31 +22,12 @@ namespace Game.Controllers
         {
             //this.controller = controller;
             weaponPooling = GetComponent<WeaponPooling>();
+            weaponStats = GetComponent<WeaponStats>();
+
             normalShot = GetComponent<NormalShot>();
             burstShot = GetComponent<BurstShot>();
             diagonalShot = GetComponent<DiagonalShot>();
-
-            //normalShot.Initialize();
-            //burstShot.Initialize();
-            //diagonalShot.Initialize();
-            //weaponPooling.Initialize(controller);
         }
-
-        //public void FireNormalMissile(Vector2 direction)
-        //{
-        //    for (int i = 0; i < WeaponStats.bulletCount; i++)
-        //    {
-        //        Vector3 spawnPos = FirePoint.position;
-
-        //        if (WeaponStats.bulletCount > 1)
-        //        {
-        //            float offset = (i - (WeaponStats.bulletCount - 1) * 0.5f) * 0.3f;
-        //            spawnPos.x += offset;
-        //        }
-
-        //        weaponPooling.SpawnMissile(i, spawnPos, direction);
-        //    }
-        //}
 
         public void FireNormalMissile(Vector2 direction)
         {
@@ -53,28 +36,28 @@ namespace Game.Controllers
 
         private IEnumerator FireBurstRoutine(Vector2 direction)
         {
-            for (int burst = 0; burst < WeaponStats.burstCount; burst++)
+            for (int burst = 0; burst < weaponStats.BurstCount; burst++)
             {
-                for (int i = 0; i < WeaponStats.bulletCount; i++)
+                for (int i = 0; i < weaponStats.BulletCount; i++)
                 {
                     Vector3 spawnPos = FirePoint.position;
 
-                    if (WeaponStats.bulletCount > 1)
+                    if (weaponStats.BulletCount > 1)
                     {
-                        float offset = (i - (WeaponStats.bulletCount - 1) * 0.5f) * 0.3f;
+                        float offset = (i - (weaponStats.BulletCount - 1) * 0.5f) * 0.3f;
                         spawnPos.x += offset;
                     }
 
                     weaponPooling.SpawnMissile(i, spawnPos, direction);
                 }
-                if (burst < WeaponStats.burstCount - 1)
-                    yield return new WaitForSeconds(WeaponStats.burstDelay);
+                if (burst < weaponStats.BurstCount - 1)
+                    yield return new WaitForSeconds(weaponStats.BurstDelay);
             }
         }
 
         public void FixedUpdate()
         {
-            if (Time.time - lastFireTime >= WeaponStats.fireRate)
+            if (Time.time - lastFireTime >= weaponStats.FireRate)
             {
                 lastFireTime = Time.time;
                 normalShot.Fire();

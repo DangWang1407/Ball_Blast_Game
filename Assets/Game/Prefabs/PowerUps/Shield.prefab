@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4562910717937894783}
   - component: {fileID: 3124356068571484930}
   - component: {fileID: 6434157549713438552}
-  - component: {fileID: 6860199125510903846}
+  - component: {fileID: -5891355602766493098}
   m_Layer: 0
   m_Name: Shield
   m_TagString: PowerUp
@@ -149,7 +149,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &6860199125510903846
+--- !u!114 &-5891355602766493098
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -158,7 +158,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 4994425700803436148}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e4d20fbb6886f647a274dff446867dc, type: 3}
+  m_Script: {fileID: 11500000, guid: 1d4001800c8f3974a89678f98f1d926b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerUpData: {fileID: 11400000, guid: 06ea57f7c115d214aa363051c3647e35, type: 2}
+  powerUpType: 10
+  targetType: 0

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2630514913887903349}
   - component: {fileID: 4367118113876652621}
   - component: {fileID: 8277603899251087547}
-  - component: {fileID: 2501463596146785570}
+  - component: {fileID: -6408317970474913502}
   m_Layer: 0
   m_Name: BounceShot
   m_TagString: PowerUp
@@ -149,7 +149,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &2501463596146785570
+--- !u!114 &-6408317970474913502
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -158,7 +158,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 2364482105492448672}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e4d20fbb6886f647a274dff446867dc, type: 3}
+  m_Script: {fileID: 11500000, guid: 1d4001800c8f3974a89678f98f1d926b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerUpData: {fileID: 11400000, guid: a3ef868d86728e34b9a944251e89a981, type: 2}
+  powerUpType: 5
+  targetType: 2

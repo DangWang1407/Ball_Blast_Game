@@ -5,12 +5,14 @@ namespace Game.Controllers
     public class MissileMovement : MonoBehaviour
     {
         private MissileController missileController;
+        private MissileStats missileStats;
 
         private Vector2 currentVelocity;
 
         public void Initialize(MissileController missileController)
         {
             this.missileController = missileController;
+            missileStats = GetComponent<MissileStats>();
         }
 
         public void OnDespawned()
@@ -21,7 +23,7 @@ namespace Game.Controllers
 
         public void SetVelocity(Vector2 velocity)
         {
-            currentVelocity = velocity * WeaponStats.missileSpeed;
+            currentVelocity = velocity * missileStats.MissileSpeed;
             missileController.Rigidbody.velocity = currentVelocity;
 
             // Set initial rotation

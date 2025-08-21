@@ -47,5 +47,7 @@ namespace Game.Scriptable
         public float smallMeteorDropChance = 0.2f;
         public GameObject[] powerUpPrefabs;
         public float powerUpDuration = 30f;
+
+        public GameObject shieldPrefab;
     }
 }

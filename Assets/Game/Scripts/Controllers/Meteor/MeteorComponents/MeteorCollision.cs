@@ -41,7 +41,7 @@ namespace Game.Controllers
 
         private void HandleMissileCollision(Collider2D collision)
         {
-            meteorHealth.TakeDamage(WeaponStats.damage);
+            meteorHealth.TakeDamage(1);
         }
 
         private void HandleWallCollision(Collider2D collision)

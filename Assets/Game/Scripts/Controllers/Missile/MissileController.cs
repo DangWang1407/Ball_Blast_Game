@@ -16,7 +16,8 @@ namespace Game.Controllers
         private MissileMovement missileMovement;
         private MissileCollision missileCollision;
         private MissilePooling missilePooling;
-        private MissileHoming missileHoming;
+        //private MissileHoming missileHoming;
+        private MissileStats missileStats;
 
         private void Awake()
         {
@@ -27,18 +28,20 @@ namespace Game.Controllers
             missileMovement = GetComponent<MissileMovement>();
             missileCollision = GetComponent<MissileCollision>();
             missilePooling = GetComponent<MissilePooling>();
-            missileHoming = GetComponent<MissileHoming>();
+            //missileHoming = GetComponent<MissileHoming>();
+            missileStats = GetComponent<MissileStats>();
 
             missileMovement.Initialize(this);
             missileCollision.Initialize(this);
             missilePooling.Initialize(this);
-            missileHoming.Initialize(this);
+            //missileHoming.Initialize(this);
+            missileStats.Initialize(this);
 
             Rigidbody.gravityScale = 0f;
             Rigidbody.constraints = RigidbodyConstraints2D.FreezeRotation;
             Collider.isTrigger = true;
 
-            missileHoming.enabled = false;
+            //missileHoming.enabled = false;
         }
 
         public void Initialize(string poolName, Vector2 direction)
@@ -66,7 +69,7 @@ namespace Game.Controllers
 
         private void Update()
         {
-            missileHoming.enabled = WeaponStats.homing;
+            //missileHoming.enabled = WeaponStats.homing;
         }
     }
 }

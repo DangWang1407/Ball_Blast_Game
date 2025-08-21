@@ -11,8 +11,9 @@ namespace Game.Controllers
         private PlayerBounds playerBounds;
         private PlayerInput playerInput;
         private PlayerMovement playerMovement;
-        private PlayerShield playerShield;
-        private PlayerVisuals playerVisuals;
+        //private PlayerShield playerShield;
+        //private PlayerVisuals playerVisuals;
+        private PlayerStats playerStats;
 
         private void Awake()
         {
@@ -27,14 +28,16 @@ namespace Game.Controllers
             playerMovement = GetComponent<PlayerMovement>();
             playerInput = GetComponent<PlayerInput>();
             playerBounds = GetComponent<PlayerBounds>();
-            playerShield = GetComponent<PlayerShield>();
-            playerVisuals = GetComponent<PlayerVisuals>();
+            //playerShield = GetComponent<PlayerShield>();
+            //playerVisuals = GetComponent<PlayerVisuals>();
+            playerStats = GetComponent<PlayerStats>();
 
             playerMovement.Initialize(this);
             playerBounds.Initialize(this);
             playerInput.Initialize(this);
-            playerShield.Initialize(this);
-            playerVisuals.Initialize(this);
+            //playerShield.Initialize(this);
+            //playerVisuals.Initialize(this);
+            playerStats.Initialize(this);
         }
 
         private void Update()

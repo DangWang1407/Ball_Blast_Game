@@ -1,15 +1,37 @@
+using Game.PowerUp;
 using Game.Services;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game.Controllers
 {
     public class WeaponPooling : MonoBehaviour
     {
+
+        //private List<PowerUpType> pendingMissileEffects = new List<PowerUpType>();
+
+        //public void AddMissileEffect(PowerUpType effect)
+        //{
+        //    if (!pendingMissileEffects.Contains(effect))
+        //        pendingMissileEffects.Add(effect);
+        //}
+
+        //public List<PowerUpType> GetMissileEffects()
+        //{
+        //    return pendingMissileEffects;
+        //}
+
+        private MissileEffectList missileEffectList;
+
+
+
         private WeaponController weaponController;
         public void Initialize(WeaponController weaponController)
         {
             this.weaponController = weaponController;
             CreatePool();
+
+            missileEffectList = GetComponent<MissileEffectList>();
         }
 
         private void CreatePool()
@@ -36,6 +58,9 @@ namespace Game.Controllers
                 var missileController = missile.GetComponent<MissileController>();
                 missileController.Initialize("Missiles_" + missileIndex, direction);
                 //missileController.SetVelocity(direction);
+
+                //Apply missile effect here
+                missileEffectList.ApplyEffect(missile);
             }
         }
     }

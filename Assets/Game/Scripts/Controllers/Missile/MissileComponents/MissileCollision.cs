@@ -8,6 +8,7 @@ namespace Game.Controllers
         private MissileController missileController;
         private MissileMovement missileMovement;
         private MissilePooling missilePooling;
+        private MissileStats missileStats;
 
         private int bounceLeft = 0;
         private bool canBounce = false;
@@ -17,18 +18,19 @@ namespace Game.Controllers
             this.missileController = missileController;
             missileMovement = GetComponent<MissileMovement>();
             missilePooling = GetComponent<MissilePooling>();
+            missileStats = GetComponent<MissileStats>();
 
-            bounceLeft = WeaponStats.bounceShot ? 3 : 0;
+            bounceLeft = missileStats.CanBounce ? 3 : 0;
         }
 
         public void Update()
         {
-            canBounce = WeaponStats.bounceShot;
+            canBounce = missileStats.CanBounce;
         }
 
         public void OnSpawned()
         {
-            bounceLeft = WeaponStats.bounceShot ? 3 : 0;
+            bounceLeft = missileStats.CanBounce ? 3 : 0;
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
@@ -78,8 +80,9 @@ namespace Game.Controllers
 
         private void HandleMeteorCollision(Collider2D collision)
         {
-            if(!WeaponStats.pierce)
+            if(!missileStats.CanPierce)
             {
+                Debug.Log(missileStats.CanPierce);
                 missilePooling.DestroyMissile();
             }
         }
