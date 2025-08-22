@@ -3,7 +3,6 @@ using Game.PowerUp;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 namespace Game.Controllers
 {
@@ -15,20 +14,6 @@ namespace Game.Controllers
         {
             this.weaponController = weaponController;
         }
-
-        //public void ApplyEffect(GameObject obj)
-        //{
-        //    Transform child = gameObject.transform.GetChild(0);
-        //    var effects = child.gameObject.GetComponents<PowerUpEffect>();
-        //    foreach (var effect in effects)
-        //    {
-        //        var newEffect = obj.AddComponent(effect.GetType());
-        //        var json = JsonUtility.ToJson(effect);
-        //        JsonUtility.FromJsonOverwrite(json, newEffect);
-        //    }
-
-
-        //}
 
         public void ApplyEffect(GameObject obj)
         {

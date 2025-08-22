@@ -4,8 +4,16 @@ namespace Game.PowerUp
 {
     public abstract class PowerUpEffect : MonoBehaviour
     {
-        [SerializeField] protected float duration = 20f;
-        [SerializeField] protected float timer;
+        protected PowerUpType powerUpType;
+        private float duration = 20f;
+        protected float timer;
+        protected int currentLevel = 1;
+        protected LevelPowerUp levelPowerUpManager;
+        
+        protected virtual void Awake()
+        {
+            //enabled = false;
+        }
 
         protected virtual void Start()
         {
@@ -20,7 +28,16 @@ namespace Game.PowerUp
             if(timer <= 0)
             {
                 OnDeactivate();
+                Debug.Log("Effect is destroyed");
                 Destroy(this);
+            }
+        }
+
+        protected virtual void OnTriggerEnter2D(Collider2D other)
+        {
+            if (other.CompareTag("Player"))
+            {
+                levelPowerUpManager = other.gameObject.GetComponent<LevelPowerUp>();
             }
         }
 
@@ -28,6 +45,4 @@ namespace Game.PowerUp
         protected virtual void OnUpdate() { }
         protected abstract void OnDeactivate();
     } 
-
-    
 }

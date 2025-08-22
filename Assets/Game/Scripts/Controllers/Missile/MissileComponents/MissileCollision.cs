@@ -82,7 +82,7 @@ namespace Game.Controllers
         {
             if(!missileStats.CanPierce)
             {
-                Debug.Log(missileStats.CanPierce);
+                //Debug.Log(missileStats.CanPierce);
                 missilePooling.DestroyMissile();
             }
         }
