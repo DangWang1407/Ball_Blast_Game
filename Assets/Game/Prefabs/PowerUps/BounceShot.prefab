@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 4367118113876652621}
   - component: {fileID: 8277603899251087547}
   - component: {fileID: -6408317970474913502}
+  - component: {fileID: 2355282909550228133}
+  - component: {fileID: 2434438342548355800}
   m_Layer: 0
   m_Name: BounceShot
   m_TagString: PowerUp
@@ -161,5 +163,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d4001800c8f3974a89678f98f1d926b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerUpType: 5
   targetType: 2
+--- !u!114 &2355282909550228133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2364482105492448672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87e8bdf228c641445931da6d7cbb4db2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timer: 0
+--- !u!114 &2434438342548355800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2364482105492448672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abd7b575e65c3dc4782d87bf544ee332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseDuration: 20
+  levelScale: 1

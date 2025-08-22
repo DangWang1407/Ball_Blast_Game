@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 2907225236379270275}
   - component: {fileID: 3593267898562029698}
   - component: {fileID: -129383315427406420}
+  - component: {fileID: 4895855448235390809}
+  - component: {fileID: 1348800592116854054}
   m_Layer: 0
   m_Name: Homing
   m_TagString: PowerUp
@@ -161,5 +163,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d4001800c8f3974a89678f98f1d926b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerUpType: 4
   targetType: 2
+--- !u!114 &4895855448235390809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1891839965848136852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06e1c0281609e52458d1026f11068a76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1348800592116854054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1891839965848136852}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7993a31b16370a498975826a7b837f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseDuration: 20
+  baseHomingRate: 0.5
+  baseRotationSpeed: 5
+  levelScale: 1

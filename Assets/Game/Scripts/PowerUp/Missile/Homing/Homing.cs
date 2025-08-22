@@ -1,30 +1,51 @@
 using Game.Controllers;
 using Game.Utils;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game.PowerUp
 {
     public class Homing : PowerUpEffect
     {
-        [SerializeField] private float homingRate = 0.5f;
-        [SerializeField] private float rotationSpeed = 5f;
+        private float homingRate = 0.5f;
+        private float rotationSpeed = 5f;
 
         private Transform targetMeteor;
         private float lastTime;
         private MissileController missileController;
         private MissileStats missileStats;
+        private HomingStats homingStats;
 
         protected override void OnActivate()
         {
-            missileController = GetComponent<MissileController>();
-            missileStats = GetComponent<MissileStats>();
+            if(gameObject.CompareTag("Missile"))
+            {
+                missileController = GetComponent<MissileController>();
+                missileStats = GetComponent<MissileStats>();
+            }
         }
 
         protected override void OnDeactivate()
         {
             
+        }
+
+        protected override void OnTriggerEnter2D(Collider2D collision)
+        {
+            base.OnTriggerEnter2D(collision);
+            if (collision.CompareTag("Player"))
+            {
+                powerUpType = PowerUpType.Homing;
+
+                if (gameObject.CompareTag("PowerUp"))
+                {
+                    currentLevel = levelPowerUpManager.GetLevel(PowerUpType.Homing);
+                    homingStats = GetComponent<HomingStats>();
+
+                    timer = homingStats.GetDuration(currentLevel);
+                    homingRate = homingStats.GetHomingRate(currentLevel);
+                    rotationSpeed = homingStats.GetRotationSpeed(currentLevel);
+                }
+            }
         }
 
         protected override void OnUpdate()

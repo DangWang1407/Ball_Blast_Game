@@ -472,38 +472,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1720846176}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &338252472 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2338567495673281401, guid: 59172d89dd342ce4fa12a98fa4af4a34, type: 3}
-  m_PrefabInstance: {fileID: 1975751290}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &338252473
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 338252472}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 406abdd1955cff749b21758d0c76f2d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &338252479
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 338252472}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 908b29a03d5f1924fb6c25976f14930b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseDuration: 20
-  baseFireRateMultiplier: 4
-  levelScale: 1
 --- !u!1 &455566016
 GameObject:
   m_ObjectHideFlags: 0
@@ -3290,7 +3258,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4865726334389350400, guid: 62dbbb4850de83949b0848fc97d5fa4c, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3961,18 +3929,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2338567495673281401, guid: 59172d89dd342ce4fa12a98fa4af4a34, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2338567495673281401, guid: 59172d89dd342ce4fa12a98fa4af4a34, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 338252473}
-    - targetCorrespondingSourceObject: {fileID: 2338567495673281401, guid: 59172d89dd342ce4fa12a98fa4af4a34, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 338252479}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 59172d89dd342ce4fa12a98fa4af4a34, type: 3}
 --- !u!1 &2100986938
 GameObject:
@@ -4426,7 +4388,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6094241772701710220, guid: 66b5ca9f633956742a62bc25ec401abb, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

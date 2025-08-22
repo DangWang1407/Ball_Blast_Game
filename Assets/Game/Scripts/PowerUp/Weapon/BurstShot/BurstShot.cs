@@ -5,30 +5,53 @@ namespace Game.PowerUp
 {
     public class BurstShot : PowerUpEffect
     {
-        [SerializeField] private int burstCount = 3;
-        [SerializeField] private float burstDelay = 0.05f;
-        //private bool originalBurst;
+        private int burstCount = 2;
+        private float burstDelay = 0.05f;
+
         private int originalBurstCount;
         private float originalBurstDelay;
         private WeaponStats weaponStats;
+        private BurstShotStats burstShotStats;
 
         protected override void OnActivate()
         {
-            weaponStats = GetComponent<WeaponStats>();
-            //originalBurst = weaponStats.Burst;
-            originalBurstCount = weaponStats.BurstCount;
-            originalBurstDelay = weaponStats.BurstDelay;
+            if (gameObject.CompareTag("Weapon"))
+            {
+                weaponStats = GetComponent<WeaponStats>();
+                originalBurstCount = weaponStats.BurstCount;
+                originalBurstDelay = weaponStats.BurstDelay;
 
-            //weaponStats.Burst = true;
-            weaponStats.BurstCount = burstCount;
-            weaponStats.BurstDelay = burstDelay;
+                weaponStats.BurstCount = burstCount;
+                weaponStats.BurstDelay = burstDelay;
+            }
+        }
+
+        protected override void OnTriggerEnter2D(Collider2D collision)
+        {
+            base.OnTriggerEnter2D(collision);
+            if (collision.CompareTag("Player"))
+            {
+                powerUpType = PowerUpType.BurstShot;
+
+                if (gameObject.CompareTag("PowerUp"))
+                {
+                    currentLevel = levelPowerUpManager.GetLevel(PowerUpType.BurstShot);
+                    burstShotStats = GetComponent<BurstShotStats>();
+
+                    timer = burstShotStats.GetDuration(currentLevel);
+                    burstCount = burstShotStats.GetBurstCount(currentLevel);
+                    burstDelay = burstShotStats.GetBurstDelay(currentLevel);
+                }
+            }
         }
 
         protected override void OnDeactivate()
         {
-            //weaponStats.Burst = originalBurst;
-            weaponStats.BurstCount = originalBurstCount;
-            weaponStats.BurstDelay = originalBurstDelay;
+            if (gameObject.CompareTag("Weapon"))
+            {
+                weaponStats.BurstCount = originalBurstCount;
+                weaponStats.BurstDelay = originalBurstDelay;
+            }
         }
     }
 }

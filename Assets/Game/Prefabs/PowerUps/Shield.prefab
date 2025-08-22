@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 3124356068571484930}
   - component: {fileID: 6434157549713438552}
   - component: {fileID: -5891355602766493098}
+  - component: {fileID: 538117209424206134}
+  - component: {fileID: 1752439297282341798}
   m_Layer: 0
   m_Name: Shield
   m_TagString: PowerUp
@@ -161,5 +163,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d4001800c8f3974a89678f98f1d926b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerUpType: 10
   targetType: 0
+--- !u!114 &538117209424206134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4994425700803436148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06fb69a60e6d461459e2968a2610382f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1752439297282341798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4994425700803436148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2577b8b1dbe76947bb6405f6c45efc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shieldPrefabs:
+  - {fileID: 3410435278320625140, guid: 927b09bdfab08fe47bb5831f8e046c6c, type: 3}
+  baseDuration: 20
+  levelScale: 1

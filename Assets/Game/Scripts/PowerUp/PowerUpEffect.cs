@@ -6,7 +6,7 @@ namespace Game.PowerUp
     {
         protected PowerUpType powerUpType;
         private float duration = 20f;
-        protected float timer;
+        [SerializeField] protected float timer;
         protected int currentLevel = 1;
         protected LevelPowerUp levelPowerUpManager;
         

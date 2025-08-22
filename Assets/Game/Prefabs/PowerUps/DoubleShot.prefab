@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 4203819562140545380}
   - component: {fileID: 6041144419386395673}
   - component: {fileID: -2681297461904355246}
+  - component: {fileID: -8493015937894990335}
+  - component: {fileID: 4146623384249706457}
   m_Layer: 0
   m_Name: DoubleShot
   m_TagString: PowerUp
@@ -161,5 +163,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d4001800c8f3974a89678f98f1d926b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerUpType: 1
   targetType: 1
+--- !u!114 &-8493015937894990335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4865726334389350400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38b1538bc3fcd4c47a850bf515dc3c91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timer: 0
+--- !u!114 &4146623384249706457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4865726334389350400}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5aabd5a5cad3bf9439fdb73c17f1e8d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseDuration: 20
+  baseBulletCountMultiplier: 2
+  levelScale: 1
