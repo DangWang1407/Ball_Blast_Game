@@ -16,7 +16,11 @@ namespace Game.PowerUp
 
         private void Initialize()
         {
-            powerupLevels = LevelPowerUpFactory.GetData(provider);
+            foreach (PowerUpType powerUpType in System.Enum.GetValues(typeof(PowerUpType)))
+            {
+                powerupLevels[powerUpType] = 1;
+            }
+            //powerupLevels = LevelPowerUpFactory.GetData(provider);
         }
 
         public int GetLevel(PowerUpType type)

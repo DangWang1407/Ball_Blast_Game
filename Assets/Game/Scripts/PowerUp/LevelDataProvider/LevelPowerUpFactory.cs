@@ -13,7 +13,7 @@ namespace Game.PowerUp
                 case ProviderType.Default:
                     break;
                 case ProviderType.Manager:
-                    data = LevelPowerUpManager.Instance.GetLevelPowerUps();
+                    //data = LevelPowerUpManager.Instance.GetLevelPowerUps();
                     break;
                 case ProviderType.Server:
                     
