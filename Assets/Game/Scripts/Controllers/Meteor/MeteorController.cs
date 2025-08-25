@@ -69,6 +69,12 @@ namespace Game.Controllers
             meteorUI?.UpdateHealthDisplay();
         }
 
+        public void SetMeteorHealth(int health)
+        {
+            meteorHealth.SetCustomHealth(health);
+            meteorUI?.UpdateHealthDisplay();
+        }
+
         private void Update() => meteorMovement.UpdateRotation();
 
         public void OnCreate()

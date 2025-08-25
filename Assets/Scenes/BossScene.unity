@@ -288,19 +288,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39bd74775c17c9f4bb83db69a85daea1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  headPrefab: {fileID: 4994291519393700578, guid: a39a2ff6d90c82c4cbcda849d778cabd, type: 3}
+  bodyPrefab: {fileID: 7259130352054522196, guid: 9af5ef8819fe8c9439acf34c9dcf299d, type: 3}
+  jsonConfig: {fileID: 4900000, guid: d300abd26b13f784fb9b943f0181b85b, type: 3}
   distanceBetween: 0.8
   speed: 0.9
-  bodyParts:
-  - {fileID: 7259130352054522196, guid: 9af5ef8819fe8c9439acf34c9dcf299d, type: 3}
-  - {fileID: 7259130352054522196, guid: 9af5ef8819fe8c9439acf34c9dcf299d, type: 3}
-  - {fileID: 7259130352054522196, guid: 9af5ef8819fe8c9439acf34c9dcf299d, type: 3}
-  - {fileID: 7259130352054522196, guid: 9af5ef8819fe8c9439acf34c9dcf299d, type: 3}
-  - {fileID: 7259130352054522196, guid: 9af5ef8819fe8c9439acf34c9dcf299d, type: 3}
-  - {fileID: 7259130352054522196, guid: 9af5ef8819fe8c9439acf34c9dcf299d, type: 3}
-  - {fileID: 7259130352054522196, guid: 9af5ef8819fe8c9439acf34c9dcf299d, type: 3}
-  - {fileID: 7259130352054522196, guid: 9af5ef8819fe8c9439acf34c9dcf299d, type: 3}
-  - {fileID: 7259130352054522196, guid: 9af5ef8819fe8c9439acf34c9dcf299d, type: 3}
-  - {fileID: 7259130352054522196, guid: 9af5ef8819fe8c9439acf34c9dcf299d, type: 3}
   waveAmplitude: 15
   waveFrequency: 0.5
 --- !u!4 &1425916457
