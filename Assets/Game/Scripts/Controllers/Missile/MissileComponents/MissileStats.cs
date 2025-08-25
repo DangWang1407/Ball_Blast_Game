@@ -8,7 +8,7 @@ namespace Game.Controllers
         private MissileController missileController;
 
         private float missileSpeed = 6f;
-        private float bulletScale = 0.5f;
+        private float bulletScale = 0.05f;
         private int damage = 1;
         private bool canBounce = false;
         private bool canPierce = false;

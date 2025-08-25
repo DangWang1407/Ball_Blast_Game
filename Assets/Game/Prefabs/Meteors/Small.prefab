@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.4, y: 1.63, z: -0.017538013}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 1}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2370472449949532821}
@@ -49,10 +49,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14a8fb52b2c5ab94f80fa23eb809e77e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 8631502847221260562}
-  textHealth: {fileID: 2111764959717945852}
-  maxHealth: 7
-  meteorSize: 2
 --- !u!50 &8631502847221260562
 Rigidbody2D:
   serializedVersion: 4
@@ -155,9 +151,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 2a9382026bc5d4f4a819ea2b764029cf, type: 3}
-  m_Color: {r: 0.65958786, g: 0.7921569, b: 0, a: 1}
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 21300000, guid: d57f79ec5e466954c9d1809051417d09, type: 3}
+  m_Color: {r: 1, g: 0.96540874, b: 0.96540874, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -206,7 +202,7 @@ RectTransform:
   m_GameObject: {fileID: 4268333328238861676}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.01, y: 0.01, z: 1}
+  m_LocalScale: {x: 0.017, y: 0.02525, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2370472449949532821}
@@ -307,7 +303,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: 26.093231, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -373,7 +369,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 3
   m_TargetDisplay: 0
 --- !u!114 &8085509228850268279
 MonoBehaviour:

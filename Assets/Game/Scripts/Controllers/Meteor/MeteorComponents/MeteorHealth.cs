@@ -12,6 +12,8 @@ namespace Game.Controllers
         private int currentHealth;
         private int maxHealth;
 
+        private bool useCustomHealth = false;
+
         public int CurrentHealth { get => currentHealth; set => currentHealth = value; }
 
         public void Initialize(MeteorController meteorController)
@@ -23,11 +25,14 @@ namespace Game.Controllers
 
         public void ResetHealth()
         {
-            currentHealth = maxHealth;
+            if (!useCustomHealth) // Chỉ reset nếu không phải custom health
+                currentHealth = maxHealth;
         }
 
         public void SetHealthBySize(MeteorSize size)
         {
+            if (useCustomHealth) return; // Skip nếu đã set custom
+
             maxHealth = size switch
             {
                 MeteorSize.Large => 10,
@@ -36,6 +41,12 @@ namespace Game.Controllers
                 _ => 10
             };
             currentHealth = maxHealth;
+        }
+
+        public void SetCustomHealth(int health)
+        {
+            maxHealth = health;
+            currentHealth = health;
         }
 
         public void TakeDamage(int damage)
