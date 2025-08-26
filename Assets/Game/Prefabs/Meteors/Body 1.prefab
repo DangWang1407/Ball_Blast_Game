@@ -250,7 +250,6 @@ GameObject:
   - component: {fileID: 3604670709806510745}
   - component: {fileID: 8598146382323367030}
   - component: {fileID: 7876870709512434276}
-  - component: {fileID: 2818633610589837004}
   m_Layer: 0
   m_Name: Body 1
   m_TagString: Meteor
@@ -294,7 +293,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5236062393377969899}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -410,17 +409,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9ae86821f1d686346a61af9a8e49be58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2818633610589837004
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5236062393377969899}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8196b3301d183514a9a911c87180838c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

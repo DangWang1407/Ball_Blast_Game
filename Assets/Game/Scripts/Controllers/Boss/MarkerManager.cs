@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 namespace Game.Controllers
 {
@@ -18,8 +19,13 @@ namespace Game.Controllers
         }
 
         [SerializeField] private Queue<Marker> markerQueue = new Queue<Marker>();
-        private int maxMarkers = 50;
+        [SerializeField] private int maxMarkers = 100; // Increased default for head-only system
+
         public bool RecordingEnabled = true;
+
+        // Cached array for efficient offset access
+        private Marker[] markerArray;
+        private bool arrayDirty = true;
 
         private void FixedUpdate()
         {
@@ -33,11 +39,35 @@ namespace Game.Controllers
 
             if (markerQueue.Count > maxMarkers)
                 markerQueue.Dequeue();
+
+            arrayDirty = true; // Mark array for refresh
         }
 
         public Marker GetNextMarker()
         {
-            return markerQueue.Count > 0 ? markerQueue.Dequeue() : null;
+            if (markerQueue.Count > 0)
+            {
+                arrayDirty = true;
+                return markerQueue.Dequeue();
+            }
+            return null;
+        }
+
+        // NEW: Get marker at specific offset without removing it
+        public Marker GetMarkerAtOffset(int offset)
+        {
+            if (markerQueue.Count == 0 || offset < 0) return null;
+
+            // Refresh cached array if needed
+            if (arrayDirty)
+            {
+                markerArray = markerQueue.ToArray();
+                arrayDirty = false;
+            }
+
+            // Return marker at offset (0 = newest, higher = older)
+            int index = markerArray.Length - 1 - offset;
+            return (index >= 0 && index < markerArray.Length) ? markerArray[index] : null;
         }
 
         public bool HasMarkers()
@@ -45,33 +75,28 @@ namespace Game.Controllers
             return markerQueue.Count > 0;
         }
 
+        public int MarkerCount => markerQueue.Count;
+
         public void ClearMarkers()
         {
             markerQueue.Clear();
             AddMarker(transform.position, transform.rotation);
+            arrayDirty = true;
         }
 
-
-        // >>> NEW: clone/replace/peek-last giúp hoán đổi queue
-        public Queue<Marker> CloneQueue() => new Queue<Marker>(markerQueue);
-
-        public void ReplaceQueue(Queue<Marker> newQueue)
+        // NEW: Set max markers capacity
+        public void SetMaxMarkers(int newMax)
         {
-            markerQueue = new Queue<Marker>(newQueue);
+            maxMarkers = Mathf.Max(1, newMax);
+
+            // Trim queue if necessary
+            while (markerQueue.Count > maxMarkers)
+            {
+                markerQueue.Dequeue();
+            }
+
+            arrayDirty = true;
         }
 
-        public Marker PeekLast()
-        {
-            if (markerQueue.Count == 0) return null;
-            Marker last = null;
-            foreach (var m in markerQueue) last = m;
-            return last;
-        }
-
-        public void ClearAndSeed(Vector3 pos, Quaternion rot)
-        {
-            markerQueue.Clear();
-            AddMarker(pos, rot);
-        }
     }
 }
