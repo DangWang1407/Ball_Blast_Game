@@ -24,12 +24,12 @@ namespace Game.Controllers
 
         [Header("Config")]
         [SerializeField] private TextAsset jsonConfig;
-        [SerializeField] private float distanceBetween = 0.2f;
-        [SerializeField] private float speed = 5f;
+        [SerializeField] private float distanceBetween = 0.8f;
+        [SerializeField] private float speed = 0.9f;
 
         [Header("Sine Wave")]
-        [SerializeField] private float waveAmplitude = 2f;
-        [SerializeField] private float waveFrequency = 1f;
+        [SerializeField] private float waveAmplitude = 15f;
+        [SerializeField] private float waveFrequency = 0.5f;
 
         private List<GameObject> snakeBody = new List<GameObject>();
         private List<SnakeBodyData> bodyDataQueue = new List<SnakeBodyData>();

@@ -23,8 +23,9 @@ MonoBehaviour:
   diagonalFire: 0
   bounceShot: 0
   missilePrefabs:
-  - {fileID: 7351639875398920185, guid: c6983b28eca64ec45bbe08f794107034, type: 3}
   - {fileID: 7697459211221981160, guid: 12cb992bd5d461c49ab2b492b09284e5, type: 3}
+  - {fileID: 2529675735506282732, guid: f653abb9225fe0a41a989a0e539e18ab, type: 3}
+  - {fileID: 7351639875398920185, guid: c6983b28eca64ec45bbe08f794107034, type: 3}
   - {fileID: 7697459211221981160, guid: 12cb992bd5d461c49ab2b492b09284e5, type: 3}
   - {fileID: 7351639875398920185, guid: c6983b28eca64ec45bbe08f794107034, type: 3}
   poolNamePrefix: Missiles

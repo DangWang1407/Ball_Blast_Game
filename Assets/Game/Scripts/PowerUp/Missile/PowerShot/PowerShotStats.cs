@@ -5,7 +5,7 @@ namespace Game.PowerUp
     public class PowerShotStats : MonoBehaviour
     {
         [SerializeField] private float baseDuration = 20f;
-        [SerializeField] private float baseScaleMultiplier = 1.5f;
+        [SerializeField] private float baseScaleMultiplier = 1.3f;
         [SerializeField] private float levelScale = 1f;
 
         public float GetDuration(int currentLevel)

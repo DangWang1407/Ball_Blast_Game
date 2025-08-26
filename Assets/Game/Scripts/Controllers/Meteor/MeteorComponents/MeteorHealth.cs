@@ -45,6 +45,7 @@ namespace Game.Controllers
 
         public void SetCustomHealth(int health)
         {
+            useCustomHealth = true;
             maxHealth = health;
             currentHealth = health;
         }
@@ -64,7 +65,16 @@ namespace Game.Controllers
 
                 EventManager.Trigger(new ScoreChangeEvent(ScoreReason.MeteorDestroyed, scoreValue));
 
-                if(meteorController.MeteorSize != MeteorSize.Small)
+
+                //need fix
+                var snakeManager = GetComponent<SnakeManager>();
+                if (snakeManager != null)
+                {
+                    //snakeManager.RemoveBodyPart(gameObject);
+                    return;
+                }
+
+                if (meteorController.MeteorSize != MeteorSize.Small)
                 {
                     //MeteorSpawnerController.Instance?.SpawnSplitMeteors(transform.position, meteorController.MeteorSize);
                     EventManager.Trigger(new SplitMeteorEvent(transform.position, meteorController.MeteorSize));

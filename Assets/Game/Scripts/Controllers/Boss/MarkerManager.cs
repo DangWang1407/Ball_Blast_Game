@@ -18,7 +18,7 @@ namespace Game.Controllers
         }
 
         private Queue<Marker> markerQueue = new Queue<Marker>();
-        private int maxMarkers = 50; 
+        private int maxMarkers = 50;
 
         private void FixedUpdate()
         {
