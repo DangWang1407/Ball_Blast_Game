@@ -50,6 +50,13 @@ namespace Game.Controllers
             currentHealth = health;
         }
 
+        //
+        private SnakeManager snakeManager;
+        public void SetSnakeManager(SnakeManager manager)
+        {
+            snakeManager = manager;
+        }
+
         public void TakeDamage(int damage)
         {
             currentHealth -= damage;
@@ -67,10 +74,11 @@ namespace Game.Controllers
 
 
                 //need fix
-                var snakeManager = GetComponent<SnakeManager>();
+                //var snakeManager = GetComponent<SnakeManager>();
                 if (snakeManager != null)
                 {
-                    //snakeManager.RemoveBodyPart(gameObject);
+                    snakeManager.RemoveBodyPart(gameObject);
+                    //meteorPooling.DestroyMeteor();
                     return;
                 }
 
@@ -85,5 +93,9 @@ namespace Game.Controllers
             }
             meteorUI.UpdateHealthDisplay();          
         }
+
+
+
+
     }
 }

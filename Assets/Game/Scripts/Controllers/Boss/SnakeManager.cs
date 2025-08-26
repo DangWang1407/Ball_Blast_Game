@@ -106,16 +106,17 @@ namespace Game.Controllers
                 rb.gravityScale = 0f;
             }
 
-            // Set health cho meteor
-            //MeteorController meteorHealth = part.GetComponent<MeteorHealth>();
-            //if (meteorHealth != null)
-            //{
-            //    meteorHealth.SetCustomHealth(health);
-            //}
             MeteorController meteorController = part.GetComponent<MeteorController>();
             if (meteorController != null)
             {
                 meteorController.SetMeteorHealth(health);
+
+                // Thêm reference để biết đây là snake part
+                MeteorHealth meteorHealth = meteorController.GetComponent<MeteorHealth>();
+                if (meteorHealth != null)
+                {
+                    meteorHealth.SetSnakeManager(this);
+                }
             }
 
             return part;
@@ -152,6 +153,18 @@ namespace Game.Controllers
                     }
                 }
             }
+        }
+
+        public void RemoveBodyPart(GameObject bodyPart)
+        {
+            int index = snakeBody.IndexOf(bodyPart);
+            if (index == -1 || index == 0) return; // Không remove head
+
+            // Remove khỏi list và destroy object
+            snakeBody.RemoveAt(index);
+            Destroy(bodyPart);
+
+            // Không cần reorganize positions - để movement system tự handle
         }
     }
 }
