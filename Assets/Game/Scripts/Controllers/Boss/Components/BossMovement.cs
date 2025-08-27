@@ -45,12 +45,27 @@ namespace Game.Controllers
             }
         }
 
+        //private void MoveHead()
+        //{
+        //    if (bossBuilder.Body.Count == 0) return;
+
+        //    float sineValue = Mathf.Sin(timeElapsed * bossStats.WaveFrequency) * bossStats.WaveAmplitude;
+        //    float cosineDerivative = Mathf.Cos(timeElapsed * bossStats.WaveFrequency) * bossStats.WaveFrequency * bossStats.WaveAmplitude;
+        //    float targetAngle = Mathf.Atan2(-bossStats.Speed, cosineDerivative) * Mathf.Rad2Deg;
+
+        //    var headRb = bossBuilder.Body[0].GetComponent<Rigidbody2D>();
+        //    if (headRb != null)
+        //    {
+        //        bossBuilder.Body[0].transform.rotation = Quaternion.AngleAxis(targetAngle, Vector3.forward);
+        //        Vector2 direction = new Vector2(cosineDerivative, -bossStats.Speed).normalized;
+        //        headRb.velocity = direction * bossStats.Speed;
+        //    }
+        //}
+
         private void MoveHead()
         {
             if (bossBuilder.Body.Count == 0) return;
-
-            float sineValue = Mathf.Sin(timeElapsed * bossStats.WaveFrequency) * bossStats.WaveAmplitude;
-            float cosineDerivative = Mathf.Cos(timeElapsed * bossStats.WaveFrequency) * bossStats.WaveFrequency * bossStats.WaveAmplitude;
+            float cosineDerivative = Mathf.Cos(timeElapsed * bossStats.WaveFrequency) * bossStats.WaveAmplitude;
             float targetAngle = Mathf.Atan2(-bossStats.Speed, cosineDerivative) * Mathf.Rad2Deg;
 
             var headRb = bossBuilder.Body[0].GetComponent<Rigidbody2D>();

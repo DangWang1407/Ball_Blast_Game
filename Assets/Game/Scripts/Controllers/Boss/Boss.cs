@@ -9,6 +9,7 @@ namespace Game.Controllers
         private BossMovement bossMovement;
         private BossAnimation bossAnimation;
         private BossBodyManager bossBodyManager;
+        private BossHeath bossHeath;
 
         private void Awake()
         {
@@ -17,6 +18,7 @@ namespace Game.Controllers
             bossMovement = GetComponent<BossMovement>();
             bossAnimation = GetComponent<BossAnimation>();
             bossBodyManager = GetComponent<BossBodyManager>();
+            bossHeath = GetComponent<BossHeath>();
 
             Initialize();
         }
@@ -28,6 +30,7 @@ namespace Game.Controllers
             bossMovement.Initialize(this);
             bossBodyManager.Initialize(this);
             bossAnimation.Initialize(this);
+            bossHeath.Initialize(this);
         }
 
         private void Start()
@@ -40,6 +43,7 @@ namespace Game.Controllers
             bossBuilder.OnFixedUpdate();
             bossAnimation?.OnFixedUpdate();
             bossMovement?.OnFixedUpdate();
+            bossHeath?.OnFixedUpdate();
         }
 
         public void RemoveBodyPart(GameObject bodyPart)

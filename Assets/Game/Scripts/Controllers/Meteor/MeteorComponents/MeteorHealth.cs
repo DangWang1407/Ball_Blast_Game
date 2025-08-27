@@ -25,13 +25,13 @@ namespace Game.Controllers
 
         public void ResetHealth()
         {
-            if (!useCustomHealth) // Chỉ reset nếu không phải custom health
+            if (!useCustomHealth) 
                 currentHealth = maxHealth;
         }
 
         public void SetHealthBySize(MeteorSize size)
         {
-            if (useCustomHealth) return; // Skip nếu đã set custom
+            if (useCustomHealth) return;
 
             maxHealth = size switch
             {
@@ -57,21 +57,11 @@ namespace Game.Controllers
             this.boss = boss;
         }
 
-        [SerializeField] private BodyData bodyData;
+        private BodyData bodyData;
         public void SetBodyData(BodyData bodyData)
         {
             this.bodyData = bodyData;
         }
-
-        // need fix 
-        //private SnakeManager snakeManager;
-
-        //public void SetSnakeManager(SnakeManager snakeManager)
-        //{
-        //    this.snakeManager = snakeManager;
-        //}
-
-
 
         public void TakeDamage(int damage)
         {
@@ -88,7 +78,6 @@ namespace Game.Controllers
 
                 EventManager.Trigger(new ScoreChangeEvent(ScoreReason.MeteorDestroyed, scoreValue));
 
-
                 //need fix
                 //var snakeManager = GetComponent<SnakeManager>();
                 if (boss != null)
@@ -100,28 +89,19 @@ namespace Game.Controllers
                         EventManager.Trigger(new SpecificPowerUpSpawnEvent(transform.position, bodyData.powerUpType));
                     }
 
-
                     boss.RemoveBodyPart(gameObject);
-                    
-                    //EventManager.Trigger(new PowerUpSpawnEvent(transform.position, MeteorSize.Medium));
-                    //meteorPooling.DestroyMeteor();
                     return;
                 }
 
                 if (meteorController.MeteorSize != MeteorSize.Small)
                 {
                     //MeteorSpawnerController.Instance?.SpawnSplitMeteors(transform.position, meteorController.MeteorSize);
-                    EventManager.Trigger(new SplitMeteorEvent(transform.position, meteorController.MeteorSize));
-                    
+                    EventManager.Trigger(new SplitMeteorEvent(transform.position, meteorController.MeteorSize));                   
                 }
                 EventManager.Trigger(new PowerUpSpawnEvent(transform.position, meteorController.MeteorSize));
                 meteorPooling.DestroyMeteor();
             }
             meteorUI.UpdateHealthDisplay();          
         }
-
-
-
-
     }
 }

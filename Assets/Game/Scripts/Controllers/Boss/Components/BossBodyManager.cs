@@ -29,6 +29,7 @@ namespace Game.Controllers
                 Destroy(bossBuilder.Body[removedIndex]);
                 bossBuilder.Body.RemoveAt(removedIndex);
                 bossAnimation.CollapseBackward(removedIndex);
+                Debug.Log("Remain body number " + bossBuilder.Body.Count);
             }
             else
             {

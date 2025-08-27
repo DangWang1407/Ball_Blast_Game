@@ -3,12 +3,14 @@
     {"health": 100, "prefabIndex": 0},
     {"health": 25, "powerUpType": 0, "prefabIndex": 1},
     {"health": 30, "prefabIndex": 0},
-    {"health": 4, "powerUpType": 3, "prefabIndex": 1},
+    {"health": 4, "prefabIndex": 0},
     {"health": 5, "prefabIndex": 0},
     {"health": 6, "powerUpType": 9, "prefabIndex": 1},
     {"health": 7, "prefabIndex": 0},
     {"health": 8, "powerUpType": 4, "prefabIndex": 1},
     {"health": 9, "prefabIndex": 0},
-    {"health": 10, "powerUpType": 1, "prefabIndex": 1}
+    {"health": 10, "prefabIndex": 0},
+    {"health": 4, "prefabIndex": 0},
+    {"health": 5, "prefabIndex": 0}
   ]
 }

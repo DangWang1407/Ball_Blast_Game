@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using UnityEngine;
@@ -74,9 +75,24 @@ namespace Game.Controllers
             collapseAnimationProgress.RemoveAt(removedIndex);
             targetMarkerOffsets.RemoveAt(removedIndex);
 
-            int segmentDistance = CalculateMarkerOffset(1);
+            //int segmentDistance = CalculateMarkerOffset(1);
 
-            for (int i = 0; i < removedIndex; i++)
+            //for (int i = 0; i < removedIndex; i++)
+            //{
+            //    if (i < targetMarkerOffsets.Count)
+            //    {
+            //        targetMarkerOffsets[i] += segmentDistance;
+            //        isAnimatingCollapse[i] = true;
+            //        collapseAnimationProgress[i] = 0f;
+            //    }
+            //}
+            StartCoroutine(Delay(removedIndex));
+        }
+
+        IEnumerator Delay(int removedIndex)
+        {
+            int segmentDistance = CalculateMarkerOffset(1);
+            for (int i = removedIndex - 1; i >= 0; i--)
             {
                 if (i < targetMarkerOffsets.Count)
                 {
@@ -84,7 +100,9 @@ namespace Game.Controllers
                     isAnimatingCollapse[i] = true;
                     collapseAnimationProgress[i] = 0f;
                 }
+                yield return new WaitForSeconds(0.3f);
             }
+            
         }
 
         public int CalculateMarkerOffset(int segmentCount)
