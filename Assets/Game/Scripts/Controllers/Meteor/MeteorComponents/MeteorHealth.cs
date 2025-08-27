@@ -50,12 +50,22 @@ namespace Game.Controllers
             currentHealth = health;
         }
 
-        //
-        private SnakeManager snakeManager;
-        public void SetSnakeManager(SnakeManager manager)
+        // need fix 
+        private Boss boss;
+        public void SetBoss(Boss boss)
         {
-            snakeManager = manager;
+            this.boss = boss;
         }
+
+        // need fix 
+        private SnakeManager snakeManager;
+
+        public void SetSnakeManager(SnakeManager snakeManager)
+        {
+            this.snakeManager = snakeManager;
+        }
+
+
 
         public void TakeDamage(int damage)
         {
@@ -75,9 +85,10 @@ namespace Game.Controllers
 
                 //need fix
                 //var snakeManager = GetComponent<SnakeManager>();
-                if (snakeManager != null)
+                if (boss != null)
                 {
-                    snakeManager.RemoveBodyPart(gameObject);
+                    boss.RemoveBodyPart(gameObject);
+                    EventManager.Trigger(new PowerUpSpawnEvent(transform.position, MeteorSize.Medium));
                     //meteorPooling.DestroyMeteor();
                     return;
                 }

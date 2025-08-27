@@ -1,6 +1,6 @@
 {
   "bodyParts": [
-    {"index": 0, "health": 0},
+    {"index": 0, "health": 100},
     {"index": 1, "health": 25},
     {"index": 2, "health": 30},
     {"index": 3, "health": 4},

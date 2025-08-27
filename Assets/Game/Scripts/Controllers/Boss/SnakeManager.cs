@@ -80,7 +80,7 @@ namespace Game.Controllers
         {
             if (snakeBody.Count == 0 && headPrefab != null)
             {
-                // Create fake head (invisible)
+
                 GameObject fakeHead = CreateBodyPart(headPrefab, transform.position, transform.rotation, 100, true);
                 snakeBody.Add(fakeHead);
                 bodyPartMarkerOffsets.Add(0);
@@ -93,10 +93,11 @@ namespace Game.Controllers
                 {
                     int estimatedMaxParts = bodyDataQueue.Count + 10;
                     int requiredMarkers = Mathf.CeilToInt(estimatedMaxParts * distanceBetween / (speed * Time.fixedDeltaTime)) + 50;
+
+                    Debug.Log("Required markers: ");
                     headMarkerManager.SetMaxMarkers(requiredMarkers);
                 }
 
-                // Disable renderer on fake head
                 var renderer = fakeHead.GetComponent<SpriteRenderer>();
                 if (renderer != null) renderer.enabled = false;
             }
@@ -222,7 +223,7 @@ namespace Game.Controllers
         public void RemoveBodyPart(GameObject bodyPart)
         {
             int removedIndex = snakeBody.IndexOf(bodyPart);
-            if (removedIndex <= 1) return; // Don't remove fake head (0) or real head (1)
+            if (removedIndex <= 1) return; //
 
             Debug.Log($"Removing body part at index {removedIndex}, collapse backward: {enableCollapseBackward}");
 

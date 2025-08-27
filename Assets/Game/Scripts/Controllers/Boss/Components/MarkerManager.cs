@@ -19,9 +19,9 @@ namespace Game.Controllers
         }
 
         [SerializeField] private Queue<Marker> markerQueue = new Queue<Marker>();
-        [SerializeField] private int maxMarkers = 100; // Increased default for head-only system
+        [SerializeField] private int maxMarkers = 100;
 
-        public bool RecordingEnabled = true;
+        //public bool RecordingEnabled = true;
 
         // Cached array for efficient offset access
         private Marker[] markerArray;
@@ -29,7 +29,7 @@ namespace Game.Controllers
 
         private void FixedUpdate()
         {
-            if (!RecordingEnabled) return;
+            //if (!RecordingEnabled) return;
             AddMarker(transform.position, transform.rotation);
         }
 
@@ -40,7 +40,7 @@ namespace Game.Controllers
             if (markerQueue.Count > maxMarkers)
                 markerQueue.Dequeue();
 
-            arrayDirty = true; // Mark array for refresh
+            arrayDirty = true; 
         }
 
         public Marker GetNextMarker()
@@ -53,12 +53,10 @@ namespace Game.Controllers
             return null;
         }
 
-        // NEW: Get marker at specific offset without removing it
         public Marker GetMarkerAtOffset(int offset)
         {
             if (markerQueue.Count == 0 || offset < 0) return null;
 
-            // Refresh cached array if needed
             if (arrayDirty)
             {
                 markerArray = markerQueue.ToArray();
@@ -84,12 +82,10 @@ namespace Game.Controllers
             arrayDirty = true;
         }
 
-        // NEW: Set max markers capacity
         public void SetMaxMarkers(int newMax)
         {
             maxMarkers = Mathf.Max(1, newMax);
 
-            // Trim queue if necessary
             while (markerQueue.Count > maxMarkers)
             {
                 markerQueue.Dequeue();
