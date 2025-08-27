@@ -2,14 +2,41 @@ using UnityEngine;
 using Game.Events;
 using Game.Core;
 using Game.Controllers;
+using System.Collections.Generic;
 
 namespace Game.PowerUp
 {
     public class PowerUpSpawner : MonoBehaviour
     {
+        [SerializeField] private GameObject[] powerUpPrefabs;
+
+        private Dictionary<PowerUpType, GameObject> powerUpList = new Dictionary<PowerUpType, GameObject>();
+
         private void Start()
         {
+            Initialize();
             EventManager.Subscribe<PowerUpSpawnEvent>(OnPowerUpSpawn);
+            EventManager.Subscribe<SpecificPowerUpSpawnEvent>(OnSpecificPowerUpSpawn);
+        }
+
+        private void Initialize()
+        {
+            foreach (var prefab in powerUpPrefabs)
+            {
+                //Debug.Log(prefab);
+                var powerUpEffect = prefab.GetComponent<PowerUpEffect>();
+                //Debug.Log(powerUpEffect);
+                //Debug.Log(powerUpEffect.powerUpType);
+                if(powerUpEffect != null)
+                {
+                    powerUpList[powerUpEffect.powerUpType] = prefab;
+                }
+            }
+        }
+
+        private void OnSpecificPowerUpSpawn(SpecificPowerUpSpawnEvent e)
+        {
+            Instantiate(powerUpList[e.PowerUpType], e.Position, Quaternion.identity);
         }
 
         private void OnPowerUpSpawn(PowerUpSpawnEvent evt)
@@ -48,6 +75,7 @@ namespace Game.PowerUp
         private void OnDestroy()
         {
             EventManager.Unsubscribe<PowerUpSpawnEvent>(OnPowerUpSpawn);
+            EventManager.Unsubscribe<SpecificPowerUpSpawnEvent>(OnSpecificPowerUpSpawn);
         }
     }
 }

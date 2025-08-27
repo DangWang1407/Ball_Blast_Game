@@ -1,8 +1,9 @@
 using UnityEngine;
+using Game.PowerUp;
 
 namespace Game.Events
 {
-    public struct  PowerUpSpawnEvent : IGameEvent
+    public struct PowerUpSpawnEvent : IGameEvent
     {
         public Vector3 Position { get; }
         public MeteorSize MeteorSize { get; }
@@ -11,6 +12,17 @@ namespace Game.Events
         {
             Position = position;
             MeteorSize = meteorSize;
+        }
+    }
+
+    public struct SpecificPowerUpSpawnEvent : IGameEvent
+    {
+        public Vector3 Position { get; }
+        public PowerUpType PowerUpType { get; }
+        public SpecificPowerUpSpawnEvent(Vector3 position, PowerUpType type)
+        {
+            Position = position;
+            PowerUpType = type;
         }
     }
 
@@ -25,18 +37,18 @@ namespace Game.Events
         }
     }
 
-    public enum PowerUpType
-    {
-        RapidFire,
-        DoubleShot,
-        PowerShot,
-        PierceShot,
-        BurstShot,
-        DamageBoost, 
-        Invisible,
-        Shield, 
-        Homing,
-        DiagonalFire,
-        BounceShot
-    }
+    //public enum PowerUpType
+    //{
+    //    RapidFire,
+    //    DoubleShot,
+    //    PowerShot,
+    //    PierceShot,
+    //    BurstShot,
+    //    DamageBoost, 
+    //    Invisible,
+    //    Shield, 
+    //    Homing,
+    //    DiagonalFire,
+    //    BounceShot
+    //}
 }

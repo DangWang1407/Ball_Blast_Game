@@ -73,10 +73,7 @@ namespace Game.Controllers
 
                 body.Add(fakeHead);
 
-                bossAnimation.BodyPartMarkerOffsets.Add(0);
-                bossAnimation.IsAnimatingCollapse.Add(false);
-                bossAnimation.CollapseAnimationProgress.Add(0f);
-                bossAnimation.TargetMarkerOffsets.Add(0);
+                bossAnimation.SetAnimation(0, false, 0f, 0);
 
                 headMarkerManager = fakeHead.GetComponent<MarkerManager>();
                 if (headMarkerManager != null)
@@ -84,7 +81,7 @@ namespace Game.Controllers
                     int estimatedMaxParts = bossStats.BodyDataQueue.Count + 10;
                     int requiredMarkers = Mathf.CeilToInt(estimatedMaxParts * bossStats.DistanceBetween / (bossStats.Speed * Time.fixedDeltaTime)) + 50;
 
-                    Debug.Log("Required markers: ");
+                    Debug.Log("Required markers: " + requiredMarkers);
                     headMarkerManager.SetMaxMarkers(requiredMarkers);
                 }
             }
@@ -94,18 +91,36 @@ namespace Game.Controllers
         {
             if (currentBodyIndex < bossStats.BodyDataQueue.Count) 
             {
-                SnakeBodyData bodyData = bossStats.BodyDataQueue[currentBodyIndex];
+                BodyData bodyData = bossStats.BodyDataQueue[currentBodyIndex];
 
-                GameObject prefabToUse = (currentBodyIndex == 0) ? bossStats.RealHeadPrefab : bossStats.BodyPrefab;
+                //GameObject prefabToUse = (currentBodyIndex == 0) ? bossStats.RealHeadPrefab : bossStats.BodyPrefab;
+
+                GameObject prefabToUse;
+                if (currentBodyIndex == 0)
+                {
+                    prefabToUse = bossStats.RealHeadPrefab;
+                }
+                else
+                {
+                    prefabToUse = bossStats.GetBodyPrefab(bodyData.prefabIndex);
+                }
+
+                //Debug.Log(bodyData.health);
 
                 GameObject newPart = CreateObject(prefabToUse, transform.position, transform.rotation, bodyData.health, false);
+
+                MeteorHealth meteorHealth = newPart.GetComponent<MeteorHealth>();
+                if (meteorHealth != null)
+                {
+                    //Debug.Log("Meteor health exists");
+                    meteorHealth.SetBodyData(bodyData);
+                }
+
                 body.Add(newPart);
 
                 int markerOffset = bossAnimation.CalculateMarkerOffset(body.Count - 1);
-                bossAnimation.BodyPartMarkerOffsets.Add(markerOffset);
-                bossAnimation.IsAnimatingCollapse.Add(false);
-                bossAnimation.CollapseAnimationProgress.Add(0f);
-                bossAnimation.TargetMarkerOffsets.Add(markerOffset);
+
+                bossAnimation.SetAnimation(markerOffset, false, 0f, markerOffset);
 
                 currentBodyIndex++;
             }

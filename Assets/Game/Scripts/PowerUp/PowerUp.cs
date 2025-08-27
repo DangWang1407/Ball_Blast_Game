@@ -75,13 +75,13 @@ namespace Game.PowerUp
 
         private void AddComponentToTarget(GameObject target)
         {
-            Debug.Log(target);
-            Debug.Log(powerUpEffect.GetType().Name);
+            //Debug.Log(target);
+            //Debug.Log(powerUpEffect.GetType().Name);
             Component newEffect = target.AddComponent(powerUpEffect.GetType());
-            Debug.Log(newEffect.gameObject);
+            //Debug.Log(newEffect.gameObject);
             if (newEffect != null)
             {
-                Debug.Log("Efect not null");
+                //Debug.Log("Efect not null");
                 var json = JsonUtility.ToJson(powerUpEffect);
                 JsonUtility.FromJsonOverwrite(json, newEffect);
             }
@@ -91,22 +91,23 @@ namespace Game.PowerUp
     public enum PowerUpType
     {
         //weapon
-        RapidFire,
-        DoubleShot,
-        BurstShot,
-        DiagonalFire,
+        RapidFire = 0,
+        DoubleShot = 1,
+        BurstShot = 2,
+        DiagonalFire = 3,
 
 
         //missile
-        Homing,
-        BounceShot,
-        PierceShot,
-        PowerShot,
-        DamageBoost,
+        Homing = 4,
+        BounceShot = 5,
+        PierceShot = 6,
+        PowerShot = 7,
+        DamageBoost = 8,
 
         //player
-        Invisible,
-        Shield
+        Invisible = 9,
+        Shield = 10,
+        None = -1
     }
 
     public enum TargetType

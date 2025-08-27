@@ -4,7 +4,7 @@ namespace Game.PowerUp
 {
     public abstract class PowerUpEffect : MonoBehaviour
     {
-        protected PowerUpType powerUpType;
+        [SerializeField] public PowerUpType powerUpType;
         private float duration = 20f;
         [SerializeField] protected float timer;
         protected int currentLevel = 1;
@@ -28,7 +28,7 @@ namespace Game.PowerUp
             if(timer <= 0)
             {
                 OnDeactivate();
-                Debug.Log("Effect is destroyed");
+                //Debug.Log("Effect is destroyed");
                 Destroy(this);
             }
         }

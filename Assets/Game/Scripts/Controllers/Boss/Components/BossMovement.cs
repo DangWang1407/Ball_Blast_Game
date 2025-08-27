@@ -38,7 +38,8 @@ namespace Game.Controllers
                     if (marker != null)
                     {
                         bossBuilder.Body[i].transform.position = marker.Position;
-                        bossBuilder.Body[i].transform.rotation = marker.Rotation;
+                        if(i == 0)
+                            bossBuilder.Body[i].transform.rotation = marker.Rotation;
                     }
                 }
             }

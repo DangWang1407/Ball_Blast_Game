@@ -26,6 +26,15 @@ namespace Game.Controllers
             bossStats = GetComponent<BossStats>();
         }
 
+        public void SetAnimation(int bodyPartMarkerOffset, bool isAnimatingCollapse, float collapseAnimationProgress, int targetMarkerOffset)
+        {
+
+            BodyPartMarkerOffsets.Add(bodyPartMarkerOffset);
+            IsAnimatingCollapse.Add(isAnimatingCollapse);
+            CollapseAnimationProgress.Add(collapseAnimationProgress);
+            TargetMarkerOffsets.Add(targetMarkerOffset);
+        }
+
         public void OnFixedUpdate()
         {
             UpdateCollapseAnimations();

@@ -1,14 +1,28 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Game.PowerUp;
 
 namespace Game.Controllers
 {
+    [System.Serializable]
+    public class BodyData
+    {
+        public int health;
+        public PowerUpType powerUpType = PowerUpType.None;
+        public int prefabIndex;                                                           
+    }
+
+    [System.Serializable]
+    public class BossConfig
+    {
+        public BodyData[] bodyParts;
+    }
     public class BossStats : MonoBehaviour
     {
         [Header("Prefabs")]
         [SerializeField] private GameObject headPrefab; // Fake head (invisible)
         [SerializeField] private GameObject realHeadPrefab; // Real head prefab
-        [SerializeField] private GameObject bodyPrefab;
+        [SerializeField] private GameObject[] bodyPrefabs;
 
         [Header("Config")]
         [SerializeField] private TextAsset jsonConfig;
@@ -23,11 +37,11 @@ namespace Game.Controllers
         [SerializeField] private bool enableCollapseBackward = true;
         [SerializeField] private float collapseAnimationSpeed = 5f;
 
-        private List<SnakeBodyData> bodyDataQueue = new List<SnakeBodyData>();
+        private List<BodyData> bodyDataQueue = new List<BodyData>();
 
         public GameObject HeadPrefab { get => headPrefab; private set => headPrefab = value; }
         public GameObject RealHeadPrefab { get => realHeadPrefab; private set => realHeadPrefab = value; }
-        public GameObject BodyPrefab { get => bodyPrefab; private set => bodyPrefab = value; }
+        public GameObject[] BodyPrefabs { get => bodyPrefabs; private set => bodyPrefabs = value; }
         //public TextAsset JsonConfig { get => jsonConfig; private set => jsonConfig = value; }
         public float DistanceBetween { get => distanceBetween; private set => distanceBetween = value; }
         public float Speed { get => speed; private set => speed = value; }
@@ -35,7 +49,7 @@ namespace Game.Controllers
         public float WaveFrequency { get => waveFrequency; private set => waveFrequency = value; }
         public bool EnableCollapseBackward { get => enableCollapseBackward; private set => enableCollapseBackward = value; }
         public float CollapseAnimationSpeed { get => collapseAnimationSpeed; private set => collapseAnimationSpeed = value; }
-        public List<SnakeBodyData> BodyDataQueue { get => bodyDataQueue; set => bodyDataQueue = value; }
+        public List<BodyData> BodyDataQueue { get => bodyDataQueue; set => bodyDataQueue = value; }
 
         private Boss boss;
         public void Initialize(Boss boss)
@@ -47,8 +61,18 @@ namespace Game.Controllers
         private void LoadBodyConfig()
         {
             if (jsonConfig == null) return;
-            SnakeConfig config = JsonUtility.FromJson<SnakeConfig>(jsonConfig.text);
+            BossConfig config = JsonUtility.FromJson<BossConfig>(jsonConfig.text);
             bodyDataQueue.AddRange(config.bodyParts);
+        }
+
+        public GameObject GetBodyPrefab(int prefabIndex)
+        {
+            if(prefabIndex < 0 || prefabIndex >= bodyPrefabs.Length)
+            {
+                Debug.Log("Index is invalid");
+                return null;
+            }
+            return bodyPrefabs[prefabIndex];
         }
     }
 }

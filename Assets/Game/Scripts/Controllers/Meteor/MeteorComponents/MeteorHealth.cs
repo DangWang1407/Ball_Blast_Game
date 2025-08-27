@@ -57,13 +57,19 @@ namespace Game.Controllers
             this.boss = boss;
         }
 
-        // need fix 
-        private SnakeManager snakeManager;
-
-        public void SetSnakeManager(SnakeManager snakeManager)
+        [SerializeField] private BodyData bodyData;
+        public void SetBodyData(BodyData bodyData)
         {
-            this.snakeManager = snakeManager;
+            this.bodyData = bodyData;
         }
+
+        // need fix 
+        //private SnakeManager snakeManager;
+
+        //public void SetSnakeManager(SnakeManager snakeManager)
+        //{
+        //    this.snakeManager = snakeManager;
+        //}
 
 
 
@@ -87,8 +93,17 @@ namespace Game.Controllers
                 //var snakeManager = GetComponent<SnakeManager>();
                 if (boss != null)
                 {
+                    Debug.Log(bodyData.powerUpType);
+                    if (bodyData != null && bodyData.powerUpType != PowerUp.PowerUpType.None)
+                    {
+                        Debug.Log("Trigger new power up event");
+                        EventManager.Trigger(new SpecificPowerUpSpawnEvent(transform.position, bodyData.powerUpType));
+                    }
+
+
                     boss.RemoveBodyPart(gameObject);
-                    EventManager.Trigger(new PowerUpSpawnEvent(transform.position, MeteorSize.Medium));
+                    
+                    //EventManager.Trigger(new PowerUpSpawnEvent(transform.position, MeteorSize.Medium));
                     //meteorPooling.DestroyMeteor();
                     return;
                 }
