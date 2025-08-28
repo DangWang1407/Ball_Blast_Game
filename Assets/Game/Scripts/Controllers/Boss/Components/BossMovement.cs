@@ -40,7 +40,7 @@ namespace Game.Controllers
         private void Movement()
         {
             if (bossBuilder.Body.Count == 0 || bossBuilder.HeadMarkerManager == null) return;
-            MoveHead();
+            //MoveHead();
 
             for (int i = 1; i < bossBuilder.Body.Count; i++)
             {
