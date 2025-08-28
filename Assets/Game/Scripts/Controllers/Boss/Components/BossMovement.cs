@@ -46,13 +46,26 @@ namespace Game.Controllers
             {
                 if (i < BossAnimation.BodyPartMarkerOffsets.Count)
                 {
-                    var marker = bossBuilder.HeadMarkerManager.GetMarkerAtOffset(BossAnimation.BodyPartMarkerOffsets[i]);
-                    if (marker != null)
+                    //var marker = bossBuilder.HeadMarkerManager.GetMarkerAtOffset(BossAnimation.BodyPartMarkerOffsets[i]);
+                    //if (marker != null)
+                    //{
+                    //    bossBuilder.Body[i].transform.position = marker.Position;
+                    //    if (i == 0)
+                    //        bossBuilder.Body[i].transform.rotation = marker.Rotation;
+                    //}
+                    Vector3 currentPos = GetBezierPoint(timeElapsed - i * 2.7f); // 2.7 là distanceBetween
+                    Vector3 nextPos = GetBezierPoint(timeElapsed + Time.fixedDeltaTime - i * 2.7f);
+
+                    var RB = bossBuilder.Body[i].GetComponent<Rigidbody2D>();
+                    if (RB != null)
                     {
-                        bossBuilder.Body[i].transform.position = marker.Position;
-                        if (i == 0)
-                            bossBuilder.Body[i].transform.rotation = marker.Rotation;
+                        Vector2 direction = (nextPos - currentPos).normalized;
+                        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+                        bossBuilder.Body[i].transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+                        RB.velocity = direction * bossStats.Speed;
                     }
+
                 }
             }
         }
@@ -84,23 +97,6 @@ namespace Game.Controllers
             }
         }
 
-        //private void MoveHead()
-        //{
-        //    if (bossBuilder.Body.Count == 0) return;
-
-        //    float sineValue = Mathf.Sin(timeElapsed * bossStats.WaveFrequency) * bossStats.WaveAmplitude;
-        //    float cosineDerivative = Mathf.Cos(timeElapsed * bossStats.WaveFrequency) * bossStats.WaveFrequency * bossStats.WaveAmplitude;
-        //    float targetAngle = Mathf.Atan2(-bossStats.Speed, cosineDerivative) * Mathf.Rad2Deg;
-
-        //    var headRb = bossBuilder.Body[0].GetComponent<Rigidbody2D>();
-        //    if (headRb != null)
-        //    {
-        //        bossBuilder.Body[0].transform.rotation = Quaternion.AngleAxis(targetAngle, Vector3.forward);
-        //        Vector2 direction = new Vector2(cosineDerivative, -bossStats.Speed).normalized;
-        //        headRb.velocity = direction * bossStats.Speed;
-        //    }
-        //}
-
         //#if UNITY_EDITOR
 
         [Header("Zigzag Path")]
@@ -113,42 +109,8 @@ namespace Game.Controllers
 
         private Dictionary<int, (Vector3, Vector3, Vector3, Vector3)> controlPoints = new();
 
-        //private void OnDrawGizmosSelected()
-        //{
-        //    //controlPoints.Clear();
-        //    for (int n = 0; n < numCycles; n++)
-        //    {
-        //        controlPoints[n] = CalculateControlPoints(n);
-        //    }
-
-        //    Handles.color = Color.red;
-        //    Vector3 lastPoint = GetBezierPoint(0f);
-
-        //    float totalTime = numCycles * rangeTime;
-        //    int segments = numCycles * 50;
-
-        //    for (int i = 0; i < segments; i++)
-        //    {
-        //        float t = (i / (float)segments) * totalTime;
-        //        Vector3 currentPoint = GetBezierPoint(t);
-        //        Handles.DrawLine(lastPoint, currentPoint);
-        //        lastPoint = currentPoint;
-        //    }
-
-        //    Handles.color = Color.yellow;
-        //    foreach (var kvp in controlPoints)
-        //    {
-        //        var (An, Bn, Cn, Dn) = kvp.Value;
-        //        Handles.DrawWireCube(An, Vector3.one * 0.2f);
-        //        Handles.DrawWireCube(Bn, Vector3.one * 0.2f);
-        //        Handles.DrawWireCube(Cn, Vector3.one * 0.2f);
-        //        Handles.DrawWireCube(Dn, Vector3.one * 0.2f);
-        //    }
-        //}
-
         private void OnDrawGizmosSelected()
         {
-            // Vẽ bezier lý thuyết (màu đỏ)
             for (int n = 0; n < numCycles; n++)
             {
                 controlPoints[n] = CalculateControlPoints(n);
@@ -167,7 +129,6 @@ namespace Game.Controllers
                 lastPoint = currentPoint;
             }
 
-            // Vẽ đường đi thực tế ngay lập tức (màu cyan)
             Handles.color = Color.cyan;
             Vector3 lastRealPoint = SimulateRealMovement(0f);
 
@@ -182,7 +143,6 @@ namespace Game.Controllers
                 lastRealPoint = currentRealPoint;
             }
 
-            // Control points
             Handles.color = Color.yellow;
             foreach (var kvp in controlPoints)
             {
@@ -196,7 +156,6 @@ namespace Game.Controllers
 
         private Vector3 SimulateRealMovement(float t)
         {
-            // Simulate physics movement với velocity
             Vector3 position = spawnPoint;
             float deltaTime = Time.fixedDeltaTime;
 
@@ -216,6 +175,8 @@ namespace Game.Controllers
 
         private Vector3 GetBezierPoint(float t)
         {
+            /////
+            if (t < 0) t = 0;
             int n = Mathf.FloorToInt(t / rangeTime);
             float normalizedTime = (t - n * rangeTime) / rangeTime;
 
@@ -238,10 +199,9 @@ namespace Game.Controllers
         }
 
         private Vector3 GetBezierPoint1(float t, Vector3 An, Vector3 Bn, Vector3 Cn, Vector3 Dn)
-        {
+        { 
             float u = 1 - t;
             return u * u * u * An + 3 * u * u * t * Bn + 3 * u * t * t * Cn + t * t * t * Dn;
         }
-        //#endif
     }
 }

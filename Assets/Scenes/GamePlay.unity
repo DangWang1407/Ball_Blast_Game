@@ -1250,7 +1250,7 @@ MonoBehaviour:
   - {fileID: 5236062393377969899, guid: 9e3b7e96470fcbf4cb7a8932cc7fbbe2, type: 3}
   - {fileID: 6061834971249803717, guid: 75cb0d11535211d46a6e9c1c4e17ded0, type: 3}
   jsonConfig: {fileID: 4900000, guid: d300abd26b13f784fb9b943f0181b85b, type: 3}
-  distanceBetween: 0.8
+  distanceBetween: 2.7
   speed: 0.3
   waveAmplitude: 15
   waveFrequency: 0.5
