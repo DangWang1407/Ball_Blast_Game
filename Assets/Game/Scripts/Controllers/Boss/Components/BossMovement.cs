@@ -12,8 +12,6 @@ namespace Game.Controllers
         private BossStats bossStats;
         private BossAnimation BossAnimation;
 
-        private float timeElapsed = 0;
-
         private void Awake()
         {
             controlPoints.Clear();
@@ -33,71 +31,55 @@ namespace Game.Controllers
 
         public void OnFixedUpdate()
         {
-            timeElapsed += Time.fixedDeltaTime;
             Movement();
         }
 
         private void Movement()
         {
-            if (bossBuilder.Body.Count == 0 || bossBuilder.HeadMarkerManager == null) return;
-            //MoveHead();
+            if (bossBuilder.Body.Count == 0) return;
 
-            for (int i = 1; i < bossBuilder.Body.Count; i++)
+            for (int i = 0; i < bossBuilder.Body.Count; i++)
             {
-                if (i < BossAnimation.BodyPartMarkerOffsets.Count)
+                if (i < BossAnimation.BodyPartMarkerOffsets.Count && !BossAnimation.IsAnimatingCollapse[i])
                 {
-                    //var marker = bossBuilder.HeadMarkerManager.GetMarkerAtOffset(BossAnimation.BodyPartMarkerOffsets[i]);
-                    //if (marker != null)
-                    //{
-                    //    bossBuilder.Body[i].transform.position = marker.Position;
-                    //    if (i == 0)
-                    //        bossBuilder.Body[i].transform.rotation = marker.Rotation;
-                    //}
-                    Vector3 currentPos = GetBezierPoint(timeElapsed - i * 2.7f); // 2.7 là distanceBetween
-                    Vector3 nextPos = GetBezierPoint(timeElapsed + Time.fixedDeltaTime - i * 2.7f);
+                    Vector3 currentPos = GetBezierPoint(bossBuilder.BodyTimers[i]); // 2.7 là distanceBetween
+                    Vector3 nextPos = GetBezierPoint(bossBuilder.BodyTimers[i] + Time.fixedDeltaTime);
 
                     var RB = bossBuilder.Body[i].GetComponent<Rigidbody2D>();
                     if (RB != null)
                     {
                         Vector2 direction = (nextPos - currentPos).normalized;
-                        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                        //float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
-                        bossBuilder.Body[i].transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+                        //bossBuilder.Body[i].transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
                         RB.velocity = direction * bossStats.Speed;
                     }
+                    bossBuilder.BodyTimers[i] += Time.fixedDeltaTime;
+                }
 
+                if (i < BossAnimation.BodyPartMarkerOffsets.Count && BossAnimation.IsAnimatingCollapse[i])
+                {
+                    Vector3 currentPos = GetBezierPoint(bossBuilder.BodyTimers[i]); // 2.7 là distanceBetween
+                    Vector3 nextPos = GetBezierPoint(bossBuilder.BodyTimers[i] - Time.fixedDeltaTime);
+
+                    var RB = bossBuilder.Body[i].GetComponent<Rigidbody2D>();
+                    if (RB != null)
+                    {
+                        Vector2 direction = (nextPos - currentPos).normalized;
+                        //float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+                        //bossBuilder.Body[i].transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+                        RB.velocity = direction * bossStats.Speed;
+                    }
+                    bossBuilder.BodyTimers[i] -= Time.fixedDeltaTime;
+                    if (bossBuilder.BodyTimers[i] <= bossBuilder.TargetBodyTimers[i] && BossAnimation.IsAnimatingCollapse[i])
+                    {
+                        BossAnimation.IsAnimatingCollapse[i] = false;
+                        bossBuilder.BodyTimers[i] = bossBuilder.TargetBodyTimers[i];
+                    }
                 }
             }
         }
-
-        private void MoveHead()
-        {
-            if (bossBuilder.Body.Count == 0) return;
-
-            int currentCycle = Mathf.FloorToInt(timeElapsed / rangeTime);
-            if(!controlPoints.ContainsKey(currentCycle))
-            {
-                controlPoints[currentCycle] = CalculateControlPoints(currentCycle);
-            }
-
-            //var headRB = bossBuilder.Body[0].GetComponent<Rigidbody2D>();
-            //headRB.position = GetBezierPoint(timeElapsed);
-
-            Vector3 currentPos = GetBezierPoint(timeElapsed);
-            Vector3 nextPos = GetBezierPoint(timeElapsed + Time.fixedDeltaTime);
-
-            var headRB = bossBuilder.Body[0].GetComponent<Rigidbody2D>();
-            if (headRB != null)
-            {
-                Vector2 direction = (nextPos - currentPos).normalized;
-                float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-
-                bossBuilder.Body[0].transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-                headRB.velocity = direction * bossStats.Speed;
-            }
-        }
-
-        //#if UNITY_EDITOR
 
         [Header("Zigzag Path")]
         public Vector2 spawnPoint = new Vector2(0, 5);
@@ -199,7 +181,7 @@ namespace Game.Controllers
         }
 
         private Vector3 GetBezierPoint1(float t, Vector3 An, Vector3 Bn, Vector3 Cn, Vector3 Dn)
-        { 
+        {
             float u = 1 - t;
             return u * u * u * An + 3 * u * u * t * Bn + 3 * u * t * t * Cn + t * t * t * Dn;
         }

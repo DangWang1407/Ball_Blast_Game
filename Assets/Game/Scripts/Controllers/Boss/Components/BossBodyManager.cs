@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Game.Controllers
 {
@@ -20,7 +20,6 @@ namespace Game.Controllers
         public void RemoveBodyPart(GameObject bodyPart)
         {
             int removedIndex = bossBuilder.Body.IndexOf(bodyPart);
-            if (removedIndex <= 1) return; //
 
             Debug.Log($"Removing body part at index {removedIndex}, collapse backward: {bossStats.EnableCollapseBackward}");
 

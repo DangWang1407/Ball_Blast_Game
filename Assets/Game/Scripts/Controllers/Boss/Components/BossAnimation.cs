@@ -19,12 +19,13 @@ namespace Game.Controllers
 
         private Boss boss;
         private BossStats bossStats;
-        //private BossBuilder bossBuilder;
+        private BossBuilder bossBuilder;
 
         public void Initialize(Boss boss)
         {
             this.boss = boss;
             bossStats = GetComponent<BossStats>();
+            bossBuilder = GetComponent<BossBuilder>();
         }
 
         public void SetAnimation(int bodyPartMarkerOffset, bool isAnimatingCollapse, float collapseAnimationProgress, int targetMarkerOffset)
@@ -38,32 +39,7 @@ namespace Game.Controllers
 
         public void OnFixedUpdate()
         {
-            UpdateCollapseAnimations();
-        }
-
-        private void UpdateCollapseAnimations()
-        {
-            for (int i = 0; i < isAnimatingCollapse.Count; i++)
-            {
-                if (isAnimatingCollapse[i])
-                {
-                    collapseAnimationProgress[i] += bossStats.CollapseAnimationSpeed * Time.fixedDeltaTime;
-
-                    if (collapseAnimationProgress[i] >= 1f)
-                    {
-                        collapseAnimationProgress[i] = 1f;
-                        bodyPartMarkerOffsets[i] = targetMarkerOffsets[i];
-                        isAnimatingCollapse[i] = false;
-                    }
-                    else
-                    {
-                        int startOffset = targetMarkerOffsets[i] - CalculateMarkerOffset(1);
-                        int endOffset = targetMarkerOffsets[i];
-                        float progress = EaseInOutQuad(collapseAnimationProgress[i]);
-                        bodyPartMarkerOffsets[i] = Mathf.RoundToInt(Mathf.Lerp(startOffset, endOffset, progress));
-                    }
-                }
-            }
+            //UpdateCollapseAnimations();
         }
 
         public void CollapseBackward(int removedIndex)
@@ -75,32 +51,44 @@ namespace Game.Controllers
             collapseAnimationProgress.RemoveAt(removedIndex);
             targetMarkerOffsets.RemoveAt(removedIndex);
 
-            //int segmentDistance = CalculateMarkerOffset(1);
+            //
+            bossBuilder.BodyTimers.RemoveAt(removedIndex);
+            bossBuilder.TargetBodyTimers.RemoveAt(removedIndex);
 
-            //for (int i = 0; i < removedIndex; i++)
-            //{
-            //    if (i < targetMarkerOffsets.Count)
-            //    {
-            //        targetMarkerOffsets[i] += segmentDistance;
-            //        isAnimatingCollapse[i] = true;
-            //        collapseAnimationProgress[i] = 0f;
-            //    }
-            //}
-            StartCoroutine(Delay(removedIndex));
-        }
-
-        IEnumerator Delay(int removedIndex)
-        {
-            int segmentDistance = CalculateMarkerOffset(1);
             for (int i = removedIndex - 1; i >= 0; i--)
             {
                 if (i < targetMarkerOffsets.Count)
                 {
-                    targetMarkerOffsets[i] += segmentDistance;
+                    //targetMarkerOffsets[i] += segmentDistance;
+                    if (isAnimatingCollapse[i])
+                    {
+                        bossBuilder.TargetBodyTimers[i] = bossBuilder.BodyTimers[i] - 3f;
+                    }
+                    bossBuilder.TargetBodyTimers[i] = bossBuilder.BodyTimers[i] - 1.4f;
                     isAnimatingCollapse[i] = true;
-                    collapseAnimationProgress[i] = 0f;
+                    //collapseAnimationProgress[i] = 0f;
                 }
-                yield return new WaitForSeconds(0.3f);
+            }
+        }
+
+        IEnumerator Delay(int removedIndex)
+        {
+            //int segmentDistance = CalculateMarkerOffset(1);
+            for (int i = removedIndex - 1; i >= 0; i--)
+            {
+                if (i < targetMarkerOffsets.Count)
+                {
+                    //targetMarkerOffsets[i] += segmentDistance;
+                    if(isAnimatingCollapse[i])
+                    {
+                        bossBuilder.TargetBodyTimers[i] = bossBuilder.BodyTimers[i] - 3f;
+                    }
+                    bossBuilder.TargetBodyTimers[i] = bossBuilder.BodyTimers[i] - 1.4f;
+                    isAnimatingCollapse[i] = true;
+                    //collapseAnimationProgress[i] = 0f;
+                    
+                }
+                yield return null;
             }
 
         }
