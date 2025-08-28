@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using UnityEngine;
@@ -102,7 +102,7 @@ namespace Game.Controllers
                 }
                 yield return new WaitForSeconds(0.3f);
             }
-            
+
         }
 
         public int CalculateMarkerOffset(int segmentCount)

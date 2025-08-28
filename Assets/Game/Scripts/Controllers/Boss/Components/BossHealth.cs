@@ -17,7 +17,7 @@ namespace Game.Controllers
         {
             if(bossBuilder.Body.Count <= 2)
             {
-                Debug.Log("Boss died");
+                //Debug.Log("Boss died");
             }
         }
     }

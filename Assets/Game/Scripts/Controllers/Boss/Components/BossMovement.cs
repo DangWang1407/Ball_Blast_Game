@@ -14,6 +14,15 @@ namespace Game.Controllers
 
         private float timeElapsed = 0;
 
+        private void Awake()
+        {
+            controlPoints.Clear();
+            for (int n = 0; n < numCycles; n++)
+            {
+                controlPoints[n] = CalculateControlPoints(n);
+            }
+        }
+
         public void Initialize(Boss boss)
         {
             this.boss = boss;
@@ -41,7 +50,7 @@ namespace Game.Controllers
                     if (marker != null)
                     {
                         bossBuilder.Body[i].transform.position = marker.Position;
-                        if(i == 0)
+                        if (i == 0)
                             bossBuilder.Body[i].transform.rotation = marker.Rotation;
                     }
                 }
@@ -52,20 +61,47 @@ namespace Game.Controllers
         {
             if (bossBuilder.Body.Count == 0) return;
 
-            float sineValue = Mathf.Sin(timeElapsed * bossStats.WaveFrequency) * bossStats.WaveAmplitude;
-            float cosineDerivative = Mathf.Cos(timeElapsed * bossStats.WaveFrequency) * bossStats.WaveFrequency * bossStats.WaveAmplitude;
-            float targetAngle = Mathf.Atan2(-bossStats.Speed, cosineDerivative) * Mathf.Rad2Deg;
-
-            var headRb = bossBuilder.Body[0].GetComponent<Rigidbody2D>();
-            if (headRb != null)
+            int currentCycle = Mathf.FloorToInt(timeElapsed / rangeTime);
+            if(!controlPoints.ContainsKey(currentCycle))
             {
-                bossBuilder.Body[0].transform.rotation = Quaternion.AngleAxis(targetAngle, Vector3.forward);
-                Vector2 direction = new Vector2(cosineDerivative, -bossStats.Speed).normalized;
-                headRb.velocity = direction * bossStats.Speed;
+                controlPoints[currentCycle] = CalculateControlPoints(currentCycle);
+            }
+
+            //var headRB = bossBuilder.Body[0].GetComponent<Rigidbody2D>();
+            //headRB.position = GetBezierPoint(timeElapsed);
+
+            Vector3 currentPos = GetBezierPoint(timeElapsed);
+            Vector3 nextPos = GetBezierPoint(timeElapsed + Time.fixedDeltaTime);
+
+            var headRB = bossBuilder.Body[0].GetComponent<Rigidbody2D>();
+            if (headRB != null)
+            {
+                Vector2 direction = (nextPos - currentPos).normalized;
+                float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+
+                bossBuilder.Body[0].transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+                headRB.velocity = direction * bossStats.Speed;
             }
         }
 
-        #if UNITY_EDITOR
+        //private void MoveHead()
+        //{
+        //    if (bossBuilder.Body.Count == 0) return;
+
+        //    float sineValue = Mathf.Sin(timeElapsed * bossStats.WaveFrequency) * bossStats.WaveAmplitude;
+        //    float cosineDerivative = Mathf.Cos(timeElapsed * bossStats.WaveFrequency) * bossStats.WaveFrequency * bossStats.WaveAmplitude;
+        //    float targetAngle = Mathf.Atan2(-bossStats.Speed, cosineDerivative) * Mathf.Rad2Deg;
+
+        //    var headRb = bossBuilder.Body[0].GetComponent<Rigidbody2D>();
+        //    if (headRb != null)
+        //    {
+        //        bossBuilder.Body[0].transform.rotation = Quaternion.AngleAxis(targetAngle, Vector3.forward);
+        //        Vector2 direction = new Vector2(cosineDerivative, -bossStats.Speed).normalized;
+        //        headRb.velocity = direction * bossStats.Speed;
+        //    }
+        //}
+
+        //#if UNITY_EDITOR
 
         [Header("Zigzag Path")]
         public Vector2 spawnPoint = new Vector2(0, 5);
@@ -73,12 +109,46 @@ namespace Game.Controllers
         public float height = 1.5f;
         public float rangeTime = 10f;
         public int numCycles = 5;
+        public float Offset = 0.2f;
 
         private Dictionary<int, (Vector3, Vector3, Vector3, Vector3)> controlPoints = new();
 
+        //private void OnDrawGizmosSelected()
+        //{
+        //    //controlPoints.Clear();
+        //    for (int n = 0; n < numCycles; n++)
+        //    {
+        //        controlPoints[n] = CalculateControlPoints(n);
+        //    }
+
+        //    Handles.color = Color.red;
+        //    Vector3 lastPoint = GetBezierPoint(0f);
+
+        //    float totalTime = numCycles * rangeTime;
+        //    int segments = numCycles * 50;
+
+        //    for (int i = 0; i < segments; i++)
+        //    {
+        //        float t = (i / (float)segments) * totalTime;
+        //        Vector3 currentPoint = GetBezierPoint(t);
+        //        Handles.DrawLine(lastPoint, currentPoint);
+        //        lastPoint = currentPoint;
+        //    }
+
+        //    Handles.color = Color.yellow;
+        //    foreach (var kvp in controlPoints)
+        //    {
+        //        var (An, Bn, Cn, Dn) = kvp.Value;
+        //        Handles.DrawWireCube(An, Vector3.one * 0.2f);
+        //        Handles.DrawWireCube(Bn, Vector3.one * 0.2f);
+        //        Handles.DrawWireCube(Cn, Vector3.one * 0.2f);
+        //        Handles.DrawWireCube(Dn, Vector3.one * 0.2f);
+        //    }
+        //}
+
         private void OnDrawGizmosSelected()
         {
-            controlPoints.Clear();
+            // Vẽ bezier lý thuyết (màu đỏ)
             for (int n = 0; n < numCycles; n++)
             {
                 controlPoints[n] = CalculateControlPoints(n);
@@ -86,7 +156,6 @@ namespace Game.Controllers
 
             Handles.color = Color.red;
             Vector3 lastPoint = GetBezierPoint(0f);
-
             float totalTime = numCycles * rangeTime;
             int segments = numCycles * 50;
 
@@ -98,6 +167,22 @@ namespace Game.Controllers
                 lastPoint = currentPoint;
             }
 
+            // Vẽ đường đi thực tế ngay lập tức (màu cyan)
+            Handles.color = Color.cyan;
+            Vector3 lastRealPoint = SimulateRealMovement(0f);
+
+            float currentTime = rangeTime;
+            int realSegments = Mathf.FloorToInt(currentTime / Time.fixedDeltaTime);
+
+            for (int i = 1; i <= realSegments; i++)
+            {
+                float t = i * Time.fixedDeltaTime;
+                Vector3 currentRealPoint = SimulateRealMovement(t);
+                Handles.DrawLine(lastRealPoint, currentRealPoint);
+                lastRealPoint = currentRealPoint;
+            }
+
+            // Control points
             Handles.color = Color.yellow;
             foreach (var kvp in controlPoints)
             {
@@ -107,6 +192,26 @@ namespace Game.Controllers
                 Handles.DrawWireCube(Cn, Vector3.one * 0.2f);
                 Handles.DrawWireCube(Dn, Vector3.one * 0.2f);
             }
+        }
+
+        private Vector3 SimulateRealMovement(float t)
+        {
+            // Simulate physics movement với velocity
+            Vector3 position = spawnPoint;
+            float deltaTime = Time.fixedDeltaTime;
+
+            for (float time = 0; time < t; time += deltaTime)
+            {
+                Vector3 currentTarget = GetBezierPoint(time);
+                Vector3 nextTarget = GetBezierPoint(time + deltaTime);
+
+                Vector2 direction = (nextTarget - currentTarget).normalized;
+                Vector2 velocity = direction * 0.3f;
+
+                position += (Vector3)(velocity * deltaTime);
+            }
+
+            return position;
         }
 
         private Vector3 GetBezierPoint(float t)
@@ -126,8 +231,8 @@ namespace Game.Controllers
 
             return (
                 new Vector3(spawnPoint.x, y1, 0),     // An
-                new Vector3(xOffset, y1, 0),         // Bn  
-                new Vector3(xOffset, y2, 0),         // Cn
+                new Vector3(xOffset, y1 + Offset, 0),         // Bn  
+                new Vector3(xOffset, y2 - Offset, 0),         // Cn
                 new Vector3(spawnPoint.x, y2, 0)     // Dn
             );
         }
@@ -137,6 +242,6 @@ namespace Game.Controllers
             float u = 1 - t;
             return u * u * u * An + 3 * u * u * t * Bn + 3 * u * t * t * Cn + t * t * t * Dn;
         }
-        #endif
+        //#endif
     }
 }

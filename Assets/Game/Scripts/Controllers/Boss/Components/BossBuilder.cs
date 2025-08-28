@@ -31,7 +31,8 @@ namespace Game.Controllers
 
         public void OnFixedUpdate()
         {
-            if (bossStats.BodyDataQueue.Count > currentBodyIndex && countUp >= bossStats.DistanceBetween) { 
+            if (bossStats.BodyDataQueue.Count > currentBodyIndex && countUp >= bossStats.DistanceBetween)
+            {
                 CreateBodyPart();
                 countUp = 0;
             }
@@ -89,7 +90,7 @@ namespace Game.Controllers
 
         private void CreateBodyPart()
         {
-            if (currentBodyIndex < bossStats.BodyDataQueue.Count) 
+            if (currentBodyIndex < bossStats.BodyDataQueue.Count)
             {
                 BodyData bodyData = bossStats.BodyDataQueue[currentBodyIndex];
 
