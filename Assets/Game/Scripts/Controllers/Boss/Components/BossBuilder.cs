@@ -14,13 +14,8 @@ namespace Game.Controllers
         private int currentBodyIndex = 0;
         private float countUp = 0;
 
-        private List<float> bodyTimers = new List<float>();
-        private List<float> targetBodyTimers = new List<float>();
-
         public List<GameObject> Body { get => body; set => body = value; }
         public MarkerManager HeadMarkerManager { get => headMarkerManager; private set => headMarkerManager = value; }
-        public List<float> BodyTimers { get => bodyTimers; set => bodyTimers = value; }
-        public List<float> TargetBodyTimers { get => targetBodyTimers; set => targetBodyTimers = value; }
 
         public void Initialize(Boss boss)
         {
@@ -31,7 +26,7 @@ namespace Game.Controllers
 
         public void OnStart()
         {
-            //CreateHead();
+            CreateHead();
         }
 
         public void OnFixedUpdate()
@@ -41,22 +36,21 @@ namespace Game.Controllers
                 CreateBodyPart();
                 countUp = 0;
             }
-            //for(int i = 0; i < bodyTimers.Count; i++) 
-            //{
-            //    bodyTimers[i] += Time.fixedDeltaTime;
-            //} 
             countUp += Time.fixedDeltaTime;
         }
 
-        private GameObject CreateObject(GameObject prefab, Vector3 position, Quaternion rotation, int health)
+        private GameObject CreateObject(GameObject prefab, Vector3 position, Quaternion rotation, int health, bool isHead)
         {
             GameObject part = Instantiate(prefab, position, rotation, transform);
+
+            if (isHead && !part.GetComponent<MarkerManager>())
+                part.AddComponent<MarkerManager>();
 
             if (!part.GetComponent<Rigidbody2D>())
             {
                 var rb = part.AddComponent<Rigidbody2D>();
                 rb.gravityScale = 0f;
-                rb.isKinematic = true;
+                if (!isHead) rb.isKinematic = true;
             }
 
             MeteorController meteorController = part.GetComponent<MeteorController>();
@@ -70,6 +64,28 @@ namespace Game.Controllers
                 }
             }
             return part;
+        }
+
+        private void CreateHead()
+        {
+            if (body.Count == 0 && bossStats.HeadPrefab != null)
+            {
+                GameObject fakeHead = CreateObject(bossStats.HeadPrefab, transform.position, transform.rotation, 100, true);
+
+                body.Add(fakeHead);
+
+                bossAnimation.SetAnimation(0, false, 0f, 0);
+
+                headMarkerManager = fakeHead.GetComponent<MarkerManager>();
+                if (headMarkerManager != null)
+                {
+                    int estimatedMaxParts = bossStats.BodyDataQueue.Count + 10;
+                    int requiredMarkers = Mathf.CeilToInt(estimatedMaxParts * bossStats.DistanceBetween / (bossStats.Speed * Time.fixedDeltaTime)) + 50;
+
+                    Debug.Log("Required markers: " + requiredMarkers);
+                    headMarkerManager.SetMaxMarkers(requiredMarkers);
+                }
+            }
         }
 
         private void CreateBodyPart()
@@ -92,7 +108,7 @@ namespace Game.Controllers
 
                 //Debug.Log(bodyData.health);
 
-                GameObject newPart = CreateObject(prefabToUse, transform.position, transform.rotation, bodyData.health);
+                GameObject newPart = CreateObject(prefabToUse, transform.position, transform.rotation, bodyData.health, false);
 
                 MeteorHealth meteorHealth = newPart.GetComponent<MeteorHealth>();
                 if (meteorHealth != null)
@@ -108,11 +124,6 @@ namespace Game.Controllers
                 bossAnimation.SetAnimation(markerOffset, false, 0f, markerOffset);
 
                 currentBodyIndex++;
-
-
-                // need fix
-                bodyTimers.Add(0f);
-                targetBodyTimers.Add(0f);
             }
         }
     }

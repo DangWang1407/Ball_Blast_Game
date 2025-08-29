@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8427510491369563959}
   - component: {fileID: 4656564256724668291}
   - component: {fileID: 5422282776789797755}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Large 1
   m_TagString: Meteor
   m_Icon: {fileID: 0}
@@ -187,7 +187,7 @@ GameObject:
   - component: {fileID: 357358776311853103}
   - component: {fileID: 4570976027688591799}
   - component: {fileID: 1105317491906893674}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -288,7 +288,7 @@ GameObject:
   - component: {fileID: 7830539759812458772}
   - component: {fileID: 7024878606399874254}
   - component: {fileID: 3854385283045159004}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

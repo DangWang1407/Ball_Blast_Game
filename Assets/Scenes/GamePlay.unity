@@ -1226,7 +1226,7 @@ Transform:
   m_GameObject: {fileID: 634013864}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 6, z: 0}
+  m_LocalPosition: {x: 0, y: 5.7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1250,8 +1250,8 @@ MonoBehaviour:
   - {fileID: 5236062393377969899, guid: 9e3b7e96470fcbf4cb7a8932cc7fbbe2, type: 3}
   - {fileID: 6061834971249803717, guid: 75cb0d11535211d46a6e9c1c4e17ded0, type: 3}
   jsonConfig: {fileID: 4900000, guid: d300abd26b13f784fb9b943f0181b85b, type: 3}
-  distanceBetween: 2.7
-  speed: 0.3
+  distanceBetween: 0.8
+  speed: 0.6
   waveAmplitude: 15
   waveFrequency: 0.5
   enableCollapseBackward: 1
@@ -1268,10 +1268,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93f0af3dd910a6441935ede881509671, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPoint: {x: 0, y: 6}
+  spawnPoint: {x: 0, y: 5.7}
   width: 8
   height: 1.8
-  rangeTime: 20
+  rangeTime: 9.5
   numCycles: 10
   Offset: 0.2
 --- !u!114 &634013870

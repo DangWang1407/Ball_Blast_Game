@@ -77,6 +77,11 @@ namespace Game.Controllers
 
         private void Update() => meteorMovement.UpdateRotation();
 
+        private void FixedUpdate()
+        {
+            MeteorCollision.OnFixedUpdate();
+        }
+
         public void OnCreate()
         {
             
