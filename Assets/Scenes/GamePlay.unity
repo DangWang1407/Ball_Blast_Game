@@ -1251,11 +1251,11 @@ MonoBehaviour:
   - {fileID: 6061834971249803717, guid: 75cb0d11535211d46a6e9c1c4e17ded0, type: 3}
   jsonConfig: {fileID: 4900000, guid: d300abd26b13f784fb9b943f0181b85b, type: 3}
   distanceBetween: 0.8
-  speed: 0.6
+  speed: 0.5
   waveAmplitude: 15
   waveFrequency: 0.5
   enableCollapseBackward: 1
-  collapseAnimationSpeed: 1
+  collapseAnimationSpeed: 0.4
 --- !u!114 &634013869
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1271,7 +1271,7 @@ MonoBehaviour:
   spawnPoint: {x: 0, y: 5.7}
   width: 8
   height: 1.8
-  rangeTime: 9.5
+  rangeTime: 10
   numCycles: 10
   Offset: 0.2
 --- !u!114 &634013870

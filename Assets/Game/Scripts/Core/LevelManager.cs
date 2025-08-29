@@ -1,24 +1,29 @@
 using UnityEngine;
 using Game.Events;
 using Game.Core;
+using System.IO;
+
+[System.Serializable]
+public class LevelSaveData
+{
+    public int currentLevel = 0;
+}
 
 public class LevelManager : MonoBehaviour
 {
-    [Header("Level Data")]
     [SerializeField] private TextAsset[] levelJsonFiles;
-
     private int currentLevel = 0;
     private bool levelCompleted = false;
+    private string SavePath => Path.Combine(Application.persistentDataPath, "level_progress.json");
 
     public static LevelManager Instance { get; private set; }
-
     public int CurrentLevel => currentLevel;
-    public int TotalLevels => levelJsonFiles.Length;
     public TextAsset GetCurrentLevelData() => currentLevel < levelJsonFiles.Length ? levelJsonFiles[currentLevel] : null;
 
     void Awake()
     {
         Instance = this;
+        LoadData();
     }
 
     void Start()
@@ -30,17 +35,43 @@ public class LevelManager : MonoBehaviour
     void OnDestroy()
     {
         EventManager.Unsubscribe<AllMeteorsDestroyedEvent>(OnAllMeteorsDestroyed);
+        SaveData();
+    }
+
+    void SaveData()
+    {
+        try
+        {
+            var saveData = new LevelSaveData { currentLevel = currentLevel};
+            File.WriteAllText(SavePath, JsonUtility.ToJson(saveData));
+        }
+        catch { Debug.LogError("Save failed"); }
+    }
+
+    void LoadData()
+    {
+        try
+        {
+            if (File.Exists(SavePath))
+            {
+                var saveData = JsonUtility.FromJson<LevelSaveData>(File.ReadAllText(SavePath));
+                currentLevel = Mathf.Clamp(saveData.currentLevel, 0, levelJsonFiles.Length - 1);
+
+                Debug.Log("Level data loaded successfully");
+                Debug.Log(currentLevel);
+            }
+            else SaveData();
+        }
+        catch { currentLevel = 0; }
     }
 
     public void StartCurrentLevel()
     {
         levelCompleted = false;
-        Debug.Log($"Starting Level {currentLevel + 1}");
-
         EventManager.Trigger(new LevelStartEvent(currentLevel, GetCurrentLevelData()));
     }
 
-    private void OnAllMeteorsDestroyed(AllMeteorsDestroyedEvent evt)
+    void OnAllMeteorsDestroyed(AllMeteorsDestroyedEvent evt)
     {
         if (!levelCompleted)
         {
@@ -49,35 +80,14 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    private void CompleteLevel()
+    void CompleteLevel()
     {
-        Debug.Log($"Level {currentLevel + 1} completed!");
-
         currentLevel++;
+        SaveData();
 
         if (currentLevel >= levelJsonFiles.Length)
-        {
-            Debug.Log("All levels completed! Game finished!");
-            //EventManager.Trigger(new GameCompleteEvent());
-        }
+            Debug.Log("Game completed!");
         else
-        {
-            // Start next level
             StartCurrentLevel();
-        }
-    }
-
-    public void RestartCurrentLevel()
-    {
-        StartCurrentLevel();
-    }
-
-    public void GoToLevel(int levelIndex)
-    {
-        if (levelIndex >= 0 && levelIndex < levelJsonFiles.Length)
-        {
-            currentLevel = levelIndex;
-            StartCurrentLevel();
-        }
     }
 }

@@ -64,22 +64,17 @@ namespace Game.Controllers
                 rb.velocity = targetDirection * 2f;
                 rb.gravityScale = 0f;
 
-                var col = rb.GetComponent<Collider2D>();
-
-                StartCoroutine(EnableGravity(rb, col, 2f, direction));
+                StartCoroutine(EnableGravity(rb, 2f));
             }
         }
 
-        private IEnumerator EnableGravity(Rigidbody2D rb, Collider2D col, float delay, float direction)
+        private IEnumerator EnableGravity(Rigidbody2D rb, float delay)
         {
             yield return new WaitForSeconds(delay);
             if (rb != null)
             {
                 rb.gravityScale = 1f;
                 rb.AddTorque(Random.Range(-20f, 20f));
-
-                col.isTrigger = false;
-                rb.velocity = new Vector2(direction, -0.5f);
             }
         }
     }

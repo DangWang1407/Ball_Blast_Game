@@ -1,6 +1,4 @@
-﻿using Game.Controllers;
-using UnityEngine;
-using static UnityEngine.RuleTile.TilingRuleOutput;
+﻿using UnityEngine;
 
 namespace Game.Controllers
 {
@@ -10,20 +8,10 @@ namespace Game.Controllers
         private MeteorController meteorController;
         private MeteorHealth meteorHealth;
 
-        private Collider2D col;
-
-        private Vector2 lastVelocity;
-
         public void Initialize(MeteorController meteorController)
         {
             this.meteorController = meteorController;
             meteorHealth = GetComponent<MeteorHealth>();
-            col = GetComponent<Collider2D>();
-        }
-
-        public void OnFixedUpdate()
-        {
-            lastVelocity = meteorController.Rigidbody.velocity;
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
@@ -37,40 +25,16 @@ namespace Game.Controllers
                     HandleWallCollision(collision);
                     break;
                 case "Ground":
-                    col.isTrigger = false;
-                    //HandleGroundCollision(collision);
+                    HandleGroundCollision(collision);
                     break;
                 case "UpBounce":
-                    col.isTrigger = false;
-                    //HandleUpBounce(collision);
+                    HandleUpBounce(collision);
                     break;
                 case "Player":
                     HandlePlayerCollision(collision);
                     break;
                 case "Shield":
-                    col.isTrigger = false;
-                    //HandleShieldCollision(collision);
-                    break;
-            }
-        }
-
-        private void OnCollisionEnter2D(Collision2D collision)
-        {
-            switch (collision.gameObject.tag)
-            {
-                case "Missile":
-                    //HandleMissileCollision(collision);
-                    break;
-                case "Wall":
-                   
-                case "Ground":
-                   
-                case "UpBounce":
-                    ReflectVelocity(collision);
-                    break;
-                case "Player":
-                    break;
-                case "Shield":
+                    HandleShieldCollision(collision);
                     break;
             }
         }
@@ -108,13 +72,6 @@ namespace Game.Controllers
         {
             Vector2 direction = (transform.position - collision.transform.position).normalized;
             meteorController.Rigidbody.velocity = direction * 10f;
-        }
-
-        private void ReflectVelocity(Collision2D collision)
-        {
-            
-            var reflectDirection = Vector2.Reflect(lastVelocity.normalized, collision.contacts[0].normal);
-            meteorController.Rigidbody.velocity = reflectDirection * 10f;
         }
     }
 }

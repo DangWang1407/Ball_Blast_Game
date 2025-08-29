@@ -7,7 +7,7 @@
     {"health": 10, "prefabIndex": 0},
     {"health": 6, "powerUpType": 9, "prefabIndex": 1},
     {"health": 20, "prefabIndex": 0},
-    {"health": 8, "powerUpType": 4, "prefabIndex": 1},
+    {"health": 8, "powerUpType": 3, "prefabIndex": 1},
     {"health": 29, "prefabIndex": 0},
     {"health": 10, "prefabIndex": 0},
     {"health": 4, "prefabIndex": 0},

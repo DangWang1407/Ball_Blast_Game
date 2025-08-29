@@ -57,7 +57,8 @@ namespace Game.Controllers
                     }
                     else
                     {
-                        int startOffset = targetMarkerOffsets[i] - CalculateMarkerOffset(1);
+                        //int startOffset = targetMarkerOffsets[i] - CalculateMarkerOffset(1);
+                        int startOffset = bodyPartMarkerOffsets[i];
                         int endOffset = targetMarkerOffsets[i];
                         float progress = EaseInOutQuad(collapseAnimationProgress[i]);
                         bodyPartMarkerOffsets[i] = Mathf.RoundToInt(Mathf.Lerp(startOffset, endOffset, progress));
@@ -65,9 +66,13 @@ namespace Game.Controllers
                 }
             }
         }
-
+        //private Coroutine currentCoroutine;
         public void CollapseBackward(int removedIndex)
         {
+            //if(currentCoroutine != null)
+            //{
+            //    StopCoroutine(currentCoroutine);
+            //}
             //Destroy(snakeBody[removedIndex]);
             //snakeBody.RemoveAt(removedIndex);
             bodyPartMarkerOffsets.RemoveAt(removedIndex);

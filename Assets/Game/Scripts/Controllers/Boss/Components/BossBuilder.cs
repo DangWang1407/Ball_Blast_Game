@@ -12,7 +12,7 @@ namespace Game.Controllers
         private List<GameObject> body = new List<GameObject>();
         private MarkerManager headMarkerManager;
         private int currentBodyIndex = 0;
-        private float countUp = 0;
+        //private float countUp = 0;
 
         public List<GameObject> Body { get => body; set => body = value; }
         public MarkerManager HeadMarkerManager { get => headMarkerManager; private set => headMarkerManager = value; }
@@ -27,16 +27,20 @@ namespace Game.Controllers
         public void OnStart()
         {
             CreateHead();
+            for (int i = 0; i < bossStats.BodyDataQueue.Count; i++)
+            {
+                CreateBodyPart();
+            }
         }
 
         public void OnFixedUpdate()
         {
-            if (bossStats.BodyDataQueue.Count > currentBodyIndex && countUp >= bossStats.DistanceBetween)
-            {
-                CreateBodyPart();
-                countUp = 0;
-            }
-            countUp += Time.fixedDeltaTime;
+            //if (bossStats.BodyDataQueue.Count > currentBodyIndex && countUp >= bossStats.DistanceBetween)
+            //{
+            //    //CreateBodyPart();
+            //    countUp = 0;
+            //}
+            //countUp += Time.fixedDeltaTime;
         }
 
         private GameObject CreateObject(GameObject prefab, Vector3 position, Quaternion rotation, int health, bool isHead)
@@ -109,6 +113,8 @@ namespace Game.Controllers
                 //Debug.Log(bodyData.health);
 
                 GameObject newPart = CreateObject(prefabToUse, transform.position, transform.rotation, bodyData.health, false);
+
+
 
                 MeteorHealth meteorHealth = newPart.GetComponent<MeteorHealth>();
                 if (meteorHealth != null)

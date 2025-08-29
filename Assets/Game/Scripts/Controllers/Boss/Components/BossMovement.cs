@@ -67,9 +67,6 @@ namespace Game.Controllers
                 controlPoints[currentCycle] = CalculateControlPoints(currentCycle);
             }
 
-            //var headRB = bossBuilder.Body[0].GetComponent<Rigidbody2D>();
-            //headRB.position = GetBezierPoint(timeElapsed);
-
             Vector3 currentPos = GetBezierPoint(timeElapsed);
             Vector3 nextPos = GetBezierPoint(timeElapsed + Time.fixedDeltaTime);
 
@@ -84,25 +81,6 @@ namespace Game.Controllers
             }
         }
 
-        //private void MoveHead()
-        //{
-        //    if (bossBuilder.Body.Count == 0) return;
-
-        //    float sineValue = Mathf.Sin(timeElapsed * bossStats.WaveFrequency) * bossStats.WaveAmplitude;
-        //    float cosineDerivative = Mathf.Cos(timeElapsed * bossStats.WaveFrequency) * bossStats.WaveFrequency * bossStats.WaveAmplitude;
-        //    float targetAngle = Mathf.Atan2(-bossStats.Speed, cosineDerivative) * Mathf.Rad2Deg;
-
-        //    var headRb = bossBuilder.Body[0].GetComponent<Rigidbody2D>();
-        //    if (headRb != null)
-        //    {
-        //        bossBuilder.Body[0].transform.rotation = Quaternion.AngleAxis(targetAngle, Vector3.forward);
-        //        Vector2 direction = new Vector2(cosineDerivative, -bossStats.Speed).normalized;
-        //        headRb.velocity = direction * bossStats.Speed;
-        //    }
-        //}
-
-        //#if UNITY_EDITOR
-
         [Header("Zigzag Path")]
         public Vector2 spawnPoint = new Vector2(0, 5);
         public float width = 3.5f;
@@ -112,40 +90,6 @@ namespace Game.Controllers
         public float Offset = 0.2f;
 
         private Dictionary<int, (Vector3, Vector3, Vector3, Vector3)> controlPoints = new();
-
-        //private void OnDrawGizmosSelected()
-        //{
-        //    //controlPoints.Clear();
-        //    for (int n = 0; n < numCycles; n++)
-        //    {
-        //        controlPoints[n] = CalculateControlPoints(n);
-        //    }
-
-        //    Handles.color = Color.red;
-        //    Vector3 lastPoint = GetBezierPoint(0f);
-
-        //    float totalTime = numCycles * rangeTime;
-        //    int segments = numCycles * 50;
-
-        //    for (int i = 0; i < segments; i++)
-        //    {
-        //        float t = (i / (float)segments) * totalTime;
-        //        Vector3 currentPoint = GetBezierPoint(t);
-        //        Handles.DrawLine(lastPoint, currentPoint);
-        //        lastPoint = currentPoint;
-        //    }
-
-        //    Handles.color = Color.yellow;
-        //    foreach (var kvp in controlPoints)
-        //    {
-        //        var (An, Bn, Cn, Dn) = kvp.Value;
-        //        Handles.DrawWireCube(An, Vector3.one * 0.2f);
-        //        Handles.DrawWireCube(Bn, Vector3.one * 0.2f);
-        //        Handles.DrawWireCube(Cn, Vector3.one * 0.2f);
-        //        Handles.DrawWireCube(Dn, Vector3.one * 0.2f);
-        //    }
-        //}
-
         private void OnDrawGizmosSelected()
         {
             // Vẽ bezier lý thuyết (màu đỏ)
@@ -206,7 +150,7 @@ namespace Game.Controllers
                 Vector3 nextTarget = GetBezierPoint(time + deltaTime);
 
                 Vector2 direction = (nextTarget - currentTarget).normalized;
-                Vector2 velocity = direction * 0.6f;
+                Vector2 velocity = direction * 0.5f;
 
                 position += (Vector3)(velocity * deltaTime);
             }
