@@ -2,6 +2,7 @@ using UnityEngine;
 using Game.Events;
 using Game.Core;
 using System.IO;
+using System.IO.Enumeration;
 
 [System.Serializable]
 public class LevelSaveData
@@ -14,7 +15,8 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private TextAsset[] levelJsonFiles;
     private int currentLevel = 0;
     private bool levelCompleted = false;
-    private string SavePath => Path.Combine(Application.persistentDataPath, "level_progress.json");
+    //private string SavePath => Path.Combine(Application.persistentDataPath, "level_progress.json");
+    private string fileName = "level_progress.json";
 
     public static LevelManager Instance { get; private set; }
     public int CurrentLevel => currentLevel;
@@ -40,29 +42,17 @@ public class LevelManager : MonoBehaviour
 
     void SaveData()
     {
-        try
-        {
-            var saveData = new LevelSaveData { currentLevel = currentLevel};
-            File.WriteAllText(SavePath, JsonUtility.ToJson(saveData));
-        }
-        catch { Debug.LogError("Save failed"); }
+        var saveData = new LevelSaveData { currentLevel = currentLevel};
+        SaveManager.SaveData(saveData, fileName);
     }
 
     void LoadData()
     {
-        try
+        if (SaveManager.FileExists(fileName))
         {
-            if (File.Exists(SavePath))
-            {
-                var saveData = JsonUtility.FromJson<LevelSaveData>(File.ReadAllText(SavePath));
-                currentLevel = Mathf.Clamp(saveData.currentLevel, 0, levelJsonFiles.Length - 1);
-
-                Debug.Log("Level data loaded successfully");
-                Debug.Log(currentLevel);
-            }
-            else SaveData();
+            var saveData = SaveManager.LoadData<LevelSaveData>(fileName, new LevelSaveData());
         }
-        catch { currentLevel = 0; }
+        else SaveData();
     }
 
     public void StartCurrentLevel()

@@ -21,8 +21,8 @@ namespace Game.PowerUp
     public class LevelPowerUpManager : MonoBehaviour
     {
         Dictionary<PowerUpType, int> levelPowerUps = new Dictionary<PowerUpType, int>();
-        private string saveFileName = "powerup_levels.json";
-        private string SavePath => Path.Combine(Application.persistentDataPath, saveFileName);
+        private string fileName = "powerup_levels.json";
+        //private string SavePath => Path.Combine(Application.persistentDataPath, saveFileName);
 
         #region Singleton
         public static LevelPowerUpManager Instance { get; private set; }
@@ -49,57 +49,79 @@ namespace Game.PowerUp
 
         public void SaveData()
         {
-            try
-            {
-                PowerUpSaveData saveData = new PowerUpSaveData();
+            //try
+            //{
+            //    PowerUpSaveData saveData = new PowerUpSaveData();
 
-                foreach (var kvp in levelPowerUps)
+            //    foreach (var kvp in levelPowerUps)
+            //    {
+            //        saveData.powerUpLevels.Add(new PowerUpLevel
+            //        {
+            //            type = kvp.Key,
+            //            level = kvp.Value
+            //        });
+            //    }
+
+            //    string jsonData = JsonUtility.ToJson(saveData, true);
+            //    File.WriteAllText(SavePath, jsonData);
+
+            //    Debug.Log($"PowerUp levels saved to: {SavePath}");
+            //}
+            //catch (System.Exception e)
+            //{
+            //    Debug.LogError($"Failed to save: {e.Message}");
+            //}
+
+            var saveData = new PowerUpSaveData();
+            foreach (var kvp in levelPowerUps)
+            {
+                saveData.powerUpLevels.Add(new PowerUpLevel
                 {
-                    saveData.powerUpLevels.Add(new PowerUpLevel
-                    {
-                        type = kvp.Key,
-                        level = kvp.Value
-                    });
-                }
+                    type = kvp.Key,
+                    level = kvp.Value
+                });
 
-                string jsonData = JsonUtility.ToJson(saveData, true);
-                File.WriteAllText(SavePath, jsonData);
-
-                Debug.Log($"PowerUp levels saved to: {SavePath}");
-            }
-            catch (System.Exception e)
-            {
-                Debug.LogError($"Failed to save: {e.Message}");
+                SaveManager.SaveData(saveData, fileName);
             }
         }
 
         public void LoadData()
         {
-            try
+            //try
+            //{
+            //    if (File.Exists(SavePath))
+            //    {
+            //        string jsonData = File.ReadAllText(SavePath);
+            //        PowerUpSaveData saveData = JsonUtility.FromJson<PowerUpSaveData>(jsonData);
+
+            //        levelPowerUps.Clear();
+
+            //        foreach (var powerUpLevel in saveData.powerUpLevels)
+            //        {
+            //            levelPowerUps[powerUpLevel.type] = powerUpLevel.level;
+            //        }
+
+            //        Debug.Log("Load successfully");
+            //    }
+            //    else
+            //    {
+            //        InitializeDefaultValues();
+            //        SaveData(); 
+            //    }
+            //}
+            //catch (System.Exception e)
+            //{
+            //    Debug.LogError($"Failed to load: {e.Message}");
+            //    InitializeDefaultValues();
+            //}
+            var data = SaveManager.LoadData<PowerUpSaveData>(fileName, new PowerUpSaveData());
+            foreach(var kvp in data.powerUpLevels)
             {
-                if (File.Exists(SavePath))
-                {
-                    string jsonData = File.ReadAllText(SavePath);
-                    PowerUpSaveData saveData = JsonUtility.FromJson<PowerUpSaveData>(jsonData);
-
-                    levelPowerUps.Clear();
-
-                    foreach (var powerUpLevel in saveData.powerUpLevels)
-                    {
-                        levelPowerUps[powerUpLevel.type] = powerUpLevel.level;
-                    }
-
-                    Debug.Log("Load successfully");
-                }
-                else
-                {
-                    InitializeDefaultValues();
-                    SaveData(); 
-                }
+                levelPowerUps[kvp.type] = kvp.level;
             }
-            catch (System.Exception e)
+
+            if(data.powerUpLevels.Count == 0)
             {
-                Debug.LogError($"Failed to load: {e.Message}");
                 InitializeDefaultValues();
             }
         }
