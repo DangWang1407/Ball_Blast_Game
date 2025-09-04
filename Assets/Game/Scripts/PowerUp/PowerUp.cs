@@ -8,14 +8,16 @@ namespace Game.PowerUp
 {
     public class PowerUp : MonoBehaviour
     {
-        //[SerializeField] private PowerUpType powerUpType;
+        [SerializeField] private PowerUpType powerUpType;
         [SerializeField] private TargetType targetType;
 
         private PowerUpEffect powerUpEffect;
+        private PowerUpStats powerUpStats;
 
         private void Start()
         {
             powerUpEffect = GetComponent<PowerUpEffect>();
+            powerUpStats = GetComponent<PowerUpStats>();
             //powerUpEffect.enabled = true;
             //Debug.Log(powerUpEffect.ToString());
         }
@@ -63,28 +65,36 @@ namespace Game.PowerUp
         //    return (float)(ratioMin + ratioStep * index);
         //}
 
-
-
-        //private void AddComponentToTarget(GameObject target)
-        //{
-        //    Debug.Log($"Game.PowerUp.{powerUpType}");
-        //    Type effectType = Type.GetType($"Game.PowerUp.{powerUpType}");
-        //    if (effectType == null) return;
-        //    target.AddComponent(effectType);
-        //}
-
         private void AddComponentToTarget(GameObject target)
         {
-            //Debug.Log(target);
-            //Debug.Log(powerUpEffect.GetType().Name);
-            Component newEffect = target.AddComponent(powerUpEffect.GetType());
-            //Debug.Log(newEffect.gameObject);
-            if (newEffect != null)
-            {
-                //Debug.Log("Efect not null");
-                var json = JsonUtility.ToJson(powerUpEffect);
-                JsonUtility.FromJsonOverwrite(json, newEffect);
-            }
+            // //Debug.Log(target);
+            // //Debug.Log(powerUpEffect.GetType().Name);
+            // Component newEffect = target.AddComponent(powerUpEffect.GetType());
+            // Component newStats = target.AddComponent(powerUpStats.GetType());
+            // //Debug.Log(newEffect.gameObject);
+            // if (newStats != null && powerUpStats != null)
+            // {
+            //     //Debug.Log("Stats not null");
+            //     var json = JsonUtility.ToJson(powerUpStats);
+            //     JsonUtility.FromJsonOverwrite(json, newStats);
+            // }
+            // if (newEffect != null)
+            // {
+            //     //Debug.Log("Efect not null");
+            //     var json = JsonUtility.ToJson(powerUpEffect);
+            //     JsonUtility.FromJsonOverwrite(json, newEffect);
+            // }
+
+            Debug.Log($"Game.PowerUp.{powerUpType}");
+            Debug.Log($"Game.PowerUp.{powerUpType}Stats");
+
+            Type statsType = Type.GetType($"Game.PowerUp.{powerUpType}Stats");
+            if (statsType == null) return;
+            target.AddComponent(statsType);
+            
+            Type effectType = Type.GetType($"Game.PowerUp.{powerUpType}");
+            if (effectType == null) return;
+            target.AddComponent(effectType);
         }
     }
 

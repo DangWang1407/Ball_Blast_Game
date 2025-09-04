@@ -506,7 +506,7 @@ GameObject:
   - component: {fileID: 195966302}
   m_Layer: 0
   m_Name: MissileEffect
-  m_TagString: Untagged
+  m_TagString: MissileEffect
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1216,7 +1216,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &634013866
 Transform:
   m_ObjectHideFlags: 0
@@ -1273,7 +1273,7 @@ MonoBehaviour:
   height: 1.8
   rangeTime: 10
   numCycles: 10
-  Offset: 0.2
+  Offset: 0.6
 --- !u!114 &634013870
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4516,6 +4516,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -6408317970474913502, guid: 57c9733111d359f459020284393deef8, type: 3}
+      propertyPath: powerUpType
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 619178647469489036, guid: 57c9733111d359f459020284393deef8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -4556,6 +4560,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2355282909550228133, guid: 57c9733111d359f459020284393deef8, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2364482105492448672, guid: 57c9733111d359f459020284393deef8, type: 3}
       propertyPath: m_Name
       value: BounceShot
@@ -4564,7 +4572,9 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2434438342548355800, guid: 57c9733111d359f459020284393deef8, type: 3}
+    - {fileID: 2355282909550228133, guid: 57c9733111d359f459020284393deef8, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

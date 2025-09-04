@@ -14,18 +14,24 @@ namespace Game.PowerUp
 
         protected override void OnActivate()
         {
-            if (gameObject.CompareTag("Missile"))
+            powerUpType = PowerUpType.BounceShot;
+            levelPowerUpManager = GameObject.FindWithTag("Player").GetComponent<LevelPowerUp>();
+           
+            currentLevel = levelPowerUpManager.GetLevel(PowerUpType.BounceShot);
+            bounceShotStats = GetComponent<BounceShotStats>();
+            if (bounceShotStats != null)
             {
-                missileCollision = GetComponent<MissileCollision>();
-                if (missileCollision != null)
-                {
-                    missileCollision.AddBehavior(this);
-                    isEffectActive = true;
-
-                    // Reset bounce count khi activate
-                    ResetBounceCount();
-                }
+                timer = bounceShotStats.GetDuration(currentLevel);
             }
+            
+            missileCollision = GetComponent<MissileCollision>();
+            if (missileCollision != null)
+            {
+                missileCollision.AddBehavior(this);
+                isEffectActive = true;
+
+                ResetBounceCount();
+            }            
         }
 
         public void ResetBounceCount()
@@ -43,19 +49,19 @@ namespace Game.PowerUp
 
         protected override void OnTriggerEnter2D(Collider2D collision)
         {
-            base.OnTriggerEnter2D(collision);
-            if (collision.CompareTag("Player"))
-            {
-                powerUpType = PowerUpType.BounceShot;
+            // base.OnTriggerEnter2D(collision);
+            // if (collision.CompareTag("Player"))
+            // {
+            //     powerUpType = PowerUpType.BounceShot;
 
-                if (gameObject.CompareTag("PowerUp"))
-                {
-                    currentLevel = levelPowerUpManager.GetLevel(PowerUpType.BounceShot);
-                    bounceShotStats = GetComponent<BounceShotStats>();
+                // if (gameObject.CompareTag("PowerUp"))
+                // {
+                    // currentLevel = levelPowerUpManager.GetLevel(PowerUpType.BounceShot);
+                    // bounceShotStats = GetComponent<BounceShotStats>();
 
-                    timer = bounceShotStats.GetDuration(currentLevel);
-                }
-            }
+                    // timer = bounceShotStats.GetDuration(currentLevel);
+                // }
+            // }
         }
 
         protected override void OnDeactivate()
