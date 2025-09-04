@@ -3,20 +3,20 @@ using UnityEngine;
 
 namespace Game.PowerUp
 {
-    public class PierceShot : PowerUpEffect
+    public class PierceShot : PowerUpEffect, IMissileCollisionBehavior
     {
-        private bool originalCanPierce;
-        private MissileStats missileStats;
         private PierceShotStats pierceShotStats;
+        private MissileCollision missileCollision;
 
         protected override void OnActivate()
         {
             if (gameObject.CompareTag("Missile"))
             {
-                missileStats = GetComponent<MissileStats>();
-                originalCanPierce = missileStats.CanPierce;
-
-                missileStats.CanPierce = true;
+                missileCollision = GetComponent<MissileCollision>();
+                if (missileCollision != null)
+                {
+                    missileCollision.AddBehavior(this);
+                }
             }
         }
 
@@ -39,10 +39,26 @@ namespace Game.PowerUp
 
         protected override void OnDeactivate()
         {
-            if (gameObject.CompareTag("Missile"))
+            if (missileCollision != null)
             {
-                missileStats.CanPierce = originalCanPierce;
+                missileCollision.RemoveBehavior(this);
             }
+        }
+
+        public bool HandleWallCollision(Collider2D wall, MissileMovement movement)
+        {
+            return false;
+        }
+
+        public bool HandleGroundCollision(Collider2D ground, MissileMovement movement)
+        {
+            return false;
+        }
+
+        public bool HandleMeteorCollision(Collider2D meteor)
+        {
+            return true;
         }
     }
 }
+

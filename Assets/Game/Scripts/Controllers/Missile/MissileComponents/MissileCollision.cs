@@ -1,3 +1,4 @@
+﻿using System.Collections.Generic;
 using Game.Events;
 using UnityEngine;
 
@@ -10,8 +11,7 @@ namespace Game.Controllers
         private MissilePooling missilePooling;
         private MissileStats missileStats;
 
-        private int bounceLeft = 0;
-        private bool canBounce = false;
+        private List<IMissileCollisionBehavior> collisionBehaviors = new();
 
         public void Initialize(MissileController missileController)
         {
@@ -19,34 +19,36 @@ namespace Game.Controllers
             missileMovement = GetComponent<MissileMovement>();
             missilePooling = GetComponent<MissilePooling>();
             missileStats = GetComponent<MissileStats>();
-
-            bounceLeft = missileStats.CanBounce ? 3 : 0;
         }
 
-        public void Update()
+        public void AddBehavior(IMissileCollisionBehavior behavior)
         {
-            canBounce = missileStats.CanBounce;
+            if (!collisionBehaviors.Contains(behavior))
+            {
+                collisionBehaviors.Add(behavior);
+            }
         }
 
-        public void OnSpawned()
+        public void RemoveBehavior(IMissileCollisionBehavior behavior)
         {
-            bounceLeft = missileStats.CanBounce ? 3 : 0;
+            collisionBehaviors.Remove(behavior);
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (!missileController.IsActive) return;
-            if(collision.CompareTag("Wall"))
+
+            if (collision.CompareTag("Wall"))
             {
                 HandleWallCollision(collision);
             }
 
-            if(collision.CompareTag("Ground") || collision.CompareTag("UpBounce"))
+            if (collision.CompareTag("Ground") || collision.CompareTag("UpBounce"))
             {
                 HandleGroundCollision(collision);
             }
 
-            if(collision.CompareTag("Meteor"))
+            if (collision.CompareTag("Meteor"))
             {
                 HandleMeteorCollision(collision);
             }
@@ -54,12 +56,19 @@ namespace Game.Controllers
 
         private void HandleWallCollision(Collider2D collision)
         {
-            if (canBounce && bounceLeft > 0)
+            // Cho behaviors xử lý trước
+            bool handled = false;
+            foreach (var behavior in collisionBehaviors)
             {
-                bounceLeft--;
-                missileMovement.Reflect(collision.transform.right);
+                if (behavior.HandleWallCollision(collision, missileMovement))
+                {
+                    handled = true;
+                    break; 
+                }
             }
-            else
+
+            // Default behavior
+            if (!handled)
             {
                 missilePooling.DestroyMissile();
             }
@@ -67,12 +76,17 @@ namespace Game.Controllers
 
         private void HandleGroundCollision(Collider2D collision)
         {
-            if(canBounce && bounceLeft > 0)
+            bool handled = false;
+            foreach (var behavior in collisionBehaviors)
             {
-                bounceLeft--;
-                missileMovement.Reflect(collision.transform.up);
+                if (behavior.HandleGroundCollision(collision, missileMovement))
+                {
+                    handled = true;
+                    break;
+                }
             }
-            else
+
+            if (!handled)
             {
                 missilePooling.DestroyMissile();
             }
@@ -80,10 +94,19 @@ namespace Game.Controllers
 
         private void HandleMeteorCollision(Collider2D collision)
         {
-            if(!missileStats.CanPierce)
+            bool handled = false;
+            foreach (var behavior in collisionBehaviors)
             {
-                //Debug.Log(missileStats.CanPierce);
-                missilePooling.DestroyMissile();
+                if (behavior.HandleMeteorCollision(collision))
+                {
+                    handled = true;
+                    break;
+                }
+            }
+
+            if (!handled)
+            {
+                 missilePooling.DestroyMissile();
             }
         }
     }

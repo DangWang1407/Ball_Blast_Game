@@ -1,22 +1,43 @@
-using Game.Controllers;
+﻿using Game.Controllers;
 using UnityEngine;
 
 namespace Game.PowerUp
 {
-    public class BounceShot : PowerUpEffect
+    public class BounceShot : PowerUpEffect, IMissileCollisionBehavior
     {
-        private bool originalCanBounce;
-        private MissileStats missileStats;
         private BounceShotStats bounceShotStats;
+        private MissileCollision missileCollision;
+
+        private int maxBounces = 3;
+        private int bounceLeft = 0;
+        private bool isEffectActive = false; 
 
         protected override void OnActivate()
         {
             if (gameObject.CompareTag("Missile"))
             {
-                missileStats = GetComponent<MissileStats>();
-                originalCanBounce = missileStats.CanBounce;
+                missileCollision = GetComponent<MissileCollision>();
+                if (missileCollision != null)
+                {
+                    missileCollision.AddBehavior(this);
+                    isEffectActive = true;
 
-                missileStats.CanBounce = true;
+                    // Reset bounce count khi activate
+                    ResetBounceCount();
+                }
+            }
+        }
+
+        public void ResetBounceCount()
+        {
+            bounceLeft = GetBounceCount(currentLevel);
+        }
+
+        void OnEnable()
+        {
+            if (isEffectActive && gameObject.CompareTag("Missile"))
+            {
+                ResetBounceCount();
             }
         }
 
@@ -39,10 +60,47 @@ namespace Game.PowerUp
 
         protected override void OnDeactivate()
         {
-            if (gameObject.CompareTag("Missile"))
+            isEffectActive = false;
+            if (missileCollision != null)
             {
-                missileStats.CanBounce = originalCanBounce;
+                missileCollision.RemoveBehavior(this);
             }
+        }
+
+        public bool HandleWallCollision(Collider2D wall, MissileMovement movement)
+        {
+            if (bounceLeft > 0)
+            {
+                bounceLeft--;
+                movement.Reflect(wall.transform.right);
+
+                return true; 
+            }
+            return false;
+        }
+
+        public bool HandleGroundCollision(Collider2D ground, MissileMovement movement)
+        {
+            if (bounceLeft > 0)
+            {
+                bounceLeft--;
+                movement.Reflect(ground.transform.up);
+
+                return true;
+            }
+            return false;
+        }
+
+        public bool HandleMeteorCollision(Collider2D meteor)
+        {
+            return false;
+        }
+
+        private int GetBounceCount(int level)
+        {
+            if (bounceShotStats != null)
+                return bounceShotStats.GetMaxBounces(level);
+            return maxBounces;
         }
     }
 }

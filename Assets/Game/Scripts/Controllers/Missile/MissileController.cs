@@ -57,7 +57,7 @@ namespace Game.Controllers
         public void OnSpawned()
         {
             isActive = true;
-            missileCollision?.OnSpawned();
+            //missileCollision?.OnSpawned();
         }
 
         public void OnDespawned()

@@ -37,7 +37,7 @@ namespace Game.Controllers
                 motor = wheels[0].motor;
         }
 
-        public void FixedUpdate()
+        public void OnFixedUpdate()
         {
             HandleMovement();
             HandleWheels();

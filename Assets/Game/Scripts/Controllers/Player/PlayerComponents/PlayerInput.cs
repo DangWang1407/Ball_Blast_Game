@@ -16,7 +16,7 @@ namespace Game.Controllers
             EventManager.Subscribe<PlayerInputEvent>(OnPlayerInput);
         }
 
-        public void Update()
+        public void OnUpdate()
         {
             HandleLegacyInput();
         }
@@ -41,7 +41,7 @@ namespace Game.Controllers
             }
         }
 
-        public void OnDestroy()
+        public void OnDestroyPlayerInput()
         {
             EventManager.Unsubscribe<PlayerInputEvent>(OnPlayerInput);
         }

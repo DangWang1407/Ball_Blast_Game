@@ -42,17 +42,17 @@ namespace Game.Controllers
 
         private void Update()
         {
-            playerInput.Update();
+            playerInput.OnUpdate();
         }
 
         private void FixedUpdate()
         {
-            playerMovement.FixedUpdate();
+            playerMovement.OnFixedUpdate();
         }
 
         private void OnDestroy()
         {
-            playerInput.OnDestroy();
+            playerInput.OnDestroyPlayerInput();
         }
     }
 }

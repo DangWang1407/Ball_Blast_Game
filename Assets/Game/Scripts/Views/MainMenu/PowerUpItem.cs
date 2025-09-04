@@ -1,3 +1,4 @@
+using Game.Scriptable;
 using TMPro;
 using Unity;
 using UnityEngine;
@@ -12,5 +13,14 @@ namespace Game.Views
         private TMP_Text levelText;
         private TMP_Text descriptionText;
         private Button upgrade;
+
+        private InventoryPage inventoryPage;
+
+        public void Initialize(PowerUpData data, InventoryPage inventorypage)
+        {
+            this.inventoryPage = inventorypage;
+
+
+        }
     }
 }

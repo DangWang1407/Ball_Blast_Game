@@ -1255,7 +1255,7 @@ MonoBehaviour:
   waveAmplitude: 15
   waveFrequency: 0.5
   enableCollapseBackward: 1
-  collapseAnimationSpeed: 0.4
+  collapseAnimationSpeed: 1
 --- !u!114 &634013869
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4562,7 +4562,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2364482105492448672, guid: 57c9733111d359f459020284393deef8, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
