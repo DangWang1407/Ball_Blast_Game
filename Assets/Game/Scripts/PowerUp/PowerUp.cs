@@ -88,13 +88,13 @@ namespace Game.PowerUp
             Debug.Log($"Game.PowerUp.{powerUpType}");
             Debug.Log($"Game.PowerUp.{powerUpType}Stats");
 
-            Type statsType = Type.GetType($"Game.PowerUp.{powerUpType}Stats");
-            if (statsType == null) return;
-            target.AddComponent(statsType);
+            // Type statsType = Type.GetType($"Game.PowerUp.{powerUpType}Stats");
+            // if (statsType == null) return;
+            // target.AddComponent(statsType);
             
-            Type effectType = Type.GetType($"Game.PowerUp.{powerUpType}");
-            if (effectType == null) return;
-            target.AddComponent(effectType);
+            // Type effectType = Type.GetType($"Game.PowerUp.{powerUpType}");
+            // if (effectType == null) return;
+            // target.AddComponent(effectType);
         }
     }
 

@@ -2,6 +2,7 @@ using Game.PowerUp;
 using Game.Services;
 using System.Collections.Generic;
 using UnityEngine;
+using Game.PowerUpV2;
 
 namespace Game.Controllers
 {
@@ -10,15 +11,27 @@ namespace Game.Controllers
 
         private MissileEffectList missileEffectList;
 
-
-
         private WeaponController weaponController;
+        private PowerUpManager powerUpManager;
         public void Initialize(WeaponController weaponController)
         {
             this.weaponController = weaponController;
             CreatePool();
 
             missileEffectList = GetComponent<MissileEffectList>();
+
+            // Try find PowerUpManager
+            powerUpManager = GetComponentInParent<Game.PowerUpV2.PowerUpManager>();
+            Debug.Log("PowerUpManager found in parent: " + (powerUpManager != null));
+            if (powerUpManager == null)
+            {
+                var player = GameObject.FindWithTag("Player");
+                powerUpManager = player != null ? player.GetComponent<Game.PowerUpV2.PowerUpManager>() : null;
+                if (powerUpManager == null)
+                {
+                    Debug.LogWarning("PowerUpManager not found in WeaponPooling");
+                }
+            }
         }
 
         private void CreatePool()
@@ -46,8 +59,28 @@ namespace Game.Controllers
                 missileController.Initialize("Missiles_" + missileIndex, direction);
                 //missileController.SetVelocity(direction);
 
-                //Apply missile effect here
-                missileEffectList.ApplyEffect(missile);
+                // Apply new PowerUpV2 effects for all active power-ups
+                if (powerUpManager != null)
+                {
+                    // Ensure missile listens to power-up expiration to remove behaviors
+                    if (missile.GetComponent<MissilePowerUpSubscriber>() == null)
+                    {
+                        missile.AddComponent<MissilePowerUpSubscriber>();
+                    }
+                    foreach (var state in powerUpManager.GetActiveStates())
+                    {
+                        if (state.definition is Game.PowerUpV2.IMissileSpawnApplier applier)
+                        {
+                            applier.ApplyToMissile(missile, state.level);
+                        }
+                    }
+                }
+
+                // Backward-compat: only apply legacy V1 effects if no V2 manager
+                if (powerUpManager == null && missileEffectList != null)
+                {
+                    missileEffectList.ApplyEffect(missile);
+                }
             }
         }
     }
