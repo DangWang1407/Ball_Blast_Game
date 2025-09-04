@@ -1,29 +1,57 @@
 using Game.PowerUp;
+using Game.Scriptable;
 using System.Collections.Generic;
-using Unity;
 using UnityEngine;
 
 namespace Game.Views
 {
     public class InventoryPage : MonoBehaviour
     {
-        [SerializeField] private GameObject prefab;
-        [SerializeField] private Transform container;
- 
-        Dictionary<PowerUpType, PowerUpItem> powerUpItems = new Dictionary<PowerUpType, PowerUpItem>();
+        [Header("UI References")]
+        [SerializeField] private Transform contentParent;
+        [SerializeField] private GameObject powerUpItemPrefab;
 
-        private void Initialize()
+        [Header("Data")]
+        [SerializeField] private List<PowerUpData> powerUpDataList = new List<PowerUpData>();
+
+        private void OnEnable()
         {
-
+            BuildList();
         }
 
-        private void Create(PowerUpItem item)
+        public void BuildList()
         {
-            GameObject objItem = Instantiate(prefab, container);
-            var powerUpItem = objItem.GetComponent<PowerUpItem>();
-            if(powerUpItem == null)
+            if (contentParent == null || powerUpItemPrefab == null)
             {
-                powerUpItem = objItem.AddComponent<PowerUpItem>();
+                Debug.LogWarning("InventoryPage: Missing UI references.");
+                return;
+            }
+
+            // Clear existing items
+            for (int i = contentParent.childCount - 1; i >= 0; i--)
+            {
+                Destroy(contentParent.GetChild(i).gameObject);
+            }
+
+            // Ensure manager exists
+            if (LevelPowerUpManager.Instance == null)
+            {
+                Debug.LogWarning("LevelPowerUpManager instance not found.");
+                return;
+            }
+
+            // Build items in the order of provided data list
+            foreach (var data in powerUpDataList)
+            {
+                if (data == null) continue;
+
+                int currentLevel = LevelPowerUpManager.Instance.GetLevel(data.powerUpType);
+                var go = Instantiate(powerUpItemPrefab, contentParent);
+                var item = go.GetComponent<PowerUpItem>();
+                if (item != null)
+                {
+                    item.Initialize(data, currentLevel, this);
+                }
             }
         }
     }
