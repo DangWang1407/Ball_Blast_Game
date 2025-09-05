@@ -12,9 +12,7 @@ GameObject:
   - component: {fileID: 2726929284745159372}
   - component: {fileID: 4551349015288597042}
   - component: {fileID: 2533812120612778009}
-  - component: {fileID: -4729750712731585922}
-  - component: {fileID: 2689998221974700124}
-  - component: {fileID: 8186050470797415555}
+  - component: {fileID: 2773964095292209821}
   m_Layer: 0
   m_Name: RapidFire
   m_TagString: PowerUp
@@ -151,7 +149,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &-4729750712731585922
+--- !u!114 &2773964095292209821
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -160,34 +158,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2338567495673281401}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d4001800c8f3974a89678f98f1d926b, type: 3}
+  m_Script: {fileID: 11500000, guid: 1575de9babf2a174586064d9a8df7e24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetType: 1
---- !u!114 &2689998221974700124
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2338567495673281401}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 406abdd1955cff749b21758d0c76f2d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &8186050470797415555
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2338567495673281401}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 908b29a03d5f1924fb6c25976f14930b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseDuration: 20
-  baseFireRateMultiplier: 4
-  levelScale: 1
+  definition: {fileID: 11400000, guid: 340f263fdcac9464fbbfedd5c041a71a, type: 2}
+  level: 1
+  usePlayerLevel: 1

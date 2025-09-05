@@ -9,9 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b760d5a26d94954db8243381534fa02, type: 3}
-  m_Name: Homing
+  m_Script: {fileID: 11500000, guid: 63660a66ac14ff64ea6b0b61ff9bac57, type: 3}
+  m_Name: PowerShotDefinition
   m_EditorClassIdentifier: 
-  powerUpType: 4
-  powerUpName: Homing
-  icon: {fileID: -11060083, guid: a00ebd2637cc7c6449daaf86bf3e10db, type: 3}
+  powerUpType: 7
+  baseDuration: 10
+  durationPerLevel: 5
+  baseScaleMultiplier: 1.3
+  levelScale: 1
+  scalePerLevel: 0.2

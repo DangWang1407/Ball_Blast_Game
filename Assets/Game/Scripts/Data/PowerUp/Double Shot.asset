@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Double Shot
   m_EditorClassIdentifier: 
   powerUpType: 1
-  duration: 20
+  powerUpName: Double Shot
+  icon: {fileID: -1620265219, guid: a00ebd2637cc7c6449daaf86bf3e10db, type: 3}

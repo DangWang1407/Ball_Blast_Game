@@ -9,9 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b760d5a26d94954db8243381534fa02, type: 3}
-  m_Name: Homing
+  m_Script: {fileID: 11500000, guid: 8e0aac6555eb15a4591a8df8e9fd3be4, type: 3}
+  m_Name: RapidFireDefinition
   m_EditorClassIdentifier: 
-  powerUpType: 4
-  powerUpName: Homing
-  icon: {fileID: -11060083, guid: a00ebd2637cc7c6449daaf86bf3e10db, type: 3}
+  powerUpType: 0
+  baseDuration: 10
+  durationPerLevel: 5
+  baseFireRateMultiplier: 4
+  levelScale: 1
+  perLevel: 0.1

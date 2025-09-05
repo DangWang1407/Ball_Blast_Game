@@ -5,8 +5,8 @@ namespace Game.PowerUpV2
     [CreateAssetMenu(fileName = "HomingShotDefinition", menuName = "PowerUps/Homing Shot Definition")]
     public class HomingShotDefinition : PowerUpDefinition, IMissileSpawnApplier
     {
-        [SerializeField] private float baseHomingRate = 0.5f; // seconds between retargets (lower is better)
-        [SerializeField] private float baseRotationSpeed = 5f; // slerp speed
+        [SerializeField] private float baseHomingRate = 0.5f; 
+        [SerializeField] private float baseRotationSpeed = 5f; 
         [SerializeField] private float levelScale = 1f;
 
         public float GetHomingRate(int level)

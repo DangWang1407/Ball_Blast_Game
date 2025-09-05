@@ -12,9 +12,7 @@ GameObject:
   - component: {fileID: 2630514913887903349}
   - component: {fileID: 4367118113876652621}
   - component: {fileID: 8277603899251087547}
-  - component: {fileID: -6408317970474913502}
-  - component: {fileID: 2355282909550228133}
-  - component: {fileID: 2434438342548355800}
+  - component: {fileID: 9104582245490013149}
   m_Layer: 0
   m_Name: BounceShot
   m_TagString: PowerUp
@@ -151,7 +149,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &-6408317970474913502
+--- !u!114 &9104582245490013149
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -160,35 +158,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2364482105492448672}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d4001800c8f3974a89678f98f1d926b, type: 3}
+  m_Script: {fileID: 11500000, guid: 1575de9babf2a174586064d9a8df7e24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetType: 2
---- !u!114 &2355282909550228133
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2364482105492448672}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87e8bdf228c641445931da6d7cbb4db2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  powerUpType: 5
-  timer: 0
---- !u!114 &2434438342548355800
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2364482105492448672}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: abd7b575e65c3dc4782d87bf544ee332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseDuration: 20
-  levelScale: 1
+  definition: {fileID: 11400000, guid: 8df20c72394f0094c92e2db2b699b8bd, type: 2}
+  level: 1
+  usePlayerLevel: 1

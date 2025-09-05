@@ -138,7 +138,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &32265082
 Transform:
   m_ObjectHideFlags: 0
@@ -1112,26 +1112,6 @@ MonoBehaviour:
   - {fileID: 8433698183133804979, guid: c9b5b74ca5d14af4eb33f9e4376bb6f1, type: 3}
   - {fileID: 2338567495673281401, guid: 59172d89dd342ce4fa12a98fa4af4a34, type: 3}
   - {fileID: 4994425700803436148, guid: 6bbd843a7cd3e8741a1bc90ac24ccdd3, type: 3}
---- !u!1 &558033525 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2364482105492448672, guid: 57c9733111d359f459020284393deef8, type: 3}
-  m_PrefabInstance: {fileID: 1071904732208317537}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &558033533
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 558033525}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1575de9babf2a174586064d9a8df7e24, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  definition: {fileID: 11400000, guid: 8df20c72394f0094c92e2db2b699b8bd, type: 2}
-  level: 1
-  usePlayerLevel: 1
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -4697,10 +4677,7 @@ PrefabInstance:
     - {fileID: -6408317970474913502, guid: 57c9733111d359f459020284393deef8, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2364482105492448672, guid: 57c9733111d359f459020284393deef8, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 558033533}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 57c9733111d359f459020284393deef8, type: 3}
 --- !u!1001 &6976045328820637287
 PrefabInstance:

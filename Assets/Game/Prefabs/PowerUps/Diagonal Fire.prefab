@@ -12,9 +12,7 @@ GameObject:
   - component: {fileID: 4851633025568337529}
   - component: {fileID: 5611845179542581258}
   - component: {fileID: 6710188724163158763}
-  - component: {fileID: 1703279844217901058}
-  - component: {fileID: -4807102562718820305}
-  - component: {fileID: 6067389096693183607}
+  - component: {fileID: 6225194585853188980}
   m_Layer: 0
   m_Name: Diagonal Fire
   m_TagString: PowerUp
@@ -151,7 +149,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &1703279844217901058
+--- !u!114 &6225194585853188980
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -160,37 +158,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 6094241772701710220}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d4001800c8f3974a89678f98f1d926b, type: 3}
+  m_Script: {fileID: 11500000, guid: 1575de9babf2a174586064d9a8df7e24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetType: 1
---- !u!114 &-4807102562718820305
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6094241772701710220}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13c133fcff231f040b9d6043f096a6c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  powerUpType: 3
-  timer: 0
---- !u!114 &6067389096693183607
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6094241772701710220}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69287af2c1060774790f346dd5e855e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseDuration: 20
-  baseExtraMissileCount: 2
-  baseFireRateMultiplier: 1.2
-  levelScale: 1
+  definition: {fileID: 11400000, guid: 7921421ec2f8a51458e9a5301ecad509, type: 2}
+  level: 1
+  usePlayerLevel: 1

@@ -7,14 +7,13 @@ namespace Game.Views
 {
     public class InventoryPage : MonoBehaviour
     {
-        [Header("UI References")]
         [SerializeField] private Transform contentParent;
         [SerializeField] private GameObject powerUpItemPrefab;
 
-        [Header("Data")]
+
         [SerializeField] private List<PowerUpData> powerUpDataList = new List<PowerUpData>();
 
-        private void OnEnable()
+        private void Awake()
         {
             BuildList();
         }
@@ -27,26 +26,22 @@ namespace Game.Views
                 return;
             }
 
-            // Clear existing items
-            for (int i = contentParent.childCount - 1; i >= 0; i--)
-            {
-                Destroy(contentParent.GetChild(i).gameObject);
-            }
-
-            // Ensure manager exists
             if (LevelPowerUpManager.Instance == null)
             {
                 Debug.LogWarning("LevelPowerUpManager instance not found.");
                 return;
             }
 
-            // Build items in the order of provided data list
             foreach (var data in powerUpDataList)
             {
+                Debug.Log("Processing PowerUpData: " + (data != null ? data.powerUpName : "null"));
                 if (data == null) continue;
 
                 int currentLevel = LevelPowerUpManager.Instance.GetLevel(data.powerUpType);
-                var go = Instantiate(powerUpItemPrefab, contentParent);
+                var go = Instantiate(powerUpItemPrefab, contentParent, false);
+
+                // var rt = go.transform as RectTransform;
+                // if (rt != null) rt.localScale = Vector3.one;
                 var item = go.GetComponent<PowerUpItem>();
                 if (item != null)
                 {

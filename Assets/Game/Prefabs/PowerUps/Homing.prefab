@@ -12,9 +12,7 @@ GameObject:
   - component: {fileID: 5741760492291401362}
   - component: {fileID: 2907225236379270275}
   - component: {fileID: 3593267898562029698}
-  - component: {fileID: -129383315427406420}
-  - component: {fileID: 4895855448235390809}
-  - component: {fileID: 1348800592116854054}
+  - component: {fileID: 5912774596932471271}
   m_Layer: 0
   m_Name: Homing
   m_TagString: PowerUp
@@ -151,7 +149,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &-129383315427406420
+--- !u!114 &5912774596932471271
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -160,37 +158,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1891839965848136852}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d4001800c8f3974a89678f98f1d926b, type: 3}
+  m_Script: {fileID: 11500000, guid: 1575de9babf2a174586064d9a8df7e24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetType: 2
---- !u!114 &4895855448235390809
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1891839965848136852}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06e1c0281609e52458d1026f11068a76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  powerUpType: 4
-  timer: 0
---- !u!114 &1348800592116854054
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1891839965848136852}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7993a31b16370a498975826a7b837f3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseDuration: 20
-  baseHomingRate: 0.5
-  baseRotationSpeed: 5
-  levelScale: 1
+  definition: {fileID: 11400000, guid: b0d02c2e97401e246a41e8b1bc4057c1, type: 2}
+  level: 1
+  usePlayerLevel: 1
