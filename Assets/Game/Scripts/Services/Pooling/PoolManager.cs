@@ -60,6 +60,8 @@ namespace Game.Services
                 return;
             }
             Transform container = new GameObject($"{poolName}_Container").transform;
+            // Ensure containers persist with PoolManager across scene loads
+            container.SetParent(transform);
             pools[poolName] = new ObjectPool(poolName, prefab, container, initialSize, maxSize, autoExpand);
         }
         #endregion

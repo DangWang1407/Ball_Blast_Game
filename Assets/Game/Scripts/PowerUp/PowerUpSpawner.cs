@@ -2,6 +2,7 @@ using UnityEngine;
 using Game.Events;
 using Game.Core;
 using Game.Controllers;
+using Game.PowerUpV2;
 using System.Collections.Generic;
 
 namespace Game.PowerUp
@@ -12,7 +13,7 @@ namespace Game.PowerUp
 
         private Dictionary<PowerUpType, GameObject> powerUpList = new Dictionary<PowerUpType, GameObject>();
 
-        private void Start()
+        private void Awake()
         {
             Initialize();
             EventManager.Subscribe<PowerUpSpawnEvent>(OnPowerUpSpawn);
@@ -24,12 +25,12 @@ namespace Game.PowerUp
             foreach (var prefab in powerUpPrefabs)
             {
                 //Debug.Log(prefab);
-                var powerUpEffect = prefab.GetComponent<PowerUpEffect>();
+                var powerUpPickupSO = prefab.GetComponent<PowerUpPickupSO>();
                 //Debug.Log(powerUpEffect);
                 //Debug.Log(powerUpEffect.powerUpType);
-                if(powerUpEffect != null)
+                if(powerUpPickupSO != null)
                 {
-                    powerUpList[powerUpEffect.powerUpType] = prefab;
+                    powerUpList[powerUpPickupSO.Definition.Type] = prefab;
                 }
             }
         }

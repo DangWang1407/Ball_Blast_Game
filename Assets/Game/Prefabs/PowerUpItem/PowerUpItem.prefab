@@ -131,6 +131,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8036985471024788085}
   - component: {fileID: 5829910803253220205}
+  - component: {fileID: 5264900676894050611}
   m_Layer: 5
   m_Name: PowerUpItem
   m_TagString: Untagged
@@ -177,6 +178,18 @@ MonoBehaviour:
   nameText: {fileID: 2327433474177900365}
   levelText: {fileID: 8491264342709847504}
   upgradeButton: {fileID: 3524444038738108395}
+--- !u!210 &5264900676894050611
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1176214790246258977}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 2
+  m_SortAtRoot: 0
 --- !u!1 &2914484919515474675
 GameObject:
   m_ObjectHideFlags: 0
@@ -269,8 +282,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25
-  m_fontSizeBase: 25
+  m_fontSize: 22
+  m_fontSizeBase: 22
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -510,7 +523,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 0bc65cba28e65c04dbe9eaf68ec0e357, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

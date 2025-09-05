@@ -25,14 +25,16 @@ namespace Game.PowerUpV2
             if (definition == null) return;
             if (level < 1)
             {
-                levelPowerUp ??= GetComponent<LevelPowerUp>();
+                levelPowerUp = GetComponent<LevelPowerUp>();
+                Debug.Log("LevelPowerUp component found: " + (levelPowerUp != null));
                 if (levelPowerUp != null)
                 {
                     level = levelPowerUp.GetLevel(definition.Type);
+                    Debug.Log($"Using player level for {definition.Type}: {level}");
                 }
             }
-            if (level < 1) level = 1;
-
+            // if (level < 1) level = 1;
+            Debug.Log($"Activating PowerUp: {definition.name} at level {level}");
             float duration = definition.GetDuration(level);
             var state = new ActivePowerUpState
             {
@@ -59,23 +61,6 @@ namespace Game.PowerUpV2
                 }
             }
         }
-
-        // public bool IsActive(PowerUpType type) => active.ContainsKey(type) && active[type].expireAt > Time.time;
-
-        // public bool TryGetState(PowerUpType type, out ActivePowerUpState state)
-        // {
-        //     if (active.TryGetValue(type, out state))
-        //     {
-        //         if (state.expireAt > Time.time) return true;
-        //     }
-        //     state = null;
-        //     return false;
-        // }
-
-        // public int GetLevel(PowerUpType type)
-        // {
-        //     return TryGetState(type, out var s) ? s.level : 1;
-        // }
 
         private void Update()
         {

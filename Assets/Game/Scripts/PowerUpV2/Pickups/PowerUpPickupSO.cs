@@ -9,6 +9,9 @@ namespace Game.PowerUp
         [SerializeField] private int level = 1;
         [SerializeField] private bool usePlayerLevel = true;
 
+        public PowerUpDefinition Definition { get => definition; private set => definition = value; }
+
+
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (!collision.CompareTag("Player")) return;
@@ -22,6 +25,8 @@ namespace Game.PowerUp
 
             Destroy(gameObject);
         }
+
+        
     }
 }
 

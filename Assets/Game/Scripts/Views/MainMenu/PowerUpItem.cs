@@ -3,6 +3,7 @@ using Game.PowerUp;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Game.Currency;
 
 namespace Game.Views
 {
@@ -13,6 +14,7 @@ namespace Game.Views
         [SerializeField] private TMP_Text nameText;
         [SerializeField] private TMP_Text levelText;
         [SerializeField] private Button upgradeButton;
+        [SerializeField] private int upgradeCost = 50;
 
         private InventoryPage inventoryPage;
         private PowerUpData data;
@@ -42,10 +44,33 @@ namespace Game.Views
             if (LevelPowerUpManager.Instance == null || data == null)
                 return;
 
-            LevelPowerUpManager.Instance.UpgradeLevel(data.powerUpType);
+            // Not enough gold
+            if (GoldManager.Instance != null && !GoldManager.Instance.CanSpend(upgradeCost))
+            {
+                return;
+            }
 
-            int newLevel = LevelPowerUpManager.Instance.GetLevel(data.powerUpType);
-            if (levelText != null) levelText.text = $"Lv {newLevel}";
+            var btnRt = upgradeButton != null ? upgradeButton.GetComponent<RectTransform>() : null;
+            var topBar = TopBar.Instance;
+
+            void DoSpendAndUpgrade()
+            {
+                if (GoldManager.Instance == null || !GoldManager.Instance.Spend(upgradeCost))
+                    return;
+
+                LevelPowerUpManager.Instance.UpgradeLevel(data.powerUpType);
+                int newLevel = LevelPowerUpManager.Instance.GetLevel(data.powerUpType);
+                if (levelText != null) levelText.text = $"Lv {newLevel}";
+            }
+
+            if (topBar != null && btnRt != null)
+            {
+                topBar.PlaySpendEffectTo(btnRt, DoSpendAndUpgrade);
+            }
+            else
+            {
+                DoSpendAndUpgrade();
+            }
         }
     }
 }

@@ -17,14 +17,12 @@ namespace Game.Views
 
         void Start()
         {
-            // Hide panel initially
+
             gameOverPanel.SetActive(false);
 
-            // Setup buttons
             restartButton.onClick.AddListener(RestartGame);
             menuButton.onClick.AddListener(GoToMenu);
 
-            // Subscribe to events
             EventManager.Subscribe<GameStateChangeEvent>(OnGameStateChanged);
         }
 
@@ -49,24 +47,17 @@ namespace Game.Views
         {
             gameOverPanel.SetActive(true);
 
-            // Display final score
             if (finalScoreText != null && GameManager.Instance != null)
             {
                 finalScoreText.text = $"Final Score: {GameManager.Instance.Score}";
             }
 
-            // Pause time
             Time.timeScale = 0f;
         }
 
         private void RestartGame()
         {
             Time.timeScale = 1f;
-            // Destroy singletons trước khi restart
-            if (PoolManager.Instance != null)
-                Destroy(PoolManager.Instance.gameObject);
-            if (GameManager.Instance != null)
-                Destroy(GameManager.Instance.gameObject);
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 

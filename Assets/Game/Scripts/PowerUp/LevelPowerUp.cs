@@ -9,18 +9,18 @@ namespace Game.PowerUp
         private Dictionary<PowerUpType, int> powerupLevels = new Dictionary<PowerUpType, int>();
         [SerializeField] private ProviderType provider;
 
-        private void Start()
+        private void Awake()
         {
             Initialize();
         }
 
         private void Initialize()
         {
-            foreach (PowerUpType powerUpType in System.Enum.GetValues(typeof(PowerUpType)))
-            {
-                powerupLevels[powerUpType] = 1;
-            }
-            //powerupLevels = LevelPowerUpFactory.GetData(provider);
+            // foreach (PowerUpType powerUpType in System.Enum.GetValues(typeof(PowerUpType)))
+            // {
+            //     powerupLevels[powerUpType] = 1;
+            // }
+            powerupLevels = LevelPowerUpFactory.GetData(provider);
         }
 
         public int GetLevel(PowerUpType type)

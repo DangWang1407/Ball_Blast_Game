@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Rapid Fire
   m_EditorClassIdentifier: 
   powerUpType: 0
-  duration: 20
+  powerUpName: Rapid Fire
+  icon: {fileID: -342014146, guid: a00ebd2637cc7c6449daaf86bf3e10db, type: 3}
