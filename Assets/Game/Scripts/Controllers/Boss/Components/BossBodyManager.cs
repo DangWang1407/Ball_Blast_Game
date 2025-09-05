@@ -23,6 +23,12 @@ namespace Game.Controllers
 
             Debug.Log($"Removing body part at index {removedIndex}, collapse backward: {bossStats.EnableCollapseBackward}");
 
+            if (removedIndex < 0)
+            {
+                Debug.LogWarning("[BossBodyManager] Tried to remove a body part that is not in the list.");
+                return;
+            }
+
             if (bossStats.EnableCollapseBackward)
             {
                 Destroy(bossBuilder.Body[removedIndex]);
@@ -32,8 +38,9 @@ namespace Game.Controllers
             }
             else
             {
-                //
-
+                // If collapse is disabled, just remove and keep current offsets
+                Destroy(bossBuilder.Body[removedIndex]);
+                bossBuilder.Body.RemoveAt(removedIndex);
             }
         }
 

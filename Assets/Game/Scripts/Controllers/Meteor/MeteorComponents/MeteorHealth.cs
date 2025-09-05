@@ -82,10 +82,9 @@ namespace Game.Controllers
                 //var snakeManager = GetComponent<SnakeManager>();
                 if (boss != null)
                 {
-                    Debug.Log(bodyData.powerUpType);
                     if (bodyData != null && bodyData.powerUpType != PowerUp.PowerUpType.None)
                     {
-                        Debug.Log("Trigger new power up event");
+                        Debug.Log("Trigger new power up event: " + bodyData.powerUpType);
                         EventManager.Trigger(new SpecificPowerUpSpawnEvent(transform.position, bodyData.powerUpType));
                     }
 

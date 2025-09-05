@@ -11,6 +11,7 @@ namespace Game.Controllers
         private List<bool> isAnimatingCollapse = new List<bool>();
         private List<float> collapseAnimationProgress = new List<float>();
         private List<int> targetMarkerOffsets = new List<int>();
+        private List<int> collapseStartOffsets = new List<int>();
 
         public List<int> BodyPartMarkerOffsets { get => bodyPartMarkerOffsets; set => bodyPartMarkerOffsets = value; }
         public List<bool> IsAnimatingCollapse { get => isAnimatingCollapse; set => isAnimatingCollapse = value; }
@@ -20,6 +21,9 @@ namespace Game.Controllers
         private Boss boss;
         private BossStats bossStats;
         //private BossBuilder bossBuilder;
+
+        [SerializeField]
+        private float cascadeDelay = 0.2f;
 
         public void Initialize(Boss boss)
         {
@@ -34,6 +38,7 @@ namespace Game.Controllers
             IsAnimatingCollapse.Add(isAnimatingCollapse);
             CollapseAnimationProgress.Add(collapseAnimationProgress);
             TargetMarkerOffsets.Add(targetMarkerOffset);
+            collapseStartOffsets.Add(bodyPartMarkerOffset);
         }
 
         public void OnFixedUpdate()
@@ -57,8 +62,8 @@ namespace Game.Controllers
                     }
                     else
                     {
-                        //int startOffset = targetMarkerOffsets[i] - CalculateMarkerOffset(1);
-                        int startOffset = bodyPartMarkerOffsets[i];
+                        // Use stable start offset captured when animation starts
+                        int startOffset = collapseStartOffsets[i];
                         int endOffset = targetMarkerOffsets[i];
                         float progress = EaseInOutQuad(collapseAnimationProgress[i]);
                         bodyPartMarkerOffsets[i] = Mathf.RoundToInt(Mathf.Lerp(startOffset, endOffset, progress));
@@ -79,22 +84,13 @@ namespace Game.Controllers
             isAnimatingCollapse.RemoveAt(removedIndex);
             collapseAnimationProgress.RemoveAt(removedIndex);
             targetMarkerOffsets.RemoveAt(removedIndex);
+            collapseStartOffsets.RemoveAt(removedIndex);
 
-            //int segmentDistance = CalculateMarkerOffset(1);
-
-            //for (int i = 0; i < removedIndex; i++)
-            //{
-            //    if (i < targetMarkerOffsets.Count)
-            //    {
-            //        targetMarkerOffsets[i] += segmentDistance;
-            //        isAnimatingCollapse[i] = true;
-            //        collapseAnimationProgress[i] = 0f;
-            //    }
-            //}
-            StartCoroutine(Delay(removedIndex));
+            // Start collapse in a staggered (one-by-one) fashion for smoother visual effect
+            StartCoroutine(CollapseCascade(removedIndex));
         }
 
-        IEnumerator Delay(int removedIndex)
+        IEnumerator CollapseCascade(int removedIndex)
         {
             int segmentDistance = CalculateMarkerOffset(1);
             for (int i = removedIndex - 1; i >= 0; i--)
@@ -102,10 +98,12 @@ namespace Game.Controllers
                 if (i < targetMarkerOffsets.Count)
                 {
                     targetMarkerOffsets[i] += segmentDistance;
+                    // Capture stable start offset at activation time
+                    collapseStartOffsets[i] = bodyPartMarkerOffsets[i];
                     isAnimatingCollapse[i] = true;
                     collapseAnimationProgress[i] = 0f;
                 }
-                yield return new WaitForSeconds(0.3f);
+                yield return new WaitForSeconds(cascadeDelay);
             }
 
         }
