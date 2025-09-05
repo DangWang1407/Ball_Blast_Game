@@ -18,7 +18,7 @@ namespace Game.PowerUpV2
             public float expireAt;
         }
 
-        private readonly Dictionary<PowerUpType, ActivePowerUpState> active = new();
+        private Dictionary<PowerUpType, ActivePowerUpState> active = new();
 
         public event Action<PowerUpType, ActivePowerUpState> OnActivated;
         public event Action<PowerUpType> OnExpired;
@@ -47,16 +47,14 @@ namespace Game.PowerUpV2
 
             active[definition.Type] = state;
             OnActivated?.Invoke(definition.Type, state);
-            // Broadcast via EventManager as well
+
             EventManager.Trigger(new PowerUpV2ActivatedEvent(definition.Type, definition, level));
 
-            // If this power-up targets player, apply immediately to this player object
             if (definition is IPlayerApplier playerApplier)
             {
                 playerApplier.ApplyToPlayer(gameObject, level);
             }
 
-            // If this power-up targets weapon, apply to weapon under this player
             if (definition is IWeaponApplier weaponApplier)
             {
                 var weapon = GetComponentInChildren<WeaponController>(true);
@@ -99,18 +97,15 @@ namespace Game.PowerUpV2
             {
                 if (active.TryGetValue(t, out var state))
                 {
-                    // Notify with state so listeners (missiles) can remove behaviors
                     OnExpiredState?.Invoke(t, state);
-                    // Broadcast via EventManager for decoupled listeners
+
                     EventManager.Trigger(new PowerUpV2ExpiredEvent(t, state.definition, state.level));
 
-                    // If this power-up targets player, remove immediately from this player object
                     if (state.definition is IPlayerApplier playerApplier)
                     {
                         playerApplier.RemoveFromPlayer(gameObject);
                     }
 
-                    // If this power-up targets weapon, remove from weapon under this player
                     if (state.definition is IWeaponApplier weaponApplier)
                     {
                         var weapon = GetComponentInChildren<WeaponController>(true);
