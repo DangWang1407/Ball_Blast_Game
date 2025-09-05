@@ -60,17 +60,17 @@ namespace Game.PowerUpV2
             }
         }
 
-        public bool IsActive(PowerUpType type) => active.ContainsKey(type) && active[type].expireAt > Time.time;
+        // public bool IsActive(PowerUpType type) => active.ContainsKey(type) && active[type].expireAt > Time.time;
 
-        public bool TryGetState(PowerUpType type, out ActivePowerUpState state)
-        {
-            if (active.TryGetValue(type, out state))
-            {
-                if (state.expireAt > Time.time) return true;
-            }
-            state = null;
-            return false;
-        }
+        // public bool TryGetState(PowerUpType type, out ActivePowerUpState state)
+        // {
+        //     if (active.TryGetValue(type, out state))
+        //     {
+        //         if (state.expireAt > Time.time) return true;
+        //     }
+        //     state = null;
+        //     return false;
+        // }
 
         // public int GetLevel(PowerUpType type)
         // {

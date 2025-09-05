@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BounceShotDefinition
   m_EditorClassIdentifier: 
   powerUpType: 5
-  baseDuration: 20
+  baseDuration: 10
   durationPerLevel: 5
   baseMaxBounces: 3
   bouncesPerLevel: 1

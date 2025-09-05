@@ -8,12 +8,12 @@ namespace Game.Controllers
     // Attach on missile to remove applied power-up behaviors when they expire
     public class MissilePowerUpSubscriber : MonoBehaviour
     {
-        private void OnEnable()
+        private void Awake()
         {
             EventManager.Subscribe<PowerUpExpiredEvent>(OnPowerUpExpired);
         }
 
-        private void OnDisable()
+        private void OnDestroy()
         {
             EventManager.Unsubscribe<PowerUpExpiredEvent>(OnPowerUpExpired);
         }
