@@ -10,15 +10,15 @@ namespace Game.Controllers
     {
         private void OnEnable()
         {
-            EventManager.Subscribe<PowerUpV2ExpiredEvent>(OnPowerUpExpired);
+            EventManager.Subscribe<PowerUpExpiredEvent>(OnPowerUpExpired);
         }
 
         private void OnDisable()
         {
-            EventManager.Unsubscribe<PowerUpV2ExpiredEvent>(OnPowerUpExpired);
+            EventManager.Unsubscribe<PowerUpExpiredEvent>(OnPowerUpExpired);
         }
 
-        private void OnPowerUpExpired(PowerUpV2ExpiredEvent e)
+        private void OnPowerUpExpired(PowerUpExpiredEvent e)
         {
             if (e.Definition is IMissileSpawnApplier applier)
             {

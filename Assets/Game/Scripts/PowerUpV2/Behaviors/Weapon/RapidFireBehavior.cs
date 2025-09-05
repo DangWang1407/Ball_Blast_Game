@@ -11,7 +11,7 @@ namespace Game.PowerUpV2
 
         public void Init(float fireRateMultiplier)
         {
-            multiplier = Mathf.Max(0.01f, fireRateMultiplier);
+            multiplier = fireRateMultiplier;
             Apply();
         }
 

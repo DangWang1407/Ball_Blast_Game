@@ -37,27 +37,27 @@ namespace Game.Events
         }
     }
 
-    public struct PowerUpV2ActivatedEvent : IGameEvent
+    // public struct PowerUpV2ActivatedEvent : IGameEvent
+    // {
+    //     public Game.PowerUp.PowerUpType PowerUpType { get; }
+    //     public Game.PowerUpV2.PowerUpDefinition Definition { get; }
+    //     public int Level { get; }
+
+    //     public PowerUpV2ActivatedEvent(Game.PowerUp.PowerUpType type, Game.PowerUpV2.PowerUpDefinition definition, int level)
+    //     {
+    //         PowerUpType = type;
+    //         Definition = definition;
+    //         Level = level;
+    //     }
+    // }
+
+    public struct PowerUpExpiredEvent : IGameEvent
     {
         public Game.PowerUp.PowerUpType PowerUpType { get; }
         public Game.PowerUpV2.PowerUpDefinition Definition { get; }
         public int Level { get; }
 
-        public PowerUpV2ActivatedEvent(Game.PowerUp.PowerUpType type, Game.PowerUpV2.PowerUpDefinition definition, int level)
-        {
-            PowerUpType = type;
-            Definition = definition;
-            Level = level;
-        }
-    }
-
-    public struct PowerUpV2ExpiredEvent : IGameEvent
-    {
-        public Game.PowerUp.PowerUpType PowerUpType { get; }
-        public Game.PowerUpV2.PowerUpDefinition Definition { get; }
-        public int Level { get; }
-
-        public PowerUpV2ExpiredEvent(Game.PowerUp.PowerUpType type, Game.PowerUpV2.PowerUpDefinition definition, int level)
+        public PowerUpExpiredEvent(Game.PowerUp.PowerUpType type, Game.PowerUpV2.PowerUpDefinition definition, int level)
         {
             PowerUpType = type;
             Definition = definition;

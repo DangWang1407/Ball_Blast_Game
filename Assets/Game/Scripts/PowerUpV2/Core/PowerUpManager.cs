@@ -20,10 +20,6 @@ namespace Game.PowerUpV2
 
         private Dictionary<PowerUpType, ActivePowerUpState> active = new();
 
-        public event Action<PowerUpType, ActivePowerUpState> OnActivated;
-        public event Action<PowerUpType> OnExpired;
-        public event Action<PowerUpType, ActivePowerUpState> OnExpiredState;
-
         public void Activate(PowerUpDefinition definition, int level = 1)
         {
             if (definition == null) return;
@@ -46,9 +42,8 @@ namespace Game.PowerUpV2
             };
 
             active[definition.Type] = state;
-            OnActivated?.Invoke(definition.Type, state);
 
-            EventManager.Trigger(new PowerUpV2ActivatedEvent(definition.Type, definition, level));
+            // EventManager.Trigger(new PowerUpV2ActivatedEvent(definition.Type, definition, level));
 
             if (definition is IPlayerApplier playerApplier)
             {
@@ -77,10 +72,10 @@ namespace Game.PowerUpV2
             return false;
         }
 
-        public int GetLevel(PowerUpType type)
-        {
-            return TryGetState(type, out var s) ? s.level : 1;
-        }
+        // public int GetLevel(PowerUpType type)
+        // {
+        //     return TryGetState(type, out var s) ? s.level : 1;
+        // }
 
         private void Update()
         {
@@ -97,9 +92,7 @@ namespace Game.PowerUpV2
             {
                 if (active.TryGetValue(t, out var state))
                 {
-                    OnExpiredState?.Invoke(t, state);
-
-                    EventManager.Trigger(new PowerUpV2ExpiredEvent(t, state.definition, state.level));
+                    EventManager.Trigger(new PowerUpExpiredEvent(t, state.definition, state.level));
 
                     if (state.definition is IPlayerApplier playerApplier)
                     {
@@ -116,7 +109,6 @@ namespace Game.PowerUpV2
                     }
                 }
                 active.Remove(t);
-                OnExpired?.Invoke(t);
             }
         }
 

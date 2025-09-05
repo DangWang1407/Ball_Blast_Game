@@ -59,10 +59,8 @@ namespace Game.Controllers
                 missileController.Initialize("Missiles_" + missileIndex, direction);
                 //missileController.SetVelocity(direction);
 
-                // Apply new PowerUpV2 effects for all active power-ups
                 if (powerUpManager != null)
                 {
-                    // Ensure missile listens to power-up expiration to remove behaviors
                     if (missile.GetComponent<MissilePowerUpSubscriber>() == null)
                     {
                         missile.AddComponent<MissilePowerUpSubscriber>();
@@ -76,7 +74,6 @@ namespace Game.Controllers
                     }
                 }
 
-                // Backward-compat: only apply legacy V1 effects if no V2 manager
                 if (powerUpManager == null && missileEffectList != null)
                 {
                     missileEffectList.ApplyEffect(missile);
