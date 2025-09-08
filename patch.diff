@@ -1,0 +1,27 @@
+*** Begin Patch
+*** Update File: Assets/Game/Scripts/Views/MainMenu/BattlePage.cs
+@@
+-using UnityEngine;
+-using UnityEngine.SceneManagement;
+-using UnityEngine.UI;
+-using Game.Editor;
++using UnityEngine;
++using UnityEngine.SceneManagement;
++using UnityEngine.UI;
++#if UNITY_EDITOR
++using Game.Editor;
++#endif
+@@
+         private void OpenLevelEditor()
+         {
+             SceneManager.LoadScene("LevelEditor");
+             // open level editor scene and open level editor window
+-            LevelEditorWindow.OpenWindow();
++            
++#if UNITY_EDITOR
++            LevelEditorWindow.OpenWindow();
++#endif
+         }
+     }
+ }
+*** End Patch

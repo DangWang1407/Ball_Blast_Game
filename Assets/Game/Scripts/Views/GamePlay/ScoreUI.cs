@@ -11,7 +11,7 @@ public class ScoreUI : MonoBehaviour
     private void Start()
     {
         EventManager.Subscribe<TotalScoreUpdateEvent>(OnTotalScoreUpdate);
-        UpdateScoreUI(0); // Initialize score UI to 0 at start
+        UpdateScoreUI(0); 
     }
 
     private void OnDestroy()

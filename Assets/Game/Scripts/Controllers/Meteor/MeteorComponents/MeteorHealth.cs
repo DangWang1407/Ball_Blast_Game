@@ -94,9 +94,11 @@ namespace Game.Controllers
 
                 if (meteorController.MeteorSize != MeteorSize.Small)
                 {
-                    //MeteorSpawnerController.Instance?.SpawnSplitMeteors(transform.position, meteorController.MeteorSize);
-                    EventManager.Trigger(new SplitMeteorEvent(transform.position, meteorController.MeteorSize));                   
+                    int childHealth = Mathf.Max(1, maxHealth / 2);
+                    EventManager.Trigger(new SplitMeteorEvent(transform.position, meteorController.MeteorSize, childHealth));                   
                 }
+                // Notify systems that a meteor was destroyed
+                EventManager.Trigger(new MeteorDestroyedEvent(meteorController.MeteorSize, transform.position));
                 EventManager.Trigger(new PowerUpSpawnEvent(transform.position, meteorController.MeteorSize));
                 meteorPooling.DestroyMeteor();
             }

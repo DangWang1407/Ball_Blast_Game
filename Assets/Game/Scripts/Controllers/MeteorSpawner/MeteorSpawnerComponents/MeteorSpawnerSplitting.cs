@@ -22,10 +22,10 @@ namespace Game.Controllers
 
         private void OnSplitMeteor(SplitMeteorEvent e)
         {
-            SpawnSplitMeteors(e.Position, e.MeteorSize);
+            SpawnSplitMeteors(e.Position, e.MeteorSize, e.ChildHealth);
         } 
 
-        public void SpawnSplitMeteors(Vector3 position, MeteorSize currentSize)
+        public void SpawnSplitMeteors(Vector3 position, MeteorSize currentSize, int childHealth)
         {
             if (currentSize == MeteorSize.Small) return;
 
@@ -36,9 +36,17 @@ namespace Game.Controllers
                 GameObject split = spawnerPooling.SpawnMeteor((int)newSize, position);
                 if (split != null)
                 {
-                    split.GetComponent<MeteorController>().Initialize(spawnerPooling.PoolNames[(int)newSize]);
-                    split.GetComponent<MeteorController>().SetMeteorSize(newSize);
-                    split.GetComponent<Rigidbody2D>().velocity = new Vector2(directions[i] * 3f, 5f);
+                    var splitController = split.GetComponent<MeteorController>();
+                    splitController.Initialize(spawnerPooling.PoolNames[(int)newSize]);
+                    splitController.SetMeteorSize(newSize);
+                    if (childHealth > 0)
+                    {
+                        splitController.SetMeteorHealth(childHealth);
+                    }
+                    var rb = split.GetComponent<Rigidbody2D>();
+                    rb.velocity = new Vector2(directions[i] * 1f, 5f);
+                    rb.gravityScale = 1f;
+                    rb.AddTorque(Random.Range(-20f, 20f));
                 }
             }
         }

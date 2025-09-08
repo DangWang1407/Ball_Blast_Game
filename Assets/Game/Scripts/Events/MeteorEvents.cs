@@ -17,10 +17,12 @@ namespace Game.Events
     {
         public Vector3 Position { get; }
         public MeteorSize MeteorSize { get; }
-        public SplitMeteorEvent(Vector3 position, MeteorSize meteorSize)
+        public int ChildHealth { get; }
+        public SplitMeteorEvent(Vector3 position, MeteorSize meteorSize, int childHealth)
         {
             Position = position;
             MeteorSize = meteorSize;
+            ChildHealth = childHealth;
         }
     }
 }

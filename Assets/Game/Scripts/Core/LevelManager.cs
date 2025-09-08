@@ -3,6 +3,7 @@ using Game.Events;
 using Game.Core;
 using System.IO;
 using System.IO.Enumeration;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public class LevelSaveData
@@ -51,6 +52,8 @@ public class LevelManager : MonoBehaviour
         if (SaveManager.FileExists(fileName))
         {
             var saveData = SaveManager.LoadData<LevelSaveData>(fileName, new LevelSaveData());
+            // Restore current level from saved data
+            currentLevel = Mathf.Max(0, saveData.currentLevel);
         }
         else SaveData();
     }
@@ -59,6 +62,21 @@ public class LevelManager : MonoBehaviour
     {
         levelCompleted = false;
         EventManager.Trigger(new LevelStartEvent(currentLevel, GetCurrentLevelData()));
+    }
+
+    // Restart the current level (reload scene)
+    public void RestartLevel()
+    {
+        var scene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(scene.buildIndex);
+    }
+
+    // Reset saved progress to level 0 and restart
+    public void ResetProgressAndRestart()
+    {
+        currentLevel = 0;
+        SaveData();
+        RestartLevel();
     }
 
     void OnAllMeteorsDestroyed(AllMeteorsDestroyedEvent evt)

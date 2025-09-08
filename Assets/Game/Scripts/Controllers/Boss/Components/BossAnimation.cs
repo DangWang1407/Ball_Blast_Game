@@ -62,7 +62,6 @@ namespace Game.Controllers
                     }
                     else
                     {
-                        // Use stable start offset captured when animation starts
                         int startOffset = collapseStartOffsets[i];
                         int endOffset = targetMarkerOffsets[i];
                         float progress = EaseInOutQuad(collapseAnimationProgress[i]);
@@ -86,7 +85,6 @@ namespace Game.Controllers
             targetMarkerOffsets.RemoveAt(removedIndex);
             collapseStartOffsets.RemoveAt(removedIndex);
 
-            // Start collapse in a staggered (one-by-one) fashion for smoother visual effect
             StartCoroutine(CollapseCascade(removedIndex));
         }
 

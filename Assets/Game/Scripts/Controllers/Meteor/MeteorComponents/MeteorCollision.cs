@@ -46,16 +46,27 @@ namespace Game.Controllers
 
         private void HandleWallCollision(Collider2D collision)
         {
+            // Apply bounce forces only after falling starts
+            var rb = meteorController.Rigidbody;
+            if (rb.gravityScale < 0.5f) return;
+
             float posX = transform.position.x;
-            var velocity = meteorController.Rigidbody.velocity;
-            meteorController.Rigidbody.velocity = new Vector2(
-                posX > 0 ? -Mathf.Abs(velocity.x) : Mathf.Abs(velocity.x),
-                velocity.y);
+            if (posX > 0)
+            {
+                rb.AddForce(Vector2.left * 150f);
+            }
+            else
+            {
+                rb.AddForce(Vector2.right * 150f);
+            }
+            rb.AddTorque(posX * 4f);
         }
 
         private void HandleGroundCollision(Collider2D collision)
         {
-            meteorController.Rigidbody.velocity = new Vector2(meteorController.Rigidbody.velocity.x, jumpForce);
+            var rb = meteorController.Rigidbody;
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            rb.AddTorque(-rb.angularVelocity * 4f);
         }
 
         private void HandleUpBounce(Collider2D collision)
@@ -65,7 +76,7 @@ namespace Game.Controllers
 
         private void HandlePlayerCollision(Collider2D collision)
         {
-
+            // player die 
         }
 
         private void HandleShieldCollision(Collider2D collision)

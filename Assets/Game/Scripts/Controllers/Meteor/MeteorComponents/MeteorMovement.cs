@@ -15,13 +15,13 @@ namespace Game.Controllers
 
         public void UpdateRotation()
         {
-            meteorController.Rigidbody.angularDrag = angularVelocity;
+            // meteorController.Rigidbody.angularDrag = angularVelocity;
         }
 
         public void ResetMovement()
         {
             meteorController.Rigidbody.mass = 1f;
-            meteorController.Rigidbody.drag = 0.2f;
+            // meteorController.Rigidbody.drag = 0.2f;
         }
     }
 }

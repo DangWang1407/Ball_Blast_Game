@@ -20,7 +20,7 @@ namespace Game.PowerUpV2
 
         private Dictionary<PowerUpType, ActivePowerUpState> active = new();
 
-        public void Activate(PowerUpDefinition definition, int level = 1)
+        public void Activate(PowerUpDefinition definition, int level)
         {
             if (definition == null) return;
             if (level < 1)

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Game.Events;
 using UnityEngine;
 
@@ -53,6 +53,7 @@ namespace Game.Controllers
                 HandleMeteorCollision(collision);
             }
         }
+        private bool _isReleasingMissile = false;
 
         private void HandleWallCollision(Collider2D collision)
         {
@@ -63,7 +64,7 @@ namespace Game.Controllers
                 if (behavior.HandleWallCollision(collision, missileMovement))
                 {
                     handled = true;
-                    break; 
+                    break;
                 }
             }
 

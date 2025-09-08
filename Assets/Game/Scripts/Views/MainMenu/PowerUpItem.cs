@@ -58,7 +58,6 @@ namespace Game.Views
                 if (GoldManager.Instance == null || !GoldManager.Instance.Spend(upgradeCost))
                     return;
 
-
                 LevelPowerUpManager.Instance.UpgradeLevel(data.powerUpType);
                 int newLevel = LevelPowerUpManager.Instance.GetLevel(data.powerUpType);
                 if (levelText != null) levelText.text = $"Lv {newLevel}";

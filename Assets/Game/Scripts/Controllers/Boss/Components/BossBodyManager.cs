@@ -38,7 +38,6 @@ namespace Game.Controllers
             }
             else
             {
-                // If collapse is disabled, just remove and keep current offsets
                 Destroy(bossBuilder.Body[removedIndex]);
                 bossBuilder.Body.RemoveAt(removedIndex);
             }

@@ -50,7 +50,6 @@ namespace Game.Controllers
                     if (marker != null)
                     {
                         bossBuilder.Body[i].transform.position = marker.Position;
-                        // Rotate the real head (index 1) to match path direction
                         if (i == 1)
                             bossBuilder.Body[i].transform.rotation = marker.Rotation;
                     }

@@ -7,7 +7,8 @@
 				"y" : 3,
 				"z" : 0
 			},
-			"size" : 2
+			"size" : 2,
+			"health" : 2
 		},
 		{
 			"spawnTime" : 2,
@@ -16,7 +17,8 @@
 				"y" : 3,
 				"z" : 0
 			},
-			"size" : 0
+			"size" : 0,
+			"health" : 10
 		},
 		{
 			"spawnTime" : 5,
@@ -25,7 +27,8 @@
 				"y" : 3,
 				"z" : 0
 			},
-			"size" : 0
+			"size" : 0,
+			"health" : 10
 		},
 		{
 			"spawnTime" : 9,
@@ -34,7 +37,8 @@
 				"y" : 3,
 				"z" : 0
 			},
-			"size" : 1
+			"size" : 1,
+			"health" : 5
 		},
 		{
 			"spawnTime" : 10,
@@ -43,7 +47,8 @@
 				"y" : 3,
 				"z" : 0
 			},
-			"size" : 2
+			"size" : 2,
+			"health" : 2
 		},
 		{
 			"spawnTime" : 14,
@@ -52,7 +57,8 @@
 				"y" : 3,
 				"z" : 0
 			},
-			"size" : 2
+			"size" : 2,
+			"health" : 2
 		},
 		{
 			"spawnTime" : 15,
@@ -61,7 +67,8 @@
 				"y" : 3,
 				"z" : 0
 			},
-			"size" : 0
+			"size" : 0,
+			"health" : 10
 		},
 		{
 			"spawnTime" : 20,
@@ -70,7 +77,8 @@
 				"y" : 3,
 				"z" : 0
 			},
-			"size" : 2
+			"size" : 2,
+			"health" : 2
 		},
 		{
 			"spawnTime" : 22,
@@ -79,7 +87,8 @@
 				"y" : 3,
 				"z" : 0
 			},
-			"size" : 0
+			"size" : 0,
+			"health" : 10
 		},
 		{
 			"spawnTime" : 23,
@@ -88,7 +97,8 @@
 				"y" : 3,
 				"z" : 0
 			},
-			"size" : 0
+			"size" : 0,
+			"health" : 10
 		}
 	]
 }

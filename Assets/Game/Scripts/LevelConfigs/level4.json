@@ -1,0 +1,19 @@
+{
+	"meteors" : [
+		{ "spawnTime" : 0.8,  "position" : { "x" : -3,  "y" : 3, "z" : 0 }, "size" : 0, "health" : 10 },
+		{ "spawnTime" : 1.2,  "position" : { "x" : 3,   "y" : 3, "z" : 0 }, "size" : 0, "health" : 10 },
+		{ "spawnTime" : 2.0,  "position" : { "x" : 0,   "y" : 3, "z" : 0 }, "size" : 1, "health" : 5 },
+		{ "spawnTime" : 2.5,  "position" : { "x" : -2,  "y" : 3, "z" : 0 }, "size" : 2, "health" : 2 },
+		{ "spawnTime" : 3.0,  "position" : { "x" : 2,   "y" : 3, "z" : 0 }, "size" : 2, "health" : 2 },
+		{ "spawnTime" : 3.5,  "position" : { "x" : 0.5, "y" : 3, "z" : 0 }, "size" : 2, "health" : 2 },
+		{ "spawnTime" : 4.0,  "position" : { "x" : -0.5,"y" : 3, "z" : 0 }, "size" : 2, "health" : 2 },
+		{ "spawnTime" : 5.0,  "position" : { "x" : -2.5,"y" : 3, "z" : 0 }, "size" : 1, "health" : 5 },
+		{ "spawnTime" : 5.5,  "position" : { "x" : 2.5, "y" : 3, "z" : 0 }, "size" : 1, "health" : 5 },
+		{ "spawnTime" : 6.5,  "position" : { "x" : 0,   "y" : 3, "z" : 0 }, "size" : 0, "health" : 10 },
+		{ "spawnTime" : 8.0,  "position" : { "x" : -3,  "y" : 3, "z" : 0 }, "size" : 1, "health" : 6 },
+		{ "spawnTime" : 8.5,  "position" : { "x" : 3,   "y" : 3, "z" : 0 }, "size" : 1, "health" : 6 },
+		{ "spawnTime" : 9.5,  "position" : { "x" : 0,   "y" : 3, "z" : 0 }, "size" : 2, "health" : 3 },
+		{ "spawnTime" : 10.5, "position" : { "x" : 0,   "y" : 3, "z" : 0 }, "size" : 0, "health" : 12 }
+	]
+}
+

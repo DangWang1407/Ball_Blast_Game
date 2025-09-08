@@ -36,6 +36,7 @@ namespace Game.Controllers
         public float spawnTime;
         public Vector3 position;
         public MeteorSize size;
+        public int health;
 
     }
 

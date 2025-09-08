@@ -12,15 +12,25 @@ namespace Game.Controllers
         private MeteorSpawnerPooling spawnerPooling;
         private readonly float[] directions = { -1f, 1f };
 
+        private int activeMeteors = 0;
+        private bool spawnFinished = false;
+
         public void Initialize(MeteorSpawnerController controller)
         {
             this.controller = controller;
             spawnerData = GetComponent<MeteorSpawnerData>();
             spawnerPooling = GetComponent<MeteorSpawnerPooling>();
+            // Subscribe to relevant events
+            EventManager.Subscribe<MeteorDestroyedEvent>(OnMeteorDestroyed);
+            EventManager.Subscribe<LevelStartEvent>(OnLevelStart);
+            EventManager.Subscribe<SplitMeteorEvent>(OnSplitMeteor);
         }
 
         public void StartSpawning()
         {
+            // Reset counters at the start of a spawn sequence
+            activeMeteors = 0;
+            spawnFinished = false;
             StartCoroutine(SpawnMeteorsFromJson());
         }
 
@@ -41,8 +51,9 @@ namespace Game.Controllers
                 }
                 yield return null;
             }
-
-            EventManager.Trigger(new AllMeteorsDestroyedEvent(LevelManager.Instance.CurrentLevel));
+            // Mark spawning as finished; completion will be checked when meteors are cleared
+            spawnFinished = true;
+            TryCompleteLevel();
         }
 
         private void SpawnMeteorFromData(MeteorData meteorData)
@@ -58,13 +69,36 @@ namespace Game.Controllers
                 var meteorController = meteor.GetComponent<MeteorController>();
                 meteorController.Initialize(spawnerPooling.PoolNames[sizeIndex]);
                 meteorController.SetMeteorSize(meteorData.size);
+                if (meteorData.health > 0)
+                {
+                    meteorController.SetMeteorHealth(meteorData.health);
+                }
+
+                // Track active meteors for completion logic
+                activeMeteors++;
 
                 var rb = meteor.GetComponent<Rigidbody2D>();
-                Vector2 targetDirection = new Vector2(-(Vector2.zero - (Vector2)spawnPosition).normalized.x, 0);
-                rb.velocity = targetDirection * 2f;
-                rb.gravityScale = 0f;
 
-                StartCoroutine(EnableGravity(rb, 2f));
+                // Spawn off-screen horizontally, drift in, then fall
+                float worldHalfWidth = 5f;
+                if (Camera.main != null)
+                {
+                    worldHalfWidth = Camera.main.orthographicSize * Camera.main.aspect;
+                }
+                float screenOffset = worldHalfWidth * 1.3f;
+
+                // Keep Y/Z from level, push X to off-screen side
+                Vector3 offscreenPos = spawnPosition;
+                offscreenPos.x = screenOffset * direction;
+                meteor.transform.position = offscreenPos;
+
+                float horizontalSpeed = 1f;
+                rb.gravityScale = 0f;
+                rb.velocity = new Vector2(-direction * horizontalSpeed, 0f);
+
+                float timeToCenter = screenOffset / Mathf.Max(0.01f, horizontalSpeed);
+                float delay = Mathf.Clamp(Random.Range(timeToCenter - 2.5f, timeToCenter - 1f), 0.5f, timeToCenter + 1.5f);
+                StartCoroutine(EnableGravity(rb, delay));
             }
         }
 
@@ -76,6 +110,39 @@ namespace Game.Controllers
                 rb.gravityScale = 1f;
                 rb.AddTorque(Random.Range(-20f, 20f));
             }
+        }
+
+        private void OnMeteorDestroyed(MeteorDestroyedEvent _)
+        {
+            if (activeMeteors > 0) activeMeteors--;
+            TryCompleteLevel();
+        }
+
+        private void OnLevelStart(LevelStartEvent _)
+        {
+            // Reset on new level
+            activeMeteors = 0;
+            spawnFinished = false;
+        }
+
+        private void OnSplitMeteor(SplitMeteorEvent e)
+        {
+            activeMeteors += 2;
+        }
+
+        private void TryCompleteLevel()
+        {
+            if (spawnFinished && activeMeteors <= 0)
+            {
+                EventManager.Trigger(new AllMeteorsDestroyedEvent(LevelManager.Instance.CurrentLevel));
+            }
+        }
+
+        private void OnDestroy()
+        {
+            EventManager.Unsubscribe<MeteorDestroyedEvent>(OnMeteorDestroyed);
+            EventManager.Unsubscribe<LevelStartEvent>(OnLevelStart);
+            EventManager.Unsubscribe<SplitMeteorEvent>(OnSplitMeteor);
         }
     }
 }

@@ -9,7 +9,6 @@ namespace Game.Controllers
     public class WeaponPooling : MonoBehaviour
     {
 
-        private MissileEffectList missileEffectList;
 
         private WeaponController weaponController;
         private PowerUpManager powerUpManager;
@@ -17,8 +16,6 @@ namespace Game.Controllers
         {
             this.weaponController = weaponController;
             CreatePool();
-
-            missileEffectList = GetComponent<MissileEffectList>();
 
             // Try find PowerUpManager
             powerUpManager = GetComponentInParent<Game.PowerUpV2.PowerUpManager>();
@@ -72,11 +69,6 @@ namespace Game.Controllers
                             applier.ApplyToMissile(missile, state.level);
                         }
                     }
-                }
-
-                if (powerUpManager == null && missileEffectList != null)
-                {
-                    missileEffectList.ApplyEffect(missile);
                 }
             }
         }
