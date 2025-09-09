@@ -1,48 +1,45 @@
 using System;
+using System.Runtime.Remoting.Messaging;
 using UnityEditor;
 using UnityEngine;
-using Game.Controllers;
 
 namespace Game.Editor
 {
-    public static class LevelEditorTimelineGUI
+    public class LevelEditorTimelineGUI
     {
         private const float HeaderHeight = 22f;
         private const float RulerHeight = 24f;
-        private const float TrackHeight = 200f; // visual rail + small density area
+        private const float TrackHeight = 200f;
         private const float MarkerRadius = 6f;
-        private const float DensityHeight = 200f; // height of the mini-graph
-        private const float DensityBottomMargin = 4f; // space from bottom edge
+        private const float DensityHeight = 200f;
+        private const float DensityBottomMargin = 4f;
 
-        private static bool isDraggingMarker = false;
-        private static int draggingIndex = -1;
+        private bool isDraggingMarker = false;
+        private int draggingIndex = -1;
 
-        public static void Draw(LevelEditorModel model, Rect rect)
+        public void Draw(LevelEditorModel model, Rect rect)
         {
             if (Event.current.type == EventType.Repaint)
             {
-                EditorGUI.DrawRect(rect, new Color(0.12f, 0.12f, 0.12f));
+                EditorGUI.DrawRect(rect, new Color(0.15f, 0.15f, 0.15f));
             }
 
-            // Header
             var header = new Rect(rect.x, rect.y, rect.width, HeaderHeight);
-            DrawHeader(model, header);
+            DrawHeader(header, model);
 
-            // Ruler
-            var ruler = new Rect(rect.x, header.yMax, rect.width, RulerHeight);
-            DrawRuler(model, ruler);
+            var ruler = new Rect(rect.x, rect.y + HeaderHeight, rect.width, RulerHeight);
+            DrawRuler(ruler, model);
 
-            // Track (compact)
             float available = Mathf.Max(32f, rect.height - HeaderHeight - RulerHeight - 8);
             var track = new Rect(rect.x + 8, ruler.yMax + (available - TrackHeight) * 0.5f, rect.width - 16, Mathf.Min(TrackHeight, available));
-            DrawTrack(model, track);
+            DrawTrack(track, model);
         }
 
-        private static void DrawHeader(LevelEditorModel model, Rect rect)
+        private void DrawHeader(Rect rect, LevelEditorModel model)
         {
             GUILayout.BeginArea(rect);
             EditorGUILayout.BeginHorizontal();
-            // GUILayout.Label("Timeline", EditorStyles.boldLabel);
+            GUILayout.Label("Timeline", EditorStyles.boldLabel);
             GUILayout.FlexibleSpace();
             EditorGUIUtility.labelWidth = 50f;
             EditorGUILayout.Space(40);
@@ -52,14 +49,14 @@ namespace Game.Editor
             GUILayout.EndArea();
         }
 
-        private static void DrawRuler(LevelEditorModel model, Rect rect)
+        private void DrawRuler(Rect rect, LevelEditorModel model)
         {
             if (Event.current.type == EventType.Repaint)
             {
                 EditorGUI.DrawRect(rect, new Color(0.16f, 0.16f, 0.16f));
             }
             // Compute visible range
-            float total = Mathf.Max(0.0001f, model.Duration);
+            float total = Mathf.Max(1f, model.Duration);
             float secondsPerPixel = total / rect.width / model.TimelineZoom;
             float visibleSpan = secondsPerPixel * rect.width;
             model.TimelineScroll = Mathf.Clamp(model.TimelineScroll, 0f, Mathf.Max(0f, total - visibleSpan));
@@ -96,37 +93,40 @@ namespace Game.Editor
             model.TimelineScroll = scrollPixels * secondsPerPixel;
         }
 
-        private static void DrawTrack(LevelEditorModel model, Rect rect)
+        private void DrawTrack(Rect rect, LevelEditorModel model)
         {
             if (Event.current.type == EventType.Repaint)
             {
-                EditorGUI.DrawRect(rect, new Color(0.10f, 0.10f, 0.10f));
+                EditorGUI.DrawRect(rect, new Color(0.1f, 0.1f, 0.1f));
             }
 
-            float total = Mathf.Max(0.0001f, model.Duration);
-            float secondsPerPixel = total / (rect.width) / model.TimelineZoom;
+            float total = Mathf.Max(1f, model.Duration);
+            float secondsPerPixel = total / rect.width / model.TimelineZoom;
 
-            // Baseline rail
+            // Base line
             float railY = rect.y + 24f;
             Handles.BeginGUI();
-            Handles.color = new Color(1f, 1f, 1f, 0.15f);
+            Handles.color = new Color(1f, 1f, 1f, 0.2f);
             Handles.DrawLine(new Vector3(rect.x, railY, 0), new Vector3(rect.xMax, railY, 0));
             Handles.EndGUI();
 
-            // Density mini-graph at bottom
-            var densityRect = new Rect(rect.x, rect.yMax - (DensityHeight + DensityBottomMargin), rect.width, DensityHeight);
+            // Density graph
+            var densityRect = new Rect(rect.x, rect.yMax - DensityHeight - DensityBottomMargin, rect.width, DensityHeight);
             Handles.BeginGUI();
             Vector3? prev = null;
             for (int x = 0; x < densityRect.width; x += 4)
             {
                 float t = model.TimelineScroll + x * secondsPerPixel;
-                float density = CountAroundTime(model, t, 1f) / 10f; // normalized
-                float y = Mathf.Lerp(densityRect.yMax, densityRect.yMin, Mathf.Clamp01(density));
-                Vector3 p = new Vector3(densityRect.x + x, y, 0);
-                if (prev.HasValue) Handles.DrawLine(prev.Value, p);
-                prev = p;
+                float count = CountAroundTime(model, t, 1f);
+                float y = densityRect.yMax - (count / 5f) * densityRect.height;
+                Vector3 curr = new Vector3(densityRect.x + x, y, 0);
+                if (prev.HasValue)
+                {
+                    Handles.color = new Color(1f, 0.5f, 0f, 0.5f);
+                    Handles.DrawLine(prev.Value, curr);
+                }
+                prev = curr;
             }
-            
             Handles.EndGUI();
 
             // Markers
@@ -148,11 +148,10 @@ namespace Game.Editor
                 {
                     Handles.BeginGUI();
                     Handles.color = Color.white;
-                    Handles.DrawAAPolyLine(2f, new Vector3(markerRect.xMin - 2, markerRect.yMin - 2), new Vector3(markerRect.xMax + 2, markerRect.yMin - 2), new Vector3(markerRect.xMax + 2, markerRect.yMax + 2), new Vector3(markerRect.xMin - 2, markerRect.yMax + 2), new Vector3(markerRect.xMin - 2, markerRect.yMin - 2));
+                    Handles.DrawWireDisc(new Vector3(markerRect.center.x, markerRect.center.y, 0), Vector3.forward, MarkerRadius + 2);
                     Handles.EndGUI();
                 }
 
-                // Interaction
                 var evt = Event.current;
                 if (evt.type == EventType.MouseDown && evt.button == 0 && markerRect.Contains(evt.mousePosition))
                 {
@@ -163,20 +162,16 @@ namespace Game.Editor
                 }
             }
 
-            // Drag logic
+             // Drag logic
             var e = Event.current;
             if (isDraggingMarker && draggingIndex >= 0 && draggingIndex < model.Meteors.Count)
             {
                 if (e.type == EventType.MouseDrag)
                 {
-                    float localX = Mathf.Clamp(e.mousePosition.x, rect.x, rect.xMax) - rect.x;
-                    float t = model.TimelineScroll + localX * secondsPerPixel;
-                    t = Mathf.Clamp(t, 0f, model.Duration);
-                    var m = model.Meteors[draggingIndex];
-                    if (Math.Abs(m.spawnTime - t) > 0.0001f)
-                    {
-                        m.spawnTime = t;
-                    }
+                    float t = model.TimelineScroll + (e.mousePosition.x - rect.x) * secondsPerPixel;
+                    t = Mathf.Clamp(t, 0f, total);
+                    model.Meteors[draggingIndex].spawnTime = t;
+                    LevelEditorUtils.ClampSpawnTimes(model);
                     e.Use();
                 }
                 else if (e.type == EventType.MouseUp)
@@ -186,19 +181,18 @@ namespace Game.Editor
                     e.Use();
                 }
             }
-
+            
             // Background click to add/select
             if (Event.current.type == EventType.MouseDown && rect.Contains(Event.current.mousePosition))
             {
-                // Add new based on tool if active
                 if (LevelEditorUtils.IsCreateTool(model.CurrentTool))
                 {
-                    float localX = Mathf.Clamp(Event.current.mousePosition.x, rect.x, rect.xMax) - rect.x;
-                    float t = model.TimelineScroll + localX * secondsPerPixel;
-                    t = Mathf.Clamp(t, 0f, model.Duration);
-                    var data = LevelEditorUtils.CreateMeteor(Vector3.zero, model.CurrentTool, t);
-                    model.Meteors.Add(data);
+                    float t = model.TimelineScroll + (Event.current.mousePosition.x - rect.x) * secondsPerPixel;
+                    t = Mathf.Clamp(t, 0f, total);
+                    var m = LevelEditorUtils.CreateMeteor(Vector3.zero, model.CurrentTool, t);
+                    model.Meteors.Add(m);
                     model.SelectedIndex = model.Meteors.Count - 1;
+                    LevelEditorUtils.ClampSpawnTimes(model);
                     Event.current.Use();
                 }
             }

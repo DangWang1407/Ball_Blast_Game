@@ -6,17 +6,17 @@ using Game.Controllers;
 
 namespace Game.Editor
 {
-    public static class LevelEditorIO
+    public class LevelEditorIO
     {
         private const string LevelConfigsDir = "Assets/Game/Scripts/LevelConfigs";
 
-        private static string ProjectToAbsolute(string projectPath)
+        private string ProjectToAbsolute(string projectPath)
         {
             // projectPath like "Assets/..."
             return System.IO.Path.Combine(Application.dataPath, projectPath.Substring("Assets/".Length));
         }
 
-        public static void Save(LevelEditorModel model)
+        public void Save(LevelEditorModel model)
         {
 #if UNITY_EDITOR
             // Ensure folder exists
@@ -44,7 +44,7 @@ namespace Game.Editor
 #endif
         }
 
-        public static void Load(LevelEditorModel model, Action repaint)
+        public void Load(LevelEditorModel model, Action repaint)
         {
 #if UNITY_EDITOR
             string dirAbs = ProjectToAbsolute(LevelConfigsDir);

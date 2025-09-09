@@ -5,8 +5,12 @@ namespace Game.Editor
 {
     public class LevelEditorWindow : EditorWindow
     {
-        [SerializeField] private LevelEditorModel model;
-        private Vector2 scrollPos;
+        private LevelEditorModel model;
+        private LevelEditorToolbarGUI toolbarGUI;
+        private LevelEditorTimelineGUI timelineGUI;
+        private LevelEditorIO io;
+        private LevelEditorSceneGUI sceneGUI;
+        private LevelEditorInfoGUI infoGUI;
 
         [MenuItem("Window/Level Editor")]
         public static void OpenWindow()
@@ -20,30 +24,52 @@ namespace Game.Editor
             {
                 model = new LevelEditorModel();
             }
-            LevelEditorSceneGUI.Attach(model, Repaint);
+
+            if (toolbarGUI == null)
+            {
+                toolbarGUI = new LevelEditorToolbarGUI();
+            }
+            if (timelineGUI == null)
+            {
+                timelineGUI = new LevelEditorTimelineGUI();
+            }
+            if (io == null)
+            {
+                io = new LevelEditorIO();
+            }
+            if (sceneGUI == null)
+            {
+                sceneGUI = new LevelEditorSceneGUI();
+            }
+            if (infoGUI == null)
+            {
+                infoGUI = new LevelEditorInfoGUI();
+            }
+            sceneGUI.Attach(model, Repaint);
         }
 
         private void OnDisable()
         {
-            LevelEditorSceneGUI.Detach();
+            sceneGUI.Detach();
         }
 
         private void OnGUI()
         {
-            GUILayout.Label("Level Editor", EditorStyles.boldLabel);
-            LevelEditorToolbarGUI.Draw(model, OnClickLoad, OnClickSave);
-            GUILayout.Space(6);
+            // GUILayout.Label("Level Editor", EditorStyles.boldLabel);
+            Rect toolbarRect = new Rect(10, 30, position.width - 20, 70);
+            toolbarGUI.Draw(model, OnLoad, OnSave, toolbarRect);
+            GUILayout.Space(4);
 
-            // Only Timeline view
             float timelineHeight = Mathf.Clamp(position.height * 0.5f, 220f, 340f);
-            Rect timelineRect = GUILayoutUtility.GetRect(position.width - 12, timelineHeight);
-            LevelEditorTimelineGUI.Draw(model, timelineRect);
+            Rect timelineRect = new Rect(10, toolbarRect.yMax + 6, position.width - 20, timelineHeight);
+            timelineGUI.Draw(model, timelineRect);
 
             GUILayout.Space(6);
-            LevelEditorListGUI.Draw(model, ref scrollPos);
+            Rect infoRect = new Rect(10, timelineRect.yMax + 6, position.width - 20, position.height - timelineRect.yMax - 16);
+            infoGUI.Draw(model, infoRect);
         }
 
-        private void OnClickLoad() => LevelEditorIO.Load(model, Repaint);
-        private void OnClickSave() => LevelEditorIO.Save(model);
+        private void OnLoad() => io.Load(model, Repaint);
+        private void OnSave() => io.Save(model);
     }
 }

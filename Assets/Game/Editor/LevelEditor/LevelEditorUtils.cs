@@ -8,6 +8,18 @@ namespace Game.Editor
         public static bool IsCreateTool(ToolMode tool)
             => tool == ToolMode.CreateLarge || tool == ToolMode.CreateMedium || tool == ToolMode.CreateSmall;
 
+        public static MeteorData CreateMeteor(Vector3 position, ToolMode tool, float spawnTime)
+        {
+            var size = ToMeteorSize(tool);
+            return new MeteorData
+            {
+                position = position,
+                size = size,
+                health = DefaultHealth(size),
+                spawnTime = Mathf.Max(0f, spawnTime)
+            };
+        }
+
         public static MeteorSize ToMeteorSize(ToolMode tool)
             => tool switch
             {
@@ -24,19 +36,7 @@ namespace Game.Editor
                 MeteorSize.Medium => 5,
                 _ => 2
             };
-
-        public static MeteorData CreateMeteor(Vector3 position, ToolMode tool, float spawnTime)
-        {
-            var size = ToMeteorSize(tool);
-            return new MeteorData
-            {
-                position = position,
-                size = size,
-                health = DefaultHealth(size),
-                spawnTime = Mathf.Max(0f, spawnTime)
-            };
-        }
-
+        
         public static void ClampSpawnTimes(LevelEditorModel model)
         {
             float max = Mathf.Max(0.0001f, model.Duration);

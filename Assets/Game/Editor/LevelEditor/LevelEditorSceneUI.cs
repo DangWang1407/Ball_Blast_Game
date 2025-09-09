@@ -5,22 +5,22 @@ using Game.Controllers;
 
 namespace Game.Editor
 {
-    public static class LevelEditorSceneGUI
+    public class LevelEditorSceneGUI
     {
-        private static LevelEditorModel model;
-        private static Action requestRepaint;
+        private LevelEditorModel model;
+        private Action requestRepaint;
 
         private const string BackgroundPrefabPath = "Assets/Game/Prefabs/Background/Background.prefab";
-        private static GameObject backgroundGo;
+        private GameObject backgroundGo;
 
-        public static void Attach(LevelEditorModel m, Action repaint)
+        public void Attach(LevelEditorModel m, Action repaint)
         {
             model = m;
             requestRepaint = repaint;
             SceneView.duringSceneGui += OnSceneGUI;
         }
 
-        public static void Detach()
+        public void Detach()
         {
             SceneView.duringSceneGui -= OnSceneGUI;
             ClearBackground();
@@ -28,12 +28,11 @@ namespace Game.Editor
             requestRepaint = null;
         }
 
-        private static void OnSceneGUI(SceneView sceneView)
+        private void OnSceneGUI(SceneView sceneView)
         {
             if (model == null) return;
             Event e = Event.current;
 
-            // Ensure background for spatial context
             EnsureBackground();
             if (backgroundGo == null)
             {
@@ -56,7 +55,7 @@ namespace Game.Editor
             }
         }
 
-        private static void DrawSceneHandles()
+        private void DrawSceneHandles()
         {
             for (int i = 0; i < model.Meteors.Count; i++)
             {
@@ -80,7 +79,7 @@ namespace Game.Editor
             }
         }
 
-        private static void EnsureBackground()
+        private void EnsureBackground()
         {
             if (backgroundGo != null) return;
             var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(BackgroundPrefabPath);
@@ -95,7 +94,7 @@ namespace Game.Editor
             backgroundGo = go;
         }
 
-        private static void ClearBackground()
+        private void ClearBackground()
         {
             if (backgroundGo != null)
             {
@@ -104,7 +103,7 @@ namespace Game.Editor
             }
         }
 
-        private static void DrawGrid(Vector3 origin, float spacing, int halfCount)
+        private void DrawGrid(Vector3 origin, float spacing, int halfCount)
         {
             Handles.color = new Color(1f, 1f, 1f, 0.08f);
             float min = -halfCount * spacing;
@@ -121,7 +120,7 @@ namespace Game.Editor
             Handles.DrawLine(new Vector3(origin.x, min + origin.y, 1f), new Vector3(origin.x, max + origin.y, 1f));
         }
 
-        private static bool TryGetMouseWorldOnPlane(Vector2 mousePos, out Vector3 world)
+        private bool TryGetMouseWorldOnPlane(Vector2 mousePos, out Vector3 world)
         {
             Ray ray = HandleUtility.GUIPointToWorldRay(mousePos);
             Plane plane = new Plane(Vector3.forward, Vector3.zero);
@@ -134,7 +133,7 @@ namespace Game.Editor
             world = Vector3.zero;
             return false;
         }
-        private static void AddMeteorFromClick(Vector3 position)
+        private void AddMeteorFromClick(Vector3 position)
         {
             var data = LevelEditorUtils.CreateMeteor(position, model.CurrentTool, 0f);
             model.Meteors.Add(data);

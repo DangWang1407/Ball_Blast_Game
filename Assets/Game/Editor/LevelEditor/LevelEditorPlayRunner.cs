@@ -1,25 +1,33 @@
 using System.IO;
+using Game.Controllers;
 using UnityEditor;
 using UnityEditor.SceneManagement;
+using UnityEditor.VersionControl;
 using UnityEngine;
 
 namespace Game.Editor
 {
-    public static class LevelEditorPlayRunner
+    public class LevelEditorPlayRunner
     {
-        private const string PlaytestResName = "__playtest"; // Resources/__playtest.json
-        private const string PlaytestResKey = "LevelEditorPlaytest_ResPath";
-        private const string PreviousSceneKey = "LevelEditor_PreviousScenePath";
 
-        public static void PlayFromEditor(LevelEditorModel model)
+        private const string PlaytestResName = "_playtest";
+        private const string PlaytestResKey = "LevelEditorPlaytest_Respath";
+        private const string PreviousScenekey = "LevelEditor_PreviousScenePath";
+
+
+        public void PlayFromEditor(LevelEditorModel model)
         {
             if (model == null) return;
 
-            string resourcesDir = Path.Combine(Application.dataPath, "Resources");
-            if (!Directory.Exists(resourcesDir)) Directory.CreateDirectory(resourcesDir);
-            string jsonPath = Path.Combine(resourcesDir, PlaytestResName + ".json");
+            string resourceDir = Path.Combine(Application.dataPath, "Resources");
+            if (!Directory.Exists(resourceDir))
+            {
+                Directory.CreateDirectory(resourceDir);
+            }
 
-            var save = new Game.Controllers.MeteorSpawnList { meteors = model.Meteors.ToArray() };
+            string jsonPath = Path.Combine(resourceDir, PlaytestResName + ".json");
+
+            var save = new MeteorSpawnList { meteors = model.Meteors.ToArray() };
             string json = JsonUtility.ToJson(save, true);
             File.WriteAllText(jsonPath, json);
 
@@ -35,30 +43,26 @@ namespace Game.Editor
             if (!string.IsNullOrEmpty(targetScene))
             {
                 var active = EditorSceneManager.GetActiveScene();
-                if (active.IsValid()) EditorPrefs.SetString(PreviousSceneKey, active.path);
+                if (active.IsValid())
+                {
+                    EditorPrefs.SetString(PreviousScenekey, active.path);
+                }
 
                 var startScene = AssetDatabase.LoadAssetAtPath<SceneAsset>(targetScene);
                 EditorSceneManager.playModeStartScene = startScene;
             }
 
-            // 4) Enter Play Mode
             EditorApplication.isPlaying = true;
         }
 
-        private static string FindGameplayScenePath()
+        private string FindGameplayScenePath()
         {
-            // Prefer Assets/Scenes/GamePlay.unity
-            string p1 = "Assets/Scenes/GamePlay.unity";
-            if (AssetDatabase.LoadAssetAtPath<SceneAsset>(p1) != null) return p1;
-            // Fallback: Assets/Scenes/Init.unity
-            string p2 = "Assets/Scenes/Init.unity";
-            if (AssetDatabase.LoadAssetAtPath<SceneAsset>(p2) != null) return p2;
-            // Otherwise keep current
-            return string.Empty;
+            // Maybe replace with Init scene 
+            return "Assets/Scenes/GamePlay.unity";
         }
 
         [InitializeOnLoadMethod]
-        private static void HookPlaymode()
+        private static void HookPlayMode()
         {
             EditorApplication.playModeStateChanged -= OnPlayModeChanged;
             EditorApplication.playModeStateChanged += OnPlayModeChanged;
@@ -73,12 +77,12 @@ namespace Game.Editor
                 PlayerPrefs.Save();
 
                 // Restore previous edit scene if stored
-                string prev = EditorPrefs.GetString(PreviousSceneKey, string.Empty);
+                string prev = EditorPrefs.GetString(PreviousScenekey, string.Empty);
                 if (!string.IsNullOrEmpty(prev) && File.Exists(Path.Combine(Directory.GetCurrentDirectory(), prev)))
                 {
                     EditorSceneManager.OpenScene(prev);
                 }
-                EditorPrefs.DeleteKey(PreviousSceneKey);
+                EditorPrefs.DeleteKey(PreviousScenekey);
 
                 // Clear playmode start scene
                 EditorSceneManager.playModeStartScene = null;
@@ -86,4 +90,3 @@ namespace Game.Editor
         }
     }
 }
-

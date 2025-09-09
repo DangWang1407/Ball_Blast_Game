@@ -4,15 +4,23 @@ using UnityEngine;
 
 namespace Game.Editor
 {
-    public static class LevelEditorToolbarGUI
+    public class LevelEditorToolbarGUI
     {
-        public static void Draw(LevelEditorModel model, Action onLoad, Action onSave)
+        private LevelEditorPlayRunner playRunner;
+        public LevelEditorToolbarGUI()
         {
+            playRunner = new LevelEditorPlayRunner();
+        }
+
+        public void Draw(LevelEditorModel model, Action onLoad, Action onSave, Rect rect)
+        {
+            GUILayout.BeginArea(rect);
+
             EditorGUILayout.BeginHorizontal();
             model.CurrentTool = (ToolMode)EditorGUILayout.EnumPopup("Tool", model.CurrentTool, GUILayout.MaxWidth(300));
             GUILayout.Space(6);
-            model.Duration = EditorGUILayout.FloatField("Duration", Mathf.Max(0f, model.Duration), GUILayout.MaxWidth(320));
-            GUILayout.FlexibleSpace();
+            model.Duration = EditorGUILayout.FloatField("Duration (s)", model.Duration, GUILayout.MaxWidth(200));
+            // GUILayout.FlexibleSpace();
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.Space(4);
@@ -24,19 +32,17 @@ namespace Game.Editor
             string playLabel = Application.isPlaying ? "Stop" : "Play";
             if (GUILayout.Button(playLabel, GUILayout.MaxWidth(90)))
             {
-                if (Application.isPlaying)
-                    UnityEditor.EditorApplication.isPlaying = false;
-                else
-                    LevelEditorPlayRunner.PlayFromEditor(model);
+                if (Application.isPlaying) EditorApplication.isPlaying = false;
+                else playRunner.PlayFromEditor(model);
             }
-            GUILayout.FlexibleSpace();
+            EditorGUILayout.EndHorizontal();
+            GUILayout.Space(4);
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label("Asset Path:", GUILayout.MaxWidth(70));
+            GUILayout.Label(string.IsNullOrEmpty(model.CurrentAssetPath) ? "<none>" : model.CurrentAssetPath);
             EditorGUILayout.EndHorizontal();
 
-            // Current file path
-            EditorGUILayout.BeginHorizontal();
-            GUILayout.Label("File:", GUILayout.Width(30));
-            GUILayout.Label(string.IsNullOrEmpty(model.CurrentAssetPath) ? "<new level>" : model.CurrentAssetPath);
-            EditorGUILayout.EndHorizontal();
+            GUILayout.EndArea();
         }
     }
 }
