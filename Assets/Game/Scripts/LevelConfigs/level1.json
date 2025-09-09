@@ -1,104 +1,124 @@
 {
-	"meteors" : [
-		{
-			"spawnTime" : 2,
-			"position" : {
-				"x" : 3,
-				"y" : 3,
-				"z" : 0
-			},
-			"size" : 2,
-			"health" : 2
-		},
-		{
-			"spawnTime" : 2,
-			"position" : {
-				"x" : -3,
-				"y" : 3,
-				"z" : 0
-			},
-			"size" : 0,
-			"health" : 10
-		},
-		{
-			"spawnTime" : 5,
-			"position" : {
-				"x" : 3,
-				"y" : 3,
-				"z" : 0
-			},
-			"size" : 0,
-			"health" : 10
-		},
-		{
-			"spawnTime" : 9,
-			"position" : {
-				"x" : -3,
-				"y" : 3,
-				"z" : 0
-			},
-			"size" : 1,
-			"health" : 5
-		},
-		{
-			"spawnTime" : 10,
-			"position" : {
-				"x" : 3,
-				"y" : 3,
-				"z" : 0
-			},
-			"size" : 2,
-			"health" : 2
-		},
-		{
-			"spawnTime" : 14,
-			"position" : {
-				"x" : 3,
-				"y" : 3,
-				"z" : 0
-			},
-			"size" : 2,
-			"health" : 2
-		},
-		{
-			"spawnTime" : 15,
-			"position" : {
-				"x" : 3,
-				"y" : 3,
-				"z" : 0
-			},
-			"size" : 0,
-			"health" : 10
-		},
-		{
-			"spawnTime" : 20,
-			"position" : {
-				"x" : 3,
-				"y" : 3,
-				"z" : 0
-			},
-			"size" : 2,
-			"health" : 2
-		},
-		{
-			"spawnTime" : 22,
-			"position" : {
-				"x" : 3,
-				"y" : 3,
-				"z" : 0
-			},
-			"size" : 0,
-			"health" : 10
-		},
-		{
-			"spawnTime" : 23,
-			"position" : {
-				"x" : 3,
-				"y" : 3,
-				"z" : 0
-			},
-			"size" : 0,
-			"health" : 10
-		}
-	]
+    "meteors": [
+        {
+            "spawnTime": 2.0,
+            "position": {
+                "x": 3.0,
+                "y": 3.0,
+                "z": 0.0
+            },
+            "size": 2,
+            "health": 2
+        },
+        {
+            "spawnTime": 2.0,
+            "position": {
+                "x": -4.434782028198242,
+                "y": 1.868729829788208,
+                "z": 0.0
+            },
+            "size": 0,
+            "health": 10
+        },
+        {
+            "spawnTime": 2.700000047683716,
+            "position": {
+                "x": -4.7382941246032719,
+                "y": 2.7516727447509767,
+                "z": 0.0
+            },
+            "size": 1,
+            "health": 5
+        },
+        {
+            "spawnTime": 2.9000000953674318,
+            "position": {
+                "x": 3.524247646331787,
+                "y": 2.186037302017212,
+                "z": 0.0
+            },
+            "size": 0,
+            "health": 10
+        },
+        {
+            "spawnTime": 10.0,
+            "position": {
+                "x": -3.6496639251708986,
+                "y": 2.7240803241729738,
+                "z": 0.0
+            },
+            "size": 2,
+            "health": 2
+        },
+        {
+            "spawnTime": 14.0,
+            "position": {
+                "x": 3.758779525756836,
+                "y": 3.2759196758270265,
+                "z": 0.0
+            },
+            "size": 2,
+            "health": 2
+        },
+        {
+            "spawnTime": 15.0,
+            "position": {
+                "x": 3.3724918365478517,
+                "y": 1.7445658445358277,
+                "z": 0.0
+            },
+            "size": 0,
+            "health": 10
+        },
+        {
+            "spawnTime": 20.0,
+            "position": {
+                "x": 3.6897997856140138,
+                "y": 3.869147539138794,
+                "z": 0.0
+            },
+            "size": 2,
+            "health": 2
+        },
+        {
+            "spawnTime": 22.0,
+            "position": {
+                "x": -3.6082756519317629,
+                "y": 2.0894663333892824,
+                "z": 0.0
+            },
+            "size": 0,
+            "health": 10
+        },
+        {
+            "spawnTime": 23.0,
+            "position": {
+                "x": 4.255434513092041,
+                "y": 2.241220474243164,
+                "z": 0.0
+            },
+            "size": 0,
+            "health": 10
+        },
+        {
+            "spawnTime": 26.600000381469728,
+            "position": {
+                "x": -3.704012155532837,
+                "y": 3.082775592803955,
+                "z": 0.0
+            },
+            "size": 0,
+            "health": 10
+        },
+        {
+            "spawnTime": 30.0,
+            "position": {
+                "x": -3.5683393478393556,
+                "y": 1.3958832025527955,
+                "z": 0.0
+            },
+            "size": 2,
+            "health": 2
+        }
+    ]
 }

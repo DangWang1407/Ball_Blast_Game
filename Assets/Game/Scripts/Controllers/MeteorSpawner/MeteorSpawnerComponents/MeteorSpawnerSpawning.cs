@@ -14,6 +14,7 @@ namespace Game.Controllers
 
         private int activeMeteors = 0;
         private bool spawnFinished = false;
+        private int startedLevelIndex = 0; // track level index from LevelStartEvent
 
         public void Initialize(MeteorSpawnerController controller)
         {
@@ -118,11 +119,12 @@ namespace Game.Controllers
             TryCompleteLevel();
         }
 
-        private void OnLevelStart(LevelStartEvent _)
+        private void OnLevelStart(LevelStartEvent e)
         {
             // Reset on new level
             activeMeteors = 0;
             spawnFinished = false;
+            startedLevelIndex = e.LevelIndex;
         }
 
         private void OnSplitMeteor(SplitMeteorEvent e)
@@ -134,7 +136,7 @@ namespace Game.Controllers
         {
             if (spawnFinished && activeMeteors <= 0)
             {
-                EventManager.Trigger(new AllMeteorsDestroyedEvent(LevelManager.Instance.CurrentLevel));
+                EventManager.Trigger(new AllMeteorsDestroyedEvent(startedLevelIndex));
             }
         }
 

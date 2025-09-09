@@ -61,7 +61,27 @@ public class LevelManager : MonoBehaviour
     public void StartCurrentLevel()
     {
         levelCompleted = false;
-        EventManager.Trigger(new LevelStartEvent(currentLevel, GetCurrentLevelData()));
+        // Editor playtest override: allows editor to inject a Resources TextAsset
+#if UNITY_EDITOR
+        string overrideRes = PlayerPrefs.GetString("LevelEditorPlaytest_ResPath", string.Empty);
+        if (!string.IsNullOrEmpty(overrideRes))
+        {
+            var ta = Resources.Load<TextAsset>(overrideRes);
+            if (ta != null)
+            {
+                EventManager.Trigger(new LevelStartEvent(-1, ta));
+                return;
+            }
+        }
+#endif
+        var data = GetCurrentLevelData();
+        if (data == null)
+        {
+            Debug.LogWarning($"LevelManager: No data for level index {currentLevel}. Advancing.");
+            CompleteLevel();
+            return;
+        }
+        EventManager.Trigger(new LevelStartEvent(currentLevel, data));
     }
 
     // Restart the current level (reload scene)
@@ -81,6 +101,9 @@ public class LevelManager : MonoBehaviour
 
     void OnAllMeteorsDestroyed(AllMeteorsDestroyedEvent evt)
     {
+        // Ignore playtest completions (negative index)
+        if (evt.LevelIndex < 0) return;
+
         if (!levelCompleted)
         {
             levelCompleted = true;
