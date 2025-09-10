@@ -1,21 +1,164 @@
 {
-	"meteors" : [
-		{ "spawnTime" : 0.5,  "position" : { "x" : -3,  "y" : 3, "z" : 0 }, "size" : 0, "health" : 12 },
-		{ "spawnTime" : 1.0,  "position" : { "x" : 3,   "y" : 3, "z" : 0 }, "size" : 0, "health" : 12 },
-		{ "spawnTime" : 1.5,  "position" : { "x" : -2,  "y" : 3, "z" : 0 }, "size" : 1, "health" : 6 },
-		{ "spawnTime" : 2.0,  "position" : { "x" : 2,   "y" : 3, "z" : 0 }, "size" : 1, "health" : 6 },
-		{ "spawnTime" : 2.5,  "position" : { "x" : 0,   "y" : 3, "z" : 0 }, "size" : 2, "health" : 3 },
-		{ "spawnTime" : 3.0,  "position" : { "x" : -1,  "y" : 3, "z" : 0 }, "size" : 2, "health" : 3 },
-		{ "spawnTime" : 3.5,  "position" : { "x" : 1,   "y" : 3, "z" : 0 }, "size" : 2, "health" : 3 },
-		{ "spawnTime" : 4.5,  "position" : { "x" : -2.5,"y" : 3, "z" : 0 }, "size" : 1, "health" : 6 },
-		{ "spawnTime" : 5.0,  "position" : { "x" : 2.5, "y" : 3, "z" : 0 }, "size" : 1, "health" : 6 },
-		{ "spawnTime" : 5.5,  "position" : { "x" : 0.5, "y" : 3, "z" : 0 }, "size" : 2, "health" : 3 },
-		{ "spawnTime" : 6.0,  "position" : { "x" : -0.5,"y" : 3, "z" : 0 }, "size" : 2, "health" : 3 },
-		{ "spawnTime" : 7.0,  "position" : { "x" : 0,   "y" : 3, "z" : 0 }, "size" : 0, "health" : 14 },
-		{ "spawnTime" : 8.5,  "position" : { "x" : -3,  "y" : 3, "z" : 0 }, "size" : 1, "health" : 7 },
-		{ "spawnTime" : 9.0,  "position" : { "x" : 3,   "y" : 3, "z" : 0 }, "size" : 1, "health" : 7 },
-		{ "spawnTime" : 10.0, "position" : { "x" : 0,   "y" : 3, "z" : 0 }, "size" : 2, "health" : 4 },
-		{ "spawnTime" : 11.5, "position" : { "x" : 0,   "y" : 3, "z" : 0 }, "size" : 0, "health" : 16 }
-	]
+    "meteors": [
+        {
+            "spawnTime": 0.5,
+            "position": {
+                "x": -3.956308364868164,
+                "y": 2.185366153717041,
+                "z": 0.0
+            },
+            "size": 0,
+            "health": 12
+        },
+        {
+            "spawnTime": 1.0,
+            "position": {
+                "x": 4.894906997680664,
+                "y": 2.203075885772705,
+                "z": 0.0
+            },
+            "size": 0,
+            "health": 12
+        },
+        {
+            "spawnTime": 1.5,
+            "position": {
+                "x": -3.4344630241394045,
+                "y": 2.911452293395996,
+                "z": 0.0
+            },
+            "size": 1,
+            "health": 6
+        },
+        {
+            "spawnTime": 2.0,
+            "position": {
+                "x": 4.4438982009887699,
+                "y": 3.1416749954223635,
+                "z": 0.0
+            },
+            "size": 1,
+            "health": 6
+        },
+        {
+            "spawnTime": 2.5,
+            "position": {
+                "x": 4.622157573699951,
+                "y": 3.655247211456299,
+                "z": 0.0
+            },
+            "size": 2,
+            "health": 3
+        },
+        {
+            "spawnTime": 3.0,
+            "position": {
+                "x": -4.329370975494385,
+                "y": 3.9917266368865969,
+                "z": 0.0
+            },
+            "size": 2,
+            "health": 3
+        },
+        {
+            "spawnTime": 3.5,
+            "position": {
+                "x": 4.347079277038574,
+                "y": 3.5135719776153566,
+                "z": 0.0
+            },
+            "size": 2,
+            "health": 3
+        },
+        {
+            "spawnTime": 4.5,
+            "position": {
+                "x": -3.5802745819091799,
+                "y": 2.8051953315734865,
+                "z": 0.0
+            },
+            "size": 1,
+            "health": 6
+        },
+        {
+            "spawnTime": 5.0,
+            "position": {
+                "x": 4.270941734313965,
+                "y": 3.088545799255371,
+                "z": 0.0
+            },
+            "size": 1,
+            "health": 6
+        },
+        {
+            "spawnTime": 5.5,
+            "position": {
+                "x": 3.793951988220215,
+                "y": 3.9740171432495119,
+                "z": 0.0
+            },
+            "size": 2,
+            "health": 3
+        },
+        {
+            "spawnTime": 6.0,
+            "position": {
+                "x": 3.360652446746826,
+                "y": 1.2998955249786378,
+                "z": 0.0
+            },
+            "size": 2,
+            "health": 3
+        },
+        {
+            "spawnTime": 7.0,
+            "position": {
+                "x": -3.949199676513672,
+                "y": 0.7686131000518799,
+                "z": 0.0
+            },
+            "size": 0,
+            "health": 14
+        },
+        {
+            "spawnTime": 8.5,
+            "position": {
+                "x": -3.442735195159912,
+                "y": 3.088545799255371,
+                "z": 0.0
+            },
+            "size": 1,
+            "health": 7
+        },
+        {
+            "spawnTime": 9.0,
+            "position": {
+                "x": 4.221949100494385,
+                "y": 3.0531277656555177,
+                "z": 0.0
+            },
+            "size": 1,
+            "health": 7
+        },
+        {
+            "spawnTime": 10.0,
+            "position": {
+                "x": -3.665849208831787,
+                "y": 2.0968189239501955,
+                "z": 0.0
+            },
+            "size": 2,
+            "health": 4
+        },
+        {
+            "spawnTime": 11.5,
+            "position": {
+                "x": 4.0200371742248539,
+                "y": 1.44157075881958,
+                "z": 0.0
+            },
+            "size": 0,
+            "health": 16
+        }
+    ]
 }
-

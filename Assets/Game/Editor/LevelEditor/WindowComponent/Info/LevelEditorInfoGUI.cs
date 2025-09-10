@@ -64,15 +64,20 @@ namespace Game.Editor
                 EditorGUILayout.Space(6);
                 EditorGUILayout.BeginHorizontal();
                 GUILayout.FlexibleSpace();
-                if (GUILayout.Button("Delete", GUILayout.Width(90)))
-                {
-                    model.Meteors.RemoveAt(model.SelectedIndex);
-                    model.SelectedIndex = -1;
-                    EditorGUILayout.EndHorizontal();
-                    EditorGUILayout.EndVertical();
-                    return;
-                }
+                bool requestDelete = false;
+                int selectedIndexBefore = model.SelectedIndex;
+                if (GUILayout.Button("Delete", GUILayout.Width(90))) requestDelete = true;
                 EditorGUILayout.EndHorizontal();
+
+                if (requestDelete)
+                {
+                    model.SelectedSet.Clear();
+                    if (selectedIndexBefore >= 0 && selectedIndexBefore < model.Meteors.Count)
+                    {
+                        model.Meteors.RemoveAt(selectedIndexBefore);
+                    }
+                    model.SelectedIndex = -1;
+                }
             }
             else
             {
@@ -85,4 +90,3 @@ namespace Game.Editor
         }
     }
 }
-
