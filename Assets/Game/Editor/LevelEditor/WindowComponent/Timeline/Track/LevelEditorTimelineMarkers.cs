@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Game.Editor
 {
+    // Draws and manages timeline markers for meteors
     public class LevelEditorTimelineMarkers
     {
         public void Draw(Rect rect, LevelEditorModel model, float secondsPerPixel, float railY, Dictionary<int, float> stackOffsets, float markerRadius, ref bool isDraggingMarker, ref int draggingIndex)

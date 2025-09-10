@@ -4,6 +4,7 @@ namespace Game.Editor
 {
     public class LevelEditorTimelineStacking
     {
+        // Computes vertical offsets for markers 
         public Dictionary<int, float> Compute(LevelEditorModel model, float threshold, float spacing)
         {
             var offsets = new Dictionary<int, float>();

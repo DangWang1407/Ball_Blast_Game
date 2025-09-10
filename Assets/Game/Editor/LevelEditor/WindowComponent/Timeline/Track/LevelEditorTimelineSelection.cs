@@ -34,6 +34,7 @@ namespace Game.Editor
             Handles.EndGUI();
         }
 
+        // Finalizes selection rectangle and updates model's selected set
         public void Finalize(Rect rect, LevelEditorModel model, float secondsPerPixel, float railY, Dictionary<int, float> stackOffsets, float markerRadius, ref bool isSelectingRect, Vector2 selectStart, Vector2 selectEnd)
         {
             if (model.CurrentViewFilter != ViewFilter.Group)

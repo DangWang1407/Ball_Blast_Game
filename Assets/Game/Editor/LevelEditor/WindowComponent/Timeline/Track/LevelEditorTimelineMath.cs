@@ -4,11 +4,13 @@ namespace Game.Editor
 {
     public static class LevelEditorTimelineMath
     {
+        // Converts a time value to a pixel position on the timeline
         public static float TimeToPixel(float t, Rect rect, LevelEditorModel model, float secondsPerPixel)
         {
             return rect.x + (t - model.TimelineScroll) / secondsPerPixel;
         }
 
+        // Counts how many meteors are within a certain time range of t
         public static float CountAroundTime(LevelEditorModel model, float t, float range)
         {
             float count = 0f;

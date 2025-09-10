@@ -5,6 +5,7 @@ namespace Game.Editor
 {
     public class LevelEditorTimelineDrag
     {
+        // Handles dragging of timeline markers
         public void Handle(Rect rect, LevelEditorModel model, float secondsPerPixel, float total, ref bool isDraggingMarker, ref int draggingIndex)
         {
             var e = Event.current;

@@ -20,9 +20,9 @@ namespace Game.Editor
             model = m;
             requestRepaint = repaint;
             SceneView.duringSceneGui += OnSceneGUI;
-            background = new LevelEditorSceneBackground();
-            preview = new LevelEditorMeteorPreview();
-            handles = new LevelEditorSceneHandles();
+            background??= new LevelEditorSceneBackground();
+            preview??= new LevelEditorMeteorPreview();
+            handles??= new LevelEditorSceneHandles();
         }
 
         public void Detach()
@@ -77,6 +77,7 @@ namespace Game.Editor
         {
             var data = LevelEditorUtils.CreateMeteor(position, model.CurrentTool, 0f);
             model.Meteors.Add(data);
+            model.SelectedIndex = model.Meteors.Count - 1;
             requestRepaint?.Invoke();
             SceneView.RepaintAll();
         }

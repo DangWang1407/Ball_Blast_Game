@@ -25,6 +25,7 @@ namespace Game.Editor
                 Vector3 handlePos = Handles.FreeMoveHandle(m.position, r * 0.8f, Vector3.one * 0.1f, Handles.CircleHandleCap);
                 if (handlePos != m.position)
                 {
+                    model.SelectedIndex = i;
                     m.position = new Vector3(handlePos.x, handlePos.y, 0f);
                     requestRepaint?.Invoke();
                 }

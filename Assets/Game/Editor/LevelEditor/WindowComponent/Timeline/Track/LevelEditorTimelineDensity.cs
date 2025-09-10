@@ -5,6 +5,7 @@ namespace Game.Editor
 {
     public class LevelEditorTimelineDensity
     {
+        // Draws a density graph of meteor spawn times
         private const float DensityHeight = 200f;
         private const float DensityBottomMargin = 4f;
 

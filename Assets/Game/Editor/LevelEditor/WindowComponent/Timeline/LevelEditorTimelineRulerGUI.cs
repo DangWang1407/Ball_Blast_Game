@@ -29,6 +29,7 @@ namespace Game.Editor
                 if (c / secondsPerPixel >= minPx) { step = c; break; }
             }
 
+            // Draw ticks and labels
             GUIStyle tickStyle = new GUIStyle(EditorStyles.miniLabel) { alignment = TextAnchor.UpperCenter };
             for (float t = Mathf.Floor(model.TimelineScroll / step) * step; t <= model.TimelineScroll + visibleSpan + 0.001f; t += step)
             {
