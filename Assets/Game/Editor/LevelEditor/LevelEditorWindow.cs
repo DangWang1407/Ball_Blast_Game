@@ -20,31 +20,13 @@ namespace Game.Editor
 
         private void OnEnable()
         {
-            if (model == null)
-            {
-                model = new LevelEditorModel();
-            }
-
-            if (toolbarGUI == null)
-            {
-                toolbarGUI = new LevelEditorToolbarGUI();
-            }
-            if (timelineGUI == null)
-            {
-                timelineGUI = new LevelEditorTimelineGUI();
-            }
-            if (io == null)
-            {
-                io = new LevelEditorIO();
-            }
-            if (sceneGUI == null)
-            {
-                sceneGUI = new LevelEditorSceneGUI();
-            }
-            if (infoGUI == null)
-            {
-                infoGUI = new LevelEditorInfoGUI();
-            }
+            model ??= new LevelEditorModel();
+            toolbarGUI ??= new LevelEditorToolbarGUI();
+            timelineGUI ??= new LevelEditorTimelineGUI();
+            io ??= new LevelEditorIO();
+            sceneGUI ??= new LevelEditorSceneGUI();
+            infoGUI ??= new LevelEditorInfoGUI();
+            
             sceneGUI.Attach(model, Repaint);
         }
 
@@ -56,7 +38,7 @@ namespace Game.Editor
         private void OnGUI()
         {
             // GUILayout.Label("Level Editor", EditorStyles.boldLabel);
-            Rect toolbarRect = new Rect(10, 30, position.width - 20, 70);
+            Rect toolbarRect = new Rect(10, 10, position.width - 20, 100);
             toolbarGUI.Draw(model, OnLoad, OnSave, toolbarRect);
             GUILayout.Space(4);
 

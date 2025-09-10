@@ -11,6 +11,13 @@ namespace Game.Editor
         CreateSmall
     }
 
+    public enum ViewFilter
+    {
+        All,
+        Single,
+        Group
+    }
+
     [System.Serializable]
     public class LevelEditorModel
     {
@@ -24,5 +31,8 @@ namespace Game.Editor
         public int SelectedIndex = -1;
         public float TimelineZoom = 1f;
         public float TimelineScroll = 0f;
+
+        public ViewFilter CurrentViewFilter = ViewFilter.All;
+        public HashSet<int> SelectedSet = new HashSet<int>();
     }
 }

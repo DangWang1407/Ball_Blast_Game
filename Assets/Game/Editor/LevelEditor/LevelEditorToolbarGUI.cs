@@ -16,15 +16,24 @@ namespace Game.Editor
         {
             GUILayout.BeginArea(rect);
 
+            // Tool mode and duration
             EditorGUILayout.BeginHorizontal();
             model.CurrentTool = (ToolMode)EditorGUILayout.EnumPopup("Tool", model.CurrentTool, GUILayout.MaxWidth(300));
-            GUILayout.Space(6);
-            model.Duration = EditorGUILayout.FloatField("Duration (s)", model.Duration, GUILayout.MaxWidth(200));
-            // GUILayout.FlexibleSpace();
             EditorGUILayout.EndHorizontal();
 
+            // View filter
             EditorGUILayout.Space(4);
+            EditorGUILayout.BeginHorizontal();
+            model.CurrentViewFilter = (ViewFilter)EditorGUILayout.EnumPopup("View", model.CurrentViewFilter, GUILayout.MaxWidth(300));
+            if (model.CurrentViewFilter == ViewFilter.Group)
+            {
+                GUILayout.Space(6); GUILayout.Label($"Selected count: {model.SelectedSet.Count}");
+            }
+            GUILayout.FlexibleSpace();
+            EditorGUILayout.EndHorizontal();
 
+            // Load / Save / Play
+            EditorGUILayout.Space(4);
             EditorGUILayout.BeginHorizontal();
             if (GUILayout.Button("Load", GUILayout.MaxWidth(90))) onLoad?.Invoke();
             if (GUILayout.Button("Save", GUILayout.MaxWidth(90))) onSave?.Invoke();
@@ -36,10 +45,16 @@ namespace Game.Editor
                 else playRunner.PlayFromEditor(model);
             }
             EditorGUILayout.EndHorizontal();
+
+            // Asset path
             GUILayout.Space(4);
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Asset Path:", GUILayout.MaxWidth(70));
             GUILayout.Label(string.IsNullOrEmpty(model.CurrentAssetPath) ? "<none>" : model.CurrentAssetPath);
+
+            GUILayout.Space(4);
+            model.Duration = EditorGUILayout.FloatField("Duration (s)", model.Duration, GUILayout.MaxWidth(200));
+
             EditorGUILayout.EndHorizontal();
 
             GUILayout.EndArea();

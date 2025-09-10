@@ -39,7 +39,7 @@ namespace Game.Editor
                 DrawGrid(Vector3.zero, 1f, 20);
             }
 
-            // Draw interactive handles only (no meteor prefab previews)
+            // Draw interactive handles only 
             DrawSceneHandles();
 
             if (e.type == EventType.MouseDown && e.button == 0 && !e.alt)
@@ -59,13 +59,15 @@ namespace Game.Editor
         {
             for (int i = 0; i < model.Meteors.Count; i++)
             {
+                if (!IsVisibleByFilter(model, i)) continue;
+
                 var m = model.Meteors[i];
                 float r = m.size switch { MeteorSize.Large => 0.6f, MeteorSize.Medium => 0.45f, _ => 0.3f };
 
                 Handles.color = i == model.SelectedIndex ? new Color(0.3f, 0.8f, 1f, 0.9f) : new Color(1f, 1f, 1f, 0.5f);
                 Handles.DrawWireDisc(m.position, Vector3.forward, r);
 
-                Handles.color = new Color(0,0,0,0);
+                Handles.color = new Color(0, 0, 0, 0);
                 Vector3 handlePos = Handles.FreeMoveHandle(m.position, r * 0.8f, Vector3.one * 0.1f, Handles.CircleHandleCap);
                 if (handlePos != m.position)
                 {
@@ -139,6 +141,17 @@ namespace Game.Editor
             model.Meteors.Add(data);
             requestRepaint?.Invoke();
             SceneView.RepaintAll();
+        }
+        
+        private static bool IsVisibleByFilter(LevelEditorModel model, int index)
+        {
+            return model.CurrentViewFilter switch
+            {
+                ViewFilter.All => true,
+                ViewFilter.Single => index == model.SelectedIndex && model.SelectedIndex >= 0 && model.SelectedIndex < model.Meteors.Count,
+                ViewFilter.Group => model.SelectedSet != null && model.SelectedSet.Contains(index),
+                _ => true
+            };
         }
     }
 }

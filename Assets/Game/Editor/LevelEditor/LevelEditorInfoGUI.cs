@@ -29,7 +29,7 @@ namespace Game.Editor
                 var m = model.Meteors[model.SelectedIndex];
 
                 //Index
-                EditorGUILayout.LabelField("Index #" + model.SelectedIndex.ToString());
+                EditorGUILayout.LabelField("Index #" + (model.SelectedIndex + 1).ToString());
 
                 // Position
                 var newPos = EditorGUILayout.Vector3Field("Position", m.position);
