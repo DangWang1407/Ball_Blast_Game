@@ -11,7 +11,7 @@ namespace Game.Editor
     {
 
         private const string PlaytestResName = "_playtest";
-        private const string PlaytestResKey = "LevelEditorPlaytest_Respath";
+        private const string PlaytestResKey = "LevelEditorPlaytest_ResPath";
         private const string PreviousScenekey = "LevelEditor_PreviousScenePath";
 
 

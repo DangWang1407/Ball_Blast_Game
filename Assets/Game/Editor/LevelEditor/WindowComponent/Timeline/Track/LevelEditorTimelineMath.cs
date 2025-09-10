@@ -16,7 +16,13 @@ namespace Game.Editor
             float count = 0f;
             for (int i = 0; i < model.Meteors.Count; i++)
             {
-                if (Mathf.Abs(model.Meteors[i].spawnTime - t) <= range) count += 1f;
+                if (Mathf.Abs(model.Meteors[i].spawnTime - t) <= range)
+                {
+                    if (model.Meteors[i].size == MeteorSize.Large) count += 2f;
+                    else if (model.Meteors[i].size == MeteorSize.Medium) count += 1.5f;
+                    else
+                    count += 1f;
+                }
             }
             return count;
         }

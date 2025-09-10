@@ -14,6 +14,7 @@ namespace Game.Editor
         private GameObject meteorsRoot;
         private GameObject prefabLarge, prefabMedium, prefabSmall;
         private readonly List<GameObject> meteorGOs = new List<GameObject>();
+        private readonly List<MeteorSize> lastSizes = new List<MeteorSize>();
 
         public void EnsurePrefabs()
         {
@@ -31,19 +32,15 @@ namespace Game.Editor
 
         public void SyncMeteorInstances(LevelEditorModel model, System.Func<int, bool> isVisible)
         {
+            if (meteorsRoot == null) EnsureMeteorsRoot();
             // grow pool
             for (int i = meteorGOs.Count; i < model.Meteors.Count; i++)
             {
                 var prefab = GetPrefabFor(model.Meteors[i].size);
                 GameObject go = prefab != null ? (GameObject)PrefabUtility.InstantiatePrefab(prefab) : new GameObject($"Meteor_{i+1}");
-                if (go.GetComponent<SpriteRenderer>() == null) go.AddComponent<SpriteRenderer>();
-                go.name = $"Meteor_{i+1}";
-                go.transform.SetParent(meteorsRoot.transform);
-                go.hideFlags = HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor | HideFlags.HideInHierarchy | HideFlags.NotEditable;
-                foreach (var mb in go.GetComponentsInChildren<MonoBehaviour>()) mb.enabled = false;
-                var rb = go.GetComponent<Rigidbody2D>(); if (rb) { rb.simulated = false; rb.isKinematic = true; }
-                var col = go.GetComponent<Collider2D>(); if (col) col.enabled = false;
+                SetupPreviewGameObject(go, i);
                 meteorGOs.Add(go);
+                lastSizes.Add(model.Meteors[i].size);
             }
 
             // shrink pool
@@ -51,38 +48,34 @@ namespace Game.Editor
             {
                 if (meteorGOs[i] != null) Object.DestroyImmediate(meteorGOs[i]);
                 meteorGOs.RemoveAt(i);
+                if (i < lastSizes.Count) lastSizes.RemoveAt(i);
             }
 
             // update & replace if size changed
             for (int i = 0; i < meteorGOs.Count; i++)
             {
                 var data = model.Meteors[i];
-                var expectedPrefab = GetPrefabFor(data.size);
                 var go = meteorGOs[i];
-                bool needsReplace = go == null;
-#if UNITY_EDITOR
-                if (!needsReplace && expectedPrefab != null)
+
+                if (i >= lastSizes.Count) lastSizes.Add(data.size);
+
+                if (go == null || lastSizes[i] != data.size)
                 {
-                    var src = PrefabUtility.GetCorrespondingObjectFromSource(go);
-                    if (src != expectedPrefab) needsReplace = true;
-                }
-#endif
-                if (needsReplace)
-                {
+                    var expectedPrefab = GetPrefabFor(data.size);
                     if (go != null) Object.DestroyImmediate(go);
                     go = expectedPrefab != null ? (GameObject)PrefabUtility.InstantiatePrefab(expectedPrefab) : new GameObject($"Meteor_{i+1}");
-                    if (go.GetComponent<SpriteRenderer>() == null) go.AddComponent<SpriteRenderer>();
-                    go.name = $"Meteor_{i+1}";
-                    go.transform.SetParent(meteorsRoot.transform);
-                    go.hideFlags = HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor | HideFlags.HideInHierarchy | HideFlags.NotEditable;
-                    foreach (var mb in go.GetComponentsInChildren<MonoBehaviour>()) mb.enabled = false;
-                    var rbNew = go.GetComponent<Rigidbody2D>(); if (rbNew) { rbNew.simulated = false; rbNew.isKinematic = true; }
-                    var colNew = go.GetComponent<Collider2D>(); if (colNew) colNew.enabled = false;
+                    SetupPreviewGameObject(go, i);
                     meteorGOs[i] = go;
+                    lastSizes[i] = data.size;
                 }
 
-                go.transform.position = new Vector3(data.position.x, data.position.y, 0f);
-                go.SetActive(isVisible == null || isVisible(i));
+                // keep name consistent with index after any deletion
+                if (go.name != $"Meteor_{i+1}") go.name = $"Meteor_{i+1}";
+
+                var newPos = new Vector3(data.position.x, data.position.y, 0f);
+                if (go.transform.position != newPos) go.transform.position = newPos;
+                bool shouldActive = isVisible == null || isVisible(i);
+                if (go.activeSelf != shouldActive) go.SetActive(shouldActive);
             }
         }
 
@@ -93,6 +86,7 @@ namespace Game.Editor
                 if (meteorGOs[i] != null) Object.DestroyImmediate(meteorGOs[i]);
             }
             meteorGOs.Clear();
+            lastSizes.Clear();
             if (meteorsRoot != null)
             {
                 Object.DestroyImmediate(meteorsRoot);
@@ -109,6 +103,16 @@ namespace Game.Editor
                 _ => prefabSmall
             };
         }
+
+        private void SetupPreviewGameObject(GameObject go, int index)
+        {
+            if (go.GetComponent<SpriteRenderer>() == null) go.AddComponent<SpriteRenderer>();
+            go.name = $"Meteor_{index + 1}";
+            go.transform.SetParent(meteorsRoot.transform);
+            go.hideFlags = HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor | HideFlags.HideInHierarchy | HideFlags.NotEditable;
+            foreach (var mb in go.GetComponentsInChildren<MonoBehaviour>()) mb.enabled = false;
+            var rb = go.GetComponent<Rigidbody2D>(); if (rb) { rb.simulated = false; rb.isKinematic = true; }
+            var col = go.GetComponent<Collider2D>(); if (col) col.enabled = false;
+        }
     }
 }
-
