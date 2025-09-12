@@ -117,8 +117,24 @@ public class LevelManager : MonoBehaviour
         SaveData();
 
         if (currentLevel >= levelJsonFiles.Length)
+        {
             Debug.Log("Game completed!");
+            // Optional: free anything not referenced anymore
+            StartCoroutine(UnloadUnusedAssetsRoutine(null));
+        }
         else
-            StartCurrentLevel();
+        {
+            // Unload unused assets between levels, then start next
+            StartCoroutine(UnloadUnusedAssetsRoutine(StartCurrentLevel));
+        }
+    }
+
+    private System.Collections.IEnumerator UnloadUnusedAssetsRoutine(System.Action after)
+    {
+        // yield once to allow references to clear this frame
+        yield return null;
+        var op = Resources.UnloadUnusedAssets();
+        yield return op;
+        after?.Invoke();
     }
 }

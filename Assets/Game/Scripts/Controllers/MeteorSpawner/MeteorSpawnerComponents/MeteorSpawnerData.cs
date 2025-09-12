@@ -25,6 +25,9 @@ namespace Game.Controllers
             }
 
             meteors = JsonUtility.FromJson<MeteorSpawnList>(meteorsJson.text);
+
+            // Release reference to raw TextAsset so it can be unloaded later
+            meteorsJson = null;
             Debug.Log("Meteor data loaded successfully");
         }
     }
